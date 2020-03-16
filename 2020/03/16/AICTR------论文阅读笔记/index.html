@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>AICTR------论文阅读笔记 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="带自适应输入和复合趋势表示的径向基函数（AICTR）——论文阅读笔记Radial Basis Functions With Adaptive Input and Composite Trend Representation for Portfolio Selection现存问题：大多数基于趋势表示的系统都只利用一种趋势信息，缺乏构建复合趋势的有效机制。 本文提出的方法：利用一组拥有多种趋势表示的R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AICTR------论文阅读笔记">
+<meta property="og:url" content="http://yoursite.com/2020/03/16/AICTR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="带自适应输入和复合趋势表示的径向基函数（AICTR）——论文阅读笔记Radial Basis Functions With Adaptive Input and Composite Trend Representation for Portfolio Selection现存问题：大多数基于趋势表示的系统都只利用一种趋势信息，缺乏构建复合趋势的有效机制。 本文提出的方法：利用一组拥有多种趋势表示的R">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226120437768.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226121003569.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226121407440.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226122413252.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226123059537.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226131439180.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226132337243.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226135345167.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226135708142.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226140112358.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226150825766.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226153039662.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227133151006.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227165107523.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227111248177.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227112931897.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113101545.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113421905.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113446310.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113515706.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113533325.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113607913.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227121638689.png">
+<meta property="article:published_time" content="2020-03-16T10:53:39.084Z">
+<meta property="article:modified_time" content="2020-03-05T03:46:08.753Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226120437768.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AICTR------论文阅读笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/16/AICTR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2020-03-16T10:53:39.084Z" itemprop="datePublished">2020-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AICTR------论文阅读笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="带自适应输入和复合趋势表示的径向基函数（AICTR）——论文阅读笔记"><a href="#带自适应输入和复合趋势表示的径向基函数（AICTR）——论文阅读笔记" class="headerlink" title="带自适应输入和复合趋势表示的径向基函数（AICTR）——论文阅读笔记"></a>带自适应输入和复合趋势表示的径向基函数（AICTR）——论文阅读笔记</h4><h4 id="Radial-Basis-Functions-With-Adaptive-Input-and-Composite-Trend-Representation-for-Portfolio-Selection"><a href="#Radial-Basis-Functions-With-Adaptive-Input-and-Composite-Trend-Representation-for-Portfolio-Selection" class="headerlink" title="Radial Basis Functions With Adaptive Input and Composite Trend Representation for Portfolio Selection"></a>Radial Basis Functions With Adaptive Input and Composite Trend Representation for Portfolio Selection</h4><p>现存问题：大多数基于趋势表示的系统都只利用一种趋势信息，缺乏构建复合趋势的有效机制。</p>
+<p>本文提出的方法：利用一组拥有多种趋势表示的RBF，能提高价格预测的有效性和鲁棒性。</p>
+<h5 id="趋势表示"><a href="#趋势表示" class="headerlink" title="趋势表示"></a>趋势表示</h5><p>趋势表示是基于启发式金融现象进行未来价格预测的主要方法之一。</p>
+<p>下面是趋势表示的三个主要方法：</p>
+<ol>
+<li><p>trend-following</p>
+<p>该方法假设表现好的股票价格会继续上升（因为非理性的投资行为）。这些系统有：ONS（online Newton step），EG（exponential gradient），PPT（peak price tracking）</p>
+</li>
+<li><p>trend-reversing</p>
+<p>该方法假设资产价格会反转到某个历史平均水平，比如移动平均线就是一个典型的历史平均参考指数。</p>
+</li>
+<li><p>trend-pattern-matching</p>
+<p>该方法试着寻找一个历史模式，这个历史模式和当前模式相似。然后用历史结果来预测资产的增长潜力。</p>
+</li>
+</ol>
+<p>下面分别介绍三种主要的趋势表示：简单移动平均（SMA），指数移动平均（EMA），最高价格（PP）。</p>
+<h5 id="SMA"><a href="#SMA" class="headerlink" title="SMA"></a>SMA</h5><p>SMA是用最近时间窗口（窗口大小为w）内的资产价格的平均值作为预测价格来预测价比的。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226120437768.png" alt="image-20200226120437768"></p>
+<p>显然他给不同交易周期的资产价格都分配一样的权重来计算平均值。</p>
+<h5 id="EMA"><a href="#EMA" class="headerlink" title="EMA"></a>EMA</h5><p>EMA没有时间窗口限制，他计算平均值的时候为不同交易周期的资产价格分配不同的权重。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226121003569.png" alt="image-20200226121003569"></p>
+<p>其中$0&lt;\vartheta&lt;1$是平滑参数。</p>
+<p>我们把EMA预测价格的公式展开：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226121407440.png" alt="image-20200226121407440"></p>
+<p>可以看到，EMA是把所有历史价格信息都用到了，但是越近的价格权重越高（他们更能影响预测价格），越久远的价格信息权重越小，所以EMA实际上比SMA要更接近于实际价格。</p>
+<h5 id="PP"><a href="#PP" class="headerlink" title="PP"></a>PP</h5><p>主要是因为一些非理性的投资行为有助于保住资产趋势，于是有一些投资者是跟随价格趋势的，他们把近期出现过的最高价格当作未来可能出现的最高价格。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226122413252.png" alt="image-20200226122413252"></p>
+<hr>
+<h4 id="本文主要提出的方法"><a href="#本文主要提出的方法" class="headerlink" title="本文主要提出的方法"></a>本文主要提出的方法</h4><h5 id="AICTR"><a href="#AICTR" class="headerlink" title="AICTR"></a>AICTR</h5><p>我们先看RBF系统的典型形式：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226123059537.png" alt="image-20200226123059537"></p>
+<p>其中$\mathbf x$和$\mathbf y$分别是输入和输出，$\mathbf A\in \mathbb{R}^{d\times L}$是混合了很多RBF系统的权重矩阵，其中d是输出的维度，$\boldsymbol {\phi}$是高斯基函数的一个向量，并且$\boldsymbol {\mu}_l$是中心，$\sigma_l$是尺度参数。</p>
+<p>我们展开上面的式子，得到更直观的表达：<br>$$<br>\begin{bmatrix}<br>y_1\<br>\vdots\<br>y_L<br>\end{bmatrix}=\begin{bmatrix}a_{11}&amp;\cdots &amp;a_{1L}\ \vdots&amp;\ddots&amp;\vdots \a_{d1}&amp;\cdots &amp;a_{dL}\end{bmatrix}<br>\begin{bmatrix}\text{exp}\left(\frac{-|\mathbf x-\boldsymbol{\mu}<em>1|^2}{2\sigma_1^2}\right)\ \vdots\\text{exp}\left(\frac{-|\mathbf x-\boldsymbol{\mu}_l|^2}{2\sigma_l^2}\right)\end{bmatrix}<br>$$<br>${\hat{\mathbf x}</em>{l,t+1}}^L_{l=1}$代表L个趋势表示，那么SMA、EMA和PP的趋势表示的符号是$\hat{\mathbf x}<em>{S,t+1},\hat{\mathbf x}</em>{E,t+1},\hat{\mathbf x}_{M,t+1}$。</p>
+<p>然后将${\hat{\mathbf x}<em>{l,t+1}}^L</em>{l=1}$投影到d维单纯形域得到合格的投资组合。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226131439180.png" alt="image-20200226131439180"></p>
+<p>注意到$\hat{\mathbf x}<em>{l,t+1}$是预测的未来价比，$\tilde{\mathbf x}</em>{l,t+1}$是一个合格的投资组合（？？？为啥投资组合也用x来表示了，作者写错了吧），上面的这个式子就是说我们要找到一个预测价比使得它与真实的价比误差最小，那么这个能使误差最小的预测价比就是我们说的合格的价比。</p>
+<p>那么我们可以用${\tilde{\mathbf x}<em>{l,t-k}}^{w-1}</em>{k=0}$在最近的时间窗口中回测$l$个趋势的最近的投资表现</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226132337243.png" alt="image-20200226132337243"></p>
+<p>其中$\mathbf R_{l,t-k}$是$l$个趋势投资组合在第$(t-k)$个周期的增长因子，$\mathbf x_{t-k}$是实际价比。（这个地方说的这个增长因子到底是增长什么，如果按照上面的定义$\tilde {\mathbf x}_{l,t-k}$代表的是投资组合的话，那这里的增长因子就是累计财富的增长因子）</p>
+<p>然后我们比较不同趋势表示的最近投资表现，用下面的方案来自动选择最好的表现趋势作为RBF的自适应输入。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226135345167.png" alt="image-20200226135345167"></p>
+<p>用白话讲就是首先找到每个趋势投资组合在窗口中的最小增长因子，然后在这些最小增长因子中选择一个最大的增长因子，用这种方法我们就找到了在最坏金融环境下表现最好的趋势表示，也就提高了整个系统的鲁棒性。用下面这幅图可能更加直观。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226135708142.png" alt="image-20200226135708142"></p>
+<p>然后让所有的趋势投资组合${\tilde{\mathbf x}_{l,t+1}}$作为径向基函数的中心，而表现最好的那一个作为公共输入，那么提出的RBF经典形式就变成了这样：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226140112358.png" alt="image-20200226140112358"></p>
+<p>其中$\hat{\mathbf X}<em>{t+1}=[\hat{\mathbf x}</em>{1,t+1},\cdots,\hat{\mathbf x}<em>{l,t+1}]\in \mathbb{R}^{d\times L}$的作用就是那个权重矩阵，$\bigtriangleup\mathbf{b}</em>{t+1}$是投资组合在第（t+1）周期（也就是下一个投资周期）的更新增量。</p>
+<p>这个RBFs从公式上看量化了$\tilde{\mathbf x}<em>{*,t+1}$和$\tilde{\mathbf x}</em>{l,t+1}$之间的相似性，如果$\tilde{\mathbf x}<em>{*,t+1}$接近于$\tilde{\mathbf x}</em>{l,t+1}$，那么我们就可以看到$\phi_l$就会更大，那么$\hat{\mathbf x}<em>{l,t+1}$就更能影响更新增量$\bigtriangleup\mathbf{b}</em>{t+1}$。随着时间的推移，自适应输入$\tilde{\mathbf x}_{*,t+1}$在不同趋势表示之间切换，以适应市场状态。</p>
+<p>上面这段话用我自己的理解讲得再清楚一点，就是说：在进行更新时，由于这里存在着$l$个趋势表示，这$l$个趋势表示共同决定着更新量，然而并不是每个趋势表示在最后的更新中都有同等的重要性，有的趋势表示给它较大的权重，那么它在更新时起到的作用就会比较大，那么究竟哪些趋势表示需要让它对最终更新起到比较大的影响呢？那就是由于我们根据后验选择了一个自适应的输入，这个自适应输入是我们选择的在最差的金融环境下表现最好的趋势表示，那么当一些趋势表示与这个自适应输入之间相差不大（这里是使用欧氏距离来衡量的）时，我们就让这个趋势起到的作用大一点，至于那些和自适应输入差别很大（相似度不高，欧式距离大）的趋势表示，我们就赋给它较小的权重让它在最后的更新中起到的作用更小。</p>
+<h5 id="一个等价的优化模型"><a href="#一个等价的优化模型" class="headerlink" title="一个等价的优化模型"></a>一个等价的优化模型</h5><p>（来的莫名奇妙！！！）</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226150825766.png" alt="image-20200226150825766"></p>
+<p>其中：</p>
+<ol>
+<li>tr是迹算子</li>
+<li>$\mathbf B$包含L个$\mathbf b$</li>
+<li>$\boldsymbol {\Phi}$是$\boldsymbol {\phi}$生成的对角矩阵</li>
+<li>$\hat{\mathbf X}_{t+1}$是L个不同的趋势表示</li>
+<li>$\mathbf 1_{(L)}$是元素都是1的L维向量</li>
+<li>约束条件是强制让新的投资组合$\mathbf b$和当前投资组合$\hat{\mathbf b}_t$之间的距离要小于阈值$\epsilon$</li>
+</ol>
+<p>和之前论文的财富增长因子$\mathbf b^{\top}\hat{\mathbf x}<em>{t+1}$不同，这里有一个广义的增长因子就是$\text{tr}(\mathbf B\boldsymbol{\Phi}\hat{\mathbf X^{\top}</em>{t+1}})$，其中的$\boldsymbol {\Phi}$是一个核心，用来调整不同趋势表示的影响。表现好的趋势$\hat{\mathbf x}<em>{*,t+1}$表示有较大的影响，其他的${\hat{\mathbf x}</em>{l,t+1}}$就影响较小，这取决于它们和$\hat{\mathbf x}_{*,t+1}$的相似度。</p>
+<p>按照PPT一文中的优化方式，可以将目标函数简化为如下形式：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200226153039662.png" alt="image-20200226153039662"></p>
+<h5 id="求解AICTR算法"><a href="#求解AICTR算法" class="headerlink" title="求解AICTR算法"></a>求解AICTR算法</h5><p>对于上述目标函数解为：<br>$$<br>\mathbf c_{t+1}=\begin{cases}\frac{\epsilon\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol{\Phi\bold 1</em>{(L)}}}{|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}|}&amp;\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}\not=0\<br>0&amp;\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}=0\end{cases}<br>$$<br>和求解PPT目标函数的方法类似。现在只需要证明这个解满足目标函数即可。</p>
+<p>首先我们看这个解是否满足目标函数的约束限制。</p>
+<ol>
+<li><p>由如下的等价变换可知，该解满足约束$|\mathbf c||\le\epsilon$。<br>$$<br>\mathbf c_{t+1}=\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol{\Phi\bold 1</em>{(L)}}}{|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}|}\iff |\mathbf c_{t+1}|=\epsilon<br>$$</p>
+</li>
+<li><p>那么现在再来看该解是否满足约束$\mathbf 1^{\top}\mathbf c=0$，由如下验证可知也是满足该约束的。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227133151006.png" alt="image-20200227133151006"></p>
+</li>
+</ol>
+<p>至此已经验证了该解满足目标函数的所有约束，现在唯一需要验证的就是该解能否使$\text{tr}\left(\mathbf C\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$达到最大。</p>
+<p>下面就是验证过程，使用反证法：</p>
+<p>假设存在一个解$\mathring {\mathbf c}$，该解满足所有的约束，且$\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)&gt;\text{tr}\left(\mathbf C</em>{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)$，其中$\mathring{\mathbf C}=\mathring{\mathbf c}\mathbf 1^{\top}</em>{(L)},$$\mathbf{C}<em>{t+1}=\mathbf{c}</em>{t+1}\mathbf 1^{\top}_{(L)}$。</p>
+<p>首先我们能发现一个幂等性性质：<br>$$<br>\begin{aligned}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)^2&amp;=\left(\mathbf I-\frac{2}{d}\mathbf 1\bold 1^{\top}+\frac{1}{d^2}\mathbf 1(\mathbf 1^{\top}\mathbf 1)\mathbf 1^{\top}\right)\<br>&amp;=\left(\mathbf I-\frac{2}{d}\mathbf 1\bold 1^{\top}+\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\<br>&amp;=\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\end{aligned}<br>$$<br>除此之外还能发现另外一个性质（其中用到了约束$\mathbf 1^{\top}\mathring{\mathbf c}=0$）：<br>$$<br>\left(\mathbf I - \frac{1}{d}\mathbf 1\bold 1^{\top}\right)\mathring{\mathbf c}=\mathring{\mathbf c}-\frac{1}{d}\mathbf 1(\mathbf 1^{\top}\mathring{\mathbf c})=\mathring{\mathbf c}<br>$$<br>接下来我们计算不等式$\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)&gt;\text{tr}\left(\mathbf C</em>{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)$的右边<br>$$<br>\begin{aligned}\text{tr}\left(\mathbf C</em>{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)&amp;=\text{tr}\left(\mathbf c</em>{t+1}\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\right)\<br>&amp;=\text{tr}\left(\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}\right)\<br>&amp;=\bold 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}<br>\end{aligned}<br>$$</p>
+<hr>
+<p>我们来解释一下上面这个等式是怎么推算的：</p>
+<ol>
+<li><p>第一个等号是由于$\mathbf{C}<em>{t+1}=\mathbf{c}</em>{t+1}\mathbf 1^{\top}<em>{(L)}$，目标函数中也提到过，不过目标函数中的形式是$\mathbf C = \mathbf c\mathbf 1^{\top}</em>{(L)}$。</p>
+</li>
+<li><p>第二个等号利用了迹中元素可交换的性质$\text{tr}(AB)=\text{tr}(BA)$，这是线代中的知识也很好理解。</p>
+</li>
+<li><p>第三个等号是因为迹算子括号里面的东西是标量，对一个标量求迹，显然就等于这个标量。接下来让我来解释一下为什么括号里面的东西是标量：</p>
+<ul>
+<li>$\mathbf 1^{\top}_{(L)}$是一个$L$维的行向量；</li>
+<li>$\mathbf {\Phi}$是由$\boldsymbol{\phi}$生成的对角矩阵，而$\boldsymbol\phi=[\phi_1,\phi_2,\dots,\phi_L]^{\top}$，所以$\boldsymbol \Phi$就是一个$L\times L$维的对角方阵；</li>
+<li>$\hat{\mathbf X}<em>{t+1}=[\hat{\mathbf x}</em>{1,t+1},\dots,\hat{\mathbf x}<em>{L,t+1}]$代表的是L个趋势表示，而其中$\hat{\mathbf x}</em>{i\in[1,L],t+1}$又代表的是某个趋势表示对d个资产的预测价比，也就是d维的列向量，所以我们就知道了$\hat{\mathbf X}<em>{t+1}$就是$d\times L$维的矩阵，而$\hat{\mathbf X}</em>{t+1}^{\top}$就是$L\times d$维的矩阵；</li>
+<li>由于$\mathbf b_{t+1}=\hat{\mathbf b}+\mathbf c_{t+1}$，因为$\mathbf b_{t+1}$是对d个资产的投资组合，而$\mathbf c_{t+1}$代表的是新旧投资组合的差异，也就是投资组合增量，一样都是d维的列向量。</li>
+</ul>
+<p>所以我们有<br>$$<br>\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}\longrightarrow[1,\dots,1]<em>L\begin{bmatrix}\phi_1&amp;\cdots&amp;0\\vdots&amp;\ddots&amp;\vdots\0&amp;\cdots&amp;\phi_L\end{bmatrix}</em>{L\times L}\begin{bmatrix}\hat{x}^1_{1,t+1}&amp;\cdots&amp;\hat{x}^d_{1,t+1}\\vdots&amp;\ddots&amp;\vdots\\hat x^{1}<em>{L,t+1}&amp;\cdots&amp;\hat x^d</em>{L,t+1}\end{bmatrix}<em>{L\times d}\begin{bmatrix}c^1</em>{t+1}\\vdots\c^d_{t+1}\end{bmatrix}_d<br>$$<br>所以现在我们就很容易看出来括号里面的东西是个标量了。</p>
+</li>
+</ol>
+<hr>
+<p>接着将解带入上面的式子，结合上面发现的幂等性性质继续计算：<br>$$<br>\begin{aligned}<br>\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}&amp;=\bold 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}<br>\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol{\Phi\bold 1</em>{(L)}}}{|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}|}\<br>&amp;=\bold 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}<br>\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)^2\hat{\mathbf X}<em>{t+1}\boldsymbol{\Phi\bold 1</em>{(L)}}}{|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}|}\<br>&amp;=\epsilon\left|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}\right|<br>\end{aligned}<br>$$<br>接下来我们计算不等式$\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)&gt;\text{tr}\left(\mathbf C</em>{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$的左边</p>
+<p>这里利用了上面发现的第二条性质<br>$$<br>\begin{aligned}\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)&amp;=\bold 1^{\top}</em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\mathring{\mathbf c}\&amp;=\bold 1^{\top}</em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\mathring{\mathbf c}\&amp;=\left|\mathbf 1^{\top}</em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\right||\mathring {\mathbf c}|<br>\end{aligned}<br>$$<br>既然不等式的两边我们都进行了计算，所以不等式就变成了如下形式：<br>$$<br>\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\right)&gt;\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)\longrightarrow|\mathring {\mathbf c}|\left|\mathbf 1^{\top}</em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\right|&gt;\epsilon\left|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}</em>{t+1}\boldsymbol \Phi\bold 1_{(L)}\right|<br>$$<br>所以由上式得$|\mathring {\mathbf c}|&gt;\epsilon$，这显然和我们的条件$|\mathring {\mathbf c}|\le\epsilon$矛盾，所以假设不成立。</p>
+<p>$\mathbf c_{t+1}$是目标函数的解，那这个解是不是唯一的解呢，我们需要验证。</p>
+<p>同样的采用反证法：</p>
+<p>假设存在一个解$\mathbf c_<em>\not=\mathbf c_{t+1}$，这个解满足所有的约束条件，且$\text{tr}\left({\mathbf C}<em>*\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\right)=\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)$，其中$\mathbf{C}</em>{</em>}=\mathbf{c}<em>{*}\mathbf 1^{\top}</em>{(L)}$。</p>
+<p>同样的我们知道：<br>$$<br>\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\right)=\bold 1^{\top}</em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}<em>{t+1}\mathbf c</em>{t+1}\\text{tr}\left({\mathbf C}<em>*\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\right)=\bold 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{<em>}<br>$$<br>从上式可以知道，因为$\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}=\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{</em>}$，而$\mathbf c_<em>\not=\mathbf c_{t+1}$。所以$\mathbf c_</em>$一定和$\mathbf c_{t+1}$不平行，我们同样可以用反证法证明这个结论。</p>
+<p>假设这两个向量平行，一定有$\mathbf c_* =\zeta\mathbf c_{t+1}(\zeta\not=0)$，那么就有</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227165107523.png" alt="image-20200227165107523"></p>
+<p>由于$\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}\not=0$所以$\zeta = 1$，那么$\mathbf c_<em>=\mathbf c_{t+1}$，这显然和我们的条件$\mathbf c_*\not=\mathbf c_{t+1}$矛盾，所以假设不成立，即$\mathbf c_</em>$一定和$\mathbf c_{t+1}$不平行。</p>
+<p>由于$\mathbf c_<em>$和$\mathbf c_{t+1}$不平行，所以利用柯西-施瓦兹不等式和我们发现的第二条性质，我们得到严格的不等式：<br>$$<br>\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{</em>}=\bold 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\mathbf c_{<em>}&lt;\left|\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\right||\mathbf c_{</em>}|<br>$$<br>又因为：<br>$$<br>\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}=\epsilon\left|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\bold 1</em>{(L)}\right|<br>$$<br>且<br>$$<br>\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{t+1}=\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\mathbf c_{<em>}<br>$$<br>所以<br>$$<br>\epsilon\left|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\mathbf 1</em>{(L)}\right|&lt;\left|\mathbf 1^{\top}<em>{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}</em>{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\right||\mathbf c_{</em>}|<br>$$<br>即$|\mathbf c_<em>|&gt;\epsilon$，这显然和条件$|\mathbf c_</em>||\le\epsilon$矛盾，所以假设不成立。该目标函数只有唯一的解。</p>
+<p>综上我们就知道了目标函数的最优解只有一个那就是$\mathbf c_{t+1}$。至于当$\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}<em>{t+1}\boldsymbol \Phi\mathbf 1</em>{(L)}=0$时，我们令$\mathbf c_{t+1}=0$。</p>
+<p>由于我们求解上述解时放宽了单纯形限制，所以最后求得的这个解还需要投影到$\epsilon$-Euclidean ball。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227111248177.png" alt="image-20200227111248177"></p>
+<p>其中的$\mathcal {P}_{\epsilon}$代表投影操作。</p>
+<p>最后下一投资组合由下式计算：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227112931897.png" alt="image-20200227112931897"></p>
+<p>下面是整个AICTR算法：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113101545.png" alt="image-20200227113101545"></p>
+<p>其中涉及到几个公式，公式现在总结罗列如下：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113421905.png" alt="image-20200227113421905"></p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113446310.png" alt="image-20200227113446310"></p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113515706.png" alt="image-20200227113515706"></p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113533325.png" alt="image-20200227113533325"></p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227113607913.png" alt="image-20200227113607913"></p>
+<h5 id="两个指标"><a href="#两个指标" class="headerlink" title="两个指标"></a>两个指标</h5><p>最后这两个指标之前没见到过，或者见到过但是不太了解。</p>
+<ol>
+<li><p>$\alpha$因子</p>
+<p>根据资金资产定价模型，具体可看这篇论文：Capital asset prices: A theory of market equilibrium under<br>conditions of risk。一个投资组合系统的期望回报可以分解为市场组成和内在超额收益。这个内在超额收益就是我们说的$\alpha$因子，这个$\alpha$因子是可以通过好的投资组合选择系统来提高的，因此我们就可以通过比较不同投资组合选择系统来比较他们的投资表现。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200227121638689.png" alt="image-20200227121638689"></p>
+<p>其中:</p>
+<ul>
+<li>$E(\cdot)$表示数学期望</li>
+<li>$\alpha$是该资产配置系统固有的超额收益率（$\alpha$为负，理解为劣于市场）</li>
+<li>$\beta$是该资产配置系统随金融市场的波动因子</li>
+<li>$r_s$是资产配置系统的期望收益</li>
+<li>$r_m$是所在的金融市场状况</li>
+<li>$\hat{c}(\cdot,\cdot)$代表n个投资日的收益率计算的样本协方差</li>
+<li>$\hat{s}(\cdot,\cdot)$代表n个投资日的收益率计算的样本标准差</li>
+</ul>
+</li>
+<li><p>t-test</p>
+<p>为了检验$\alpha$是否显著大于0，进行统计t检验，以表明固有超额收益不是由于运气好。</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/16/AICTR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" data-id="ck7udi2qp0002fwwx59ue2imo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2019RecSys最佳论文------论文阅读笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/16/AICTR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">AICTR------论文阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">2019RecSys最佳论文------论文阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/%E5%81%B6%E5%B0%94%E7%88%B1%E7%9A%84/">偶尔爱的</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%8D%9A%E5%AE%A2/">如何使用博客</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

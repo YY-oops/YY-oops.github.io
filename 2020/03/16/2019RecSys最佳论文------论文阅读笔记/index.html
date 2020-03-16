@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>2019RecSys最佳论文------论文阅读笔记 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="2019RecSys最佳论文——论文阅读笔记Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches论文主要提出现有的研究中存在两个问题：1. 结果的可复现性；2. baseline的选择问题。 论文选择了顶级会议（KDD,SIGIR,WWW,RecSys）中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019RecSys最佳论文------论文阅读笔记">
+<meta property="og:url" content="http://yoursite.com/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="2019RecSys最佳论文——论文阅读笔记Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches论文主要提出现有的研究中存在两个问题：1. 结果的可复现性；2. baseline的选择问题。 论文选择了顶级会议（KDD,SIGIR,WWW,RecSys）中">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316132353648.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316140901008.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316140933687.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316141834353.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316143614930.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316144520757.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316145445718.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316150926703.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316154514502.png">
+<meta property="og:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316154835318.png">
+<meta property="article:published_time" content="2020-03-16T10:52:21.007Z">
+<meta property="article:modified_time" content="2020-03-16T07:57:20.592Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316132353648.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2019RecSys最佳论文------论文阅读笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2020-03-16T10:52:21.007Z" itemprop="datePublished">2020-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      2019RecSys最佳论文------论文阅读笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="2019RecSys最佳论文——论文阅读笔记"><a href="#2019RecSys最佳论文——论文阅读笔记" class="headerlink" title="2019RecSys最佳论文——论文阅读笔记"></a>2019RecSys最佳论文——论文阅读笔记</h4><h4 id="Are-We-Really-Making-Much-Progress-A-Worrying-Analysis-of-Recent-Neural-Recommendation-Approaches"><a href="#Are-We-Really-Making-Much-Progress-A-Worrying-Analysis-of-Recent-Neural-Recommendation-Approaches" class="headerlink" title="Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches"></a>Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches</h4><p>论文主要提出现有的研究中存在两个问题：1. 结果的可复现性；2. baseline的选择问题。</p>
+<p>论文选择了顶级会议（KDD,SIGIR,WWW,RecSys）中的18篇文章，其中7个只有通过极大的努力才能复现，7个中有6个可以被简单的基于最近邻和基于图的模型超过，剩下的1个虽然能够很好的优于baseline，但是也比不了经过良好调整的非线性排序模型。</p>
+<p>是什么导致就算是最近发布在顶会上的神经网络的文章也可以被简单的最近邻模型超越呢？</p>
+<p>主要是：</p>
+<ol>
+<li><strong>选择很弱的baseline</strong>：对于给定的任务和数据集，故意选择很差的baseline，并且有时候这些这些baseline没有进行很好的调参；</li>
+<li><strong>创建一些弱方法作为新的baseline</strong>：有些时候，选择的baseline与新提出的算法来自同一个领域，比如提出了一个深度学习的算法只和其他深度学习方法baseline作比较，显然一些传统的非深度学习方法可能要比提出的这个深度学习方法还要好，接着本领域内的其他新方法又拿这个方法作为baseline，一直传递下去，这种行为我们可以想象，该领域中的方法总体就会很弱。</li>
+<li><strong>难以比较不同论文结果，也很难复现论文结果</strong>：不同的论文采用不同的数据集，评估方法，表现度量，和数据处理步骤，这让我们很难知道哪个方法在不同的应用场景下是最好的。尤其是不共享源代码和数据集时，这个问题尤为突出。虽然现在公布源代码的趋势在上升，但这还不是很普遍，或者即便公布了源代码，但这些代码通常不完整，比如有的缺少数据预处理，参数调整，或者精确的计算过程等等。</li>
+</ol>
+<p>本文的做法是：1. 先复现各种论文的结果，看一看各种论文的可复现性；2.使用额外的baseline（基于用户的最近邻方法，基于物品的最近邻方法，基于图的基于用户的最近邻方法，基于图的基于物品的最近邻方法） </p>
+<p>本文选择的文章具有以下特征：1. 提出基于深度学习的方法；2. 聚焦于Top-n推荐。一些其他推荐任务，比如团体推荐（group recommendation）和基于会话的推荐（session-based recommendation）都没有考虑在内；3. 使用了分类或者排序指标，比如Precision, Recall, MAP。</p>
+<p>那么文章怎么判断一篇文章是否能够复现呢？本文也说明了自己的标准，如果满足以下要求，就认为一篇论文可复现：</p>
+<ol>
+<li>可以获得源代码的可运行版本，或者源代码只需要小的改动就可以正常运行。</li>
+<li>原文中至少有一个数据集可用。更进一步的要求是原始使用的训练-测试分割是公开可获得的或者可以通过论文中的信息重建。</li>
+</ol>
+<p>显然不满足上述要求我们认为论文不可复现，还有一点就是，如果论文的代码是公开的，但是只包括骨架，而缺少很多部分和很多细节，我们也认为该论文不可复现，如果使用的数据是公司拥有的非公开数据或者数据是自己从网上以某种形式收集的但不公开共享的数据，我们也认为该论文无法复现。</p>
+<p>根据这些规则，可以复现的论文如下表：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316132353648.png" alt="image-20200316132353648"></p>
+<h5 id="可复现："><a href="#可复现：" class="headerlink" title="可复现："></a>可复现：</h5><ol>
+<li><p>KDD</p>
+<ul>
+<li>Binbin Hu, Chuan Shi, Wayne Xin Zhao, and Philip S Yu. 2018. Leveraging meta-path based context for top-n recommendation with a neural co-attention model. In <em>Proceedings KDD ’18</em>. 1531–1540.</li>
+<li>Xiaopeng Li and James She. 2017. Collaborative variational autoencoder for recommender systems. In <em>Proceedings KDD ’17</em>. 305–314.</li>
+<li>Hao Wang, Naiyan Wang, and Dit-Yan Yeung. 2015. Collaborative deep learning for recommender systems. In <em>Proceedings KDD ’15</em>. 1235–1244.</li>
+</ul>
+</li>
+<li><p>RecSys</p>
+<ul>
+<li>Lei Zheng, Chun-Ta Lu, Fei Jiang, Jiawei Zhang, and Philip S. Yu. 2018. Spectral Collaborative Filtering. In <em>Proceedings RecSys ’18</em>. 311–319.</li>
+</ul>
+</li>
+<li><p>SIGIR</p>
+<ul>
+<li>Travis Ebesu, Bin Shen, and Yi Fang. 2018. Collaborative Memory Network for Recommendation Systems. In <em>Proceedings SIGIR ’18</em>. 515–524.</li>
+</ul>
+</li>
+<li><p>WWW</p>
+<ul>
+<li>Xiangnan He, Lizi Liao, Hanwang Zhang, Liqiang Nie, Xia Hu, and Tat-Seng Chua. 2017. Neural collaborative fifiltering. In <em>Proceedings WWW ’17</em>. 173–182.</li>
+<li>Dawen Liang, Rahul G Krishnan, Matthew D Hoffffman, and Tony Jebara. 2018. Variational Autoencoders for Collaborative Filtering. In <em>Proceedings WWW ’18</em>. 689–698.</li>
+</ul>
+</li>
+</ol>
+<h5 id="不可复现："><a href="#不可复现：" class="headerlink" title="不可复现："></a>不可复现：</h5><ol>
+<li><p>KDD</p>
+<ul>
+<li>Yi Tay, Luu Anh Tuan, and Siu Cheung Hui. 2018. Multi-Pointer Co-Attention Networks for Recommendation. In <em>Proceedings SIGKDD ’18</em>. 2309–2318.</li>
+</ul>
+</li>
+<li><p>RecSys</p>
+<ul>
+<li><p>Zhu Sun, Jie Yang, Jie Zhang, Alessandro Bozzon, Long-Kai Huang, and Chi Xu. 2018. Recurrent Knowledge Graph Embedding for Effffective Recommendation. In <em>Proceedings RecSys ’18</em>. 297–305.</p>
+</li>
+<li><p>Homanga Bharadhwaj, Homin Park, and Brian Y. Lim. 2018. RecGAN: Recurrent Generative Adversarial Networks for Recommendation Systems. In <em>Proceedings</em> <em>RecSys ’18</em>. 372–376.</p>
+</li>
+<li><p>Noveen Sachdeva, Kartik Gupta, and Vikram Pudi. 2018. Attentive Neural Architecture Incorporating Song Features for Music Recommendation. In <em>Proceedings</em> <em>RecSys ’18</em>. 417–421.</p>
+</li>
+<li><p>Trinh Xuan Tuan and Tu Minh Phuong. 2017. 3D Convolutional Networks for Session-based Recommendation with Content Features. In <em>Proceedings RecSys</em> <em>’17</em>. 138–146.</p>
+</li>
+<li><p>Donghyun Kim, Chanyoung Park, Jinoh Oh, Sungyoung Lee, and Hwanjo Yu. 2016. Convolutional Matrix Factorization for Document Context-Aware Recommendation. In <em>Proceedings RecSys ’16</em>. 233–240.</p>
+</li>
+<li><p>Flavian Vasile, Elena Smirnova, and Alexis Conneau. 2016. Meta-Prod2Vec: Product Embeddings Using Side-Information for Recommendation. In <em>Proceedings</em> <em>RecSys ’16</em>. 225–232.</p>
+</li>
+</ul>
+</li>
+<li><p>SIGIR</p>
+<ul>
+<li>Jarana Manotumruksa, Craig Macdonald, and Iadh Ounis. 2018. A Contextual Attention Recurrent Architecture for Context-Aware Venue Recommendation. In <em>Proceedings SIGIR ’18</em>. 555–564.</li>
+<li>Jingyuan Chen, Hanwang Zhang, Xiangnan He, Liqiang Nie, Wei Liu, and TatSeng Chua. 2017. Attentive collaborative fifiltering: Multimedia recommendation with item-and component-level attention. In <em>Proceedings SIGIR ’17</em>. 335–344.</li>
+</ul>
+</li>
+<li><p>WWW</p>
+<ul>
+<li>Yi Tay, Luu Anh Tuan, and Siu Cheung Hui. 2018. Latent relational metric learning via memory-based attention for collaborative ranking. In <em>Proceedings WWW</em> <em>’18</em>. 729–739.</li>
+<li>Ali Mamdouh Elkahky, Yang Song, and Xiaodong He. 2015. A multi-view deep learning approach for cross domain user modeling in recommendation systems. In <em>Proceedings WWW ’15</em>. 278–288.</li>
+</ul>
+</li>
+</ol>
+<p>对于可以复现的论文，本文选择了几个额外的baseline进行比较：</p>
+<ol>
+<li>TopPopular</li>
+<li>ItemKNN</li>
+<li>UserKNN</li>
+<li>ItemKNN-CBF</li>
+<li>ItemKNN-CFCBF</li>
+<li>P^3^α</li>
+<li>RP^3^β</li>
+</ol>
+<h5 id="Collaborative-Memory-Networks-CMN"><a href="#Collaborative-Memory-Networks-CMN" class="headerlink" title="Collaborative Memory Networks(CMN)"></a>Collaborative Memory Networks(CMN)</h5><p>当然在CMN原文中所有评价指标都比它的baseline要好，但是当我们复现并且与新的baseline比较时，发现CMN谁也比不过…….</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316140901008.png" alt="image-20200316140901008"></p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316140933687.png" alt="image-20200316140933687"></p>
+<p>最有趣的是，最后一幅图，最垃圾的也是最不个性化的TopPopular算法居然在Epinions数据集上很大程度上比所有其他算法都要好，不过这可能跟数据集本身的特性有关。</p>
+<h5 id="Metapath-based-Context-for-RECommendation-MCRec"><a href="#Metapath-based-Context-for-RECommendation-MCRec" class="headerlink" title="Metapath based Context for RECommendation(MCRec)"></a>Metapath based Context for RECommendation(MCRec)</h5><p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316141834353.png" alt="image-20200316141834353"></p>
+<p>使用的数据集是MovieLens，MCRec也不行。</p>
+<p>特别的有一点，通过看该论文的源代码发现原文的作者在测试集上进行测试时，每次epoch得到一个结果，然后对每个评价指标选择了epoch中最佳的结果，这样做显然是不适当的。</p>
+<h5 id="Collaborative-Variational-Autoencoder-CVAE"><a href="#Collaborative-Variational-Autoencoder-CVAE" class="headerlink" title="Collaborative Variational Autoencoder(CVAE)"></a>Collaborative Variational Autoencoder(CVAE)</h5><p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316143614930.png" alt="image-20200316143614930"></p>
+<p>使用的评价指标是不同列表长度（50到300）的Recall，使用的数据集是CiteULike-a，显然CVAE也8太行。但是在两个较长的列表长度（超过100）时，CVAE能够在两个数据集上优于我们这些baseline。</p>
+<h5 id="Collaborative-Deep-Learning-CDL"><a href="#Collaborative-Deep-Learning-CDL" class="headerlink" title="Collaborative Deep Learning(CDL)"></a>Collaborative Deep Learning(CDL)</h5><p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316144520757.png" alt="image-20200316144520757"></p>
+<p>使用的数据集是CiteULike-a，baseline也都优于CDL。比较CVAE和CDL的结果，发现确实CVAE的结果确实比CDL好，这表明确实有提高，但是这两种方法都没有一种简单的baseline效果好。</p>
+<h5 id="Neural-Collaborative-Filtering-NCF"><a href="#Neural-Collaborative-Filtering-NCF" class="headerlink" title="Neural Collaborative Filtering(NCF)"></a>Neural Collaborative Filtering(NCF)</h5><p>先上结果</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316145445718.png" alt="image-20200316145445718"></p>
+<p>观察表格发现，在Pinterest数据集上，有两个baseline所有指标都优于NeuMF，但是在MovieLens数据集上，NeuMF很清楚是优于所有的baseline的。</p>
+<p>该论文作者也是搞了一些小trick，从源代码看，作者是基于从测试集的结果来选择的epoch数，然而，这个超参数的调整不应该基于测试集来确定，应该用验证集来找到一个合适的参数。并且作者和ItemKNN作比较时，只是简单的取了不同邻居数，而没有测试其他变化。</p>
+<h5 id="Spectral-Collaborative-Filtering-SpectralCF"><a href="#Spectral-Collaborative-Filtering-SpectralCF" class="headerlink" title="Spectral Collaborative Filtering(SpectralCF)"></a>Spectral Collaborative Filtering(SpectralCF)</h5><p>作者提供了MovieLens数据集的训练集和测试集，但是其他两个数据集（HetRec，AmazonInstant Video）却没有给，所以我们就根据论文中的描述自行创建了一个分割。</p>
+<p>其次作者在文章只提供了一组超参数，显然应该所以的数据集都是用的这一组超参数，于是我们用提供的超参数和自己设定的超参数跑了代码。</p>
+<p>在HetRec数据集和Amazon数据集上进行比较时，包括TopPoular在内的所有baseline在所有的指标上都比SpectralCF要好。但是用作者提供的Movie Lens分割时（该数据集作者提供了训练集和测试集），SpectralCF却比所有的baseline都要好的多。</p>
+<p>这个结果不禁让我们思考是不是跟数据集的分割方法有很大关系？</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316150926703.png" alt="image-20200316150926703"></p>
+<p>上图是采用自己的训练集测试集分割方法时在数据集MovieLens1M上的结果，结果却发现如上图，SpectralCF甚至被TopPopular超过。</p>
+<p>所以这里面数据分割是一个很大的问题。</p>
+<h5 id="Variational-Autoencoders-for-Collaborative-Filtering-Mult-VAE"><a href="#Variational-Autoencoders-for-Collaborative-Filtering-Mult-VAE" class="headerlink" title="Variational Autoencoders for  Collaborative Filtering(Mult-VAE)"></a>Variational Autoencoders for  Collaborative Filtering(Mult-VAE)</h5><p>该模型是在我们所调研的文献中唯一一个复杂的模型表现更好的一个例子，在各种配置下该模型都极大的优于我们提出的任何一个baseline。</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316154514502.png" alt="image-20200316154514502"></p>
+<p>上图用到的数据集是Netflix data。</p>
+<p>但是该神经方法只是部分的，取决于所选择的评估方法，当我们用其他的评价指标时发现：</p>
+<p><img src="C:%5CUsers%5Cperso%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200316154835318.png" alt="image-20200316154835318"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" data-id="ck7udi2qa0000fwwx5tg4fqrt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/16/AICTR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          AICTR------论文阅读笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/16/%E5%81%B6%E5%B0%94%E7%88%B1%E7%9A%84/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">偶尔爱的</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/16/AICTR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">AICTR------论文阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">2019RecSys最佳论文------论文阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/%E5%81%B6%E5%B0%94%E7%88%B1%E7%9A%84/">偶尔爱的</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%8D%9A%E5%AE%A2/">如何使用博客</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/16/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
