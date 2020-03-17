@@ -147,6 +147,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/17/RPRT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="个人博客personal blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/17/RPRT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">RPRT------论文阅读笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-17 18:49:35 / 修改时间：13:47:30" itemprop="dateCreated datePublished" datetime="2020-03-17T18:49:35+08:00">2020-03-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="RPRT———论文阅读笔记"><a href="#RPRT———论文阅读笔记" class="headerlink" title="RPRT———论文阅读笔记"></a>RPRT———论文阅读笔记</h4><h4 id="Reweighted-Price-Relative-Tracking-System-for-Automatic-Portfolio-Optimization"><a href="#Reweighted-Price-Relative-Tracking-System-for-Automatic-Portfolio-Optimization" class="headerlink" title="Reweighted Price Relative Tracking System for Automatic Portfolio Optimization"></a>Reweighted Price Relative Tracking System for Automatic Portfolio Optimization</h4><p>本文出发点：1. 不像OLMAR预测价格时使用平均值，这样相当于每个资产的权重都是一样的，但是不同的资产对预测价格应该有不同的影响，所以在预测价格阶段自动的为资产加权并且自动更新是有必要的；2. 在投资组合优化阶段，如果资产有表现好的潜力（获得财富高）那就设定与其成比例的优化方向 。</p>
+<hr>
+<h4 id="本文研究内容"><a href="#本文研究内容" class="headerlink" title="本文研究内容"></a>本文研究内容</h4><p>该文主要是受OLMAR的启发，因为在不同资产上预测价格时采用了统一的权重，所以它不太能有效的适应变动的市场，在实际场景下表现不太好。为了进一步用自适应的方式利用均值回归原则，于是提出了RPRT系统。</p>
+<h5 id="价比预测"><a href="#价比预测" class="headerlink" title="价比预测"></a>价比预测</h5><p>为了不使用统一的权重，RPR(Reweighted Price Relative)方法在价比预测时为不同的资产分配不同的权重。</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200309142628139.png" alt="image-20200309142628139"></p>
+<p>其中</p>
+<ol>
+<li>$\hat {\boldsymbol {\varphi}}_{t+1}$代表新的预测价比；</li>
+<li>$\mathbf x_t$代表实际价比；</li>
+<li>$\boldsymbol \gamma_{t+1}$代表权重向量，注意它不是固定的，它也随着时间更新。</li>
+</ol>
+<hr>
+<p>可以看到上面这个式子实际上跟OLMAR中的EMA预测形式是一样的，不如我来解释一下：</p>
+<p>为了考虑整个价比，而不是一个窗口内的，所以对所有的历史价比进行指数加权，使越久远的价格信息占比越少，提出EMA价格预测，其中$\alpha$是衰减因子：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200314103052329.png" alt="image-20200314103052329"></p>
+<p>那么EMA预测价比为：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200314103145896.png" alt="image-20200314103145896"></p>
+<p>那这个形式实际上就和我们上面提出的价格预测形式是一样了，只不过EMA中$\alpha$是不变的，而RPR方法中$\lambda$是会变的，在不同的价格预测周期会更新为不同的值。</p>
+<hr>
+<p>至于如何确定$\boldsymbol \gamma_{t+1}$，因为我们既要考虑所有的历史信息又要考虑当前的市场环境（因为不同的资产有不同表现，所以不同资产根据其表现权重应该不同，而每个资产的表现也不是一成不变的，会随着金融环境的改变而改变，所以各个资产的权重也要随着时间更新），所以把预测价比$\hat {\boldsymbol {\varphi}}_{t}$和实际价比组合$\mathbf x_t$在一起可能是个不错的方法（<strong>因为预测价比$\hat {\boldsymbol {\varphi}}_{t}$代表着历史价格信息，实际价比$\mathbf x_t$代表着当前市场环境信息</strong>）。</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200309145620363.png" alt="image-20200309145620363"></p>
+<p>其中</p>
+<ol>
+<li>$\vartheta&gt;0$是一个混合参数；</li>
+<li>$0&lt;\boldsymbol \gamma_{t+1}^{(i)}&lt;1$</li>
+<li>当$\vartheta$越大，说明实际价比对预测价格影响越大，反之亦然。</li>
+</ol>
+<hr>
+<p>举例解释一下上面的式子：既然$\gamma_{t+1}$是想由历史信息和当前环境共同决定，所以我们很自然会想历史信息$\hat {\boldsymbol {\varphi}}_{t}$占多大比例，当前环境$\mathbf x_t$又要占多大比例。假如一个资产表现很好，那么它的价格增长因子肯定大（相当于$\mathbf x^{(i)}_t$很大），那么$\boldsymbol \gamma_{t+1}^{(i)}$就越接近1，那么最后的预测价比$\hat {\boldsymbol {\varphi}}_{t+1}^{(i)}$也就越接近1。否则的话，$\boldsymbol \gamma_{t+1}^{(i)}$就越接近0，那么$\hat {\boldsymbol {\varphi}}_{t+1}^{(i)}$就越接近$\hat {\boldsymbol {\varphi}}_{t}^{(i)}/\mathbf x^{(i)}_t$，由于分母很小，所以$\hat {\boldsymbol {\varphi}}_{t+1}^{(i)}$就会是一个很大的值。</p>
+<hr>
+<p>从上面这个例子可以看出，当资产表现好时，反而预测保守；当资产表现差时，预测比较激进。这实际上是符合均值回归原则的思想。</p>
+<h5 id="投资组合优化"><a href="#投资组合优化" class="headerlink" title="投资组合优化"></a>投资组合优化</h5><p>基本的策略是在可能表现好的资产上投入更多的资金，在可能表现不好的资产上投入相对较少的资金。如果我们再看看均值回归原则：一个当前价格超过平均线的资产在下一个周期价格可能会下降，一个当前价格低于平均线的资产下个周期价格可能会增长。所以换句话说就是在当前表现好（下一周期可能表现差）的资产上投入较少的资金，在当前表现差（下一周期可能表现好）的资产上投入较多资金。看一个简单的tracking system:</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200309153143552.png" alt="image-20200309153143552"></p>
+<p>那么投资组合的更新量$\bigtriangleup\mathbf b_{t+1}$被设置为与预测价比$\hat {\boldsymbol {\varphi}}_{t+1}$成比例，因为预测价比暗示了该资产的财富增长潜力，当预测价比较小时，我们尽量在该资产上投入较小的资金，当预测价比较大时，我们加大投入。</p>
+<p>那么一般我们的目标是最大化累计财富，所以优化问题如下：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200309154840252.png" alt="image-20200309154840252"></p>
+<p>其实也就是最大化财富增长因子$\mathbf b^{\top}\hat {\boldsymbol {\varphi}}_{t+1}$。</p>
+<p>实际上本文没有使用这种广为使用的财富增长因子，而是提出了一种更加具有一般性的增长因子：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200309155208206.png" alt="image-20200309155208206"></p>
+<p>其中</p>
+<ol>
+<li>$\mathbf D_{t+1}$是一个正定对称矩阵，用来调整不同资产之间的相对影响，以此提高广义增长因子的自适应性，它在每个周期根据市场环境自动的更新；</li>
+<li>$\bar {\varphi}_{t+1}$是所有资产预测价比的平均值；</li>
+<li>$(\hat {\boldsymbol {\varphi}}_{t+1}-\bar {\varphi}_{t+1}\mathbf 1)$是各个资产预测价比对于平均值的偏差，可以看作一个标准化预测价比，可以想象这个向量中有些元素是正的，有些元素是负的，这代表这些资产是不是有好的增长能力；</li>
+<li>$(\mathbf b - \hat{\mathbf b}_t)$和上面的解释差不多，看作一个标准化的预测投资组合。</li>
+</ol>
+<p>那么对于这个新提出的广义增长因子，我们代替原来的增长因子后，目标优化函数就变成了（后面的约束不知道是怎么变换来的）：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200309161218255.png" alt="image-20200309161218255"></p>
+<p>其中</p>
+<ol>
+<li>$\mathbf D^{-1}_{t+1}$代表$\mathbf D_{t+1}$的逆；</li>
+<li>$(y)^+=\text{max}\{0,y\}$；</li>
+<li>$\epsilon$可以看作是预期盈利水平，如果实际的盈利水平超过了我们的预期$\mathbf b^{\top}\hat {\boldsymbol {\varphi}}_{t+1}&gt;\epsilon$，那么$\mathbf b$和$\hat{\mathbf b}_{t}$的马氏距离就要小于等于0，这意味着投资组合就不改变；否则的话，如果实际盈利达不到预期，那么之间的这个差距就能控制投资组合$\mathbf b$的可行解集，换句话说，$\mathbf b$和$\hat{\mathbf b}_{t}$的马氏距离就要小于等于一个数，而这个数的大小和期望与实际情况的差距大小有关。我们想象一个高维空间中的椭球体，$\hat{\mathbf b}_{t}$是球心，那么上面约束中小于等于号右边的分式就相当于球的半径，那么$\mathbf b$就可以是这个球表面和内部的任意一点，半径变大变小影响着$\mathbf b$的可行解集的大小。</li>
+</ol>
+<p>对于上面的约束的理解还补充一点知识：</p>
+<blockquote>
+<p>马哈拉诺比斯距离又称马氏距离，是对欧式距离的一种修正，能够处理欧式距离中各个特征维度不同且自相关的问题：</p>
+<script type="math/tex; mode=display">
+D_M(x)=\sqrt{(x-\mu)^T\Sigma^{-1}(x-\mu)}</script><p>如果协方差矩阵$\Sigma$是单位矩阵，那么马氏距离就可以简化为欧式距离</p>
+</blockquote>
+<p>至于$\mathbf D_{t+1}$，我们希望表现好的资产能够在预测未来价格上起更大的作用，所以$\mathbf D_{t+1}$中相应的元素值应该设得更大，得益于对OLMAR论文中的启发：表现好的资产的预测价格大，表现不好的资产的预测价格小。</p>
+<blockquote>
+<p>OLMAR论文中提出了两种预测价格的方式：1. 简单移动平均（Simple Moving Average SMA）2. 指数移动平均（Exponential Moving Average EMA）</p>
+<p>SMA的思想是：取一个窗口，窗口大小为w，预测价格就是简单的窗口内的资产价格的算术平均值：</p>
+<script type="math/tex; mode=display">
+SMA_t(w)=\frac{1}{w}\sum^t_{i = t-w+1}\mathbf p_i</script><p>EMA的思想是：利用所有的历史价格信息，没有取窗口。既然利用所有的历史价格信息，那么很直观的是时间越久远的价格信息对预测未来价格影响应该越小，相应的就是权重越小：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}EMA_t(\alpha)&=\alpha\mathbf p_t +(1-\alpha)EMA_{t-1}(\alpha)\\&=\alpha\mathbf p_t+(1-\alpha)\alpha\mathbf p_{t-1}+(1-\alpha)^2\alpha\mathbf p_{t-2}+\dots+(1-\alpha)^{t-1}\mathbf p_{1}\end{aligned}</script></blockquote>
+<p>利用SMA的思想，所以将$\mathbf D_{t+1}$设置为</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310121322546.png" alt="image-20200310121322546"></p>
+<p>其中</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf x}_{SMA,t+1}=\frac{SMA_t{(w)}}{\mathbf p_t}=\frac{\sum^{w-1}_{k=0}\mathbf p_{t-k}}{w\mathbf p_t}=\frac{1}{w}\left(\mathbf 1 +\frac{\mathbf 1}{\mathbf x_t}+\dots+\frac{\mathbf 1}{\bigotimes^{w-2}_{k=0}\mathbf x_{t-k}}\right)</script><p>显然这个设置是符合我们想法的，表现好的资产在最近的窗口内价格的平均值肯定高，所以把他作为$\mathbf D_{t+1}$的对角元素那么在预测未来价格的时候影响就大。</p>
+<h5 id="优化问题的求解算法"><a href="#优化问题的求解算法" class="headerlink" title="优化问题的求解算法"></a>优化问题的求解算法</h5><p>目标函数：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200309161218255.png" alt="image-20200309161218255"></p>
+<p>主要是使用梯度投影原理来进行高效的计算。梯度投影原理主要包括一个梯度上升或者梯度下降步骤和一个投影步骤组成。所以一般的做法就是先不管单纯形域的限制，等我们求出解后再进行投影就可以了。</p>
+<p>那么先对未知参数$\mathbf b$求梯度</p>
+<script type="math/tex; mode=display">
+\frac{\partial \hat{\mathbf b}_{t+1}}{\partial\mathbf b}=\mathbf D_{t+1}(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)</script><p>梯度上升步：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310124646916.png" alt="image-20200310124646916"></p>
+<p>其中</p>
+<ol>
+<li>$(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)$代表着不同资产的增长能力；</li>
+<li>$\mathbf D_{t+1}$调整不同资产的优化影响；</li>
+<li>$\lambda_{t+1}$代表着步长。</li>
+</ol>
+<p>把这个结果代入约束中</p>
+<script type="math/tex; mode=display">
+\left(\lambda_{t+1}\mathbf D_{t+1}(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)\right)^{\top}(\mathbf D^{-1}_{t+1})^2\left(\lambda_{t+1}\mathbf D_{t+1}(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)\right)\le\frac{\left[(\epsilon-\mathbf b^{\top}\hat {\boldsymbol {\varphi}}_{t+1})^+\right]^2}{\|\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1\|^2}</script><p>得到</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310131111406.png" alt="image-20200310131111406"></p>
+<p>如果$|\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1|^2=0$那么我们就不更新投资组合，使$\hat\lambda_{t+1}=0$。</p>
+<p>如果$|\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1|^2\not=0$那么我们就最大化投资组合更新步长，使</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310131734129.png" alt="image-20200310131734129"></p>
+<p>最后把投资组合$\mathbf b_{t+1}$投影到单纯形域：</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310131954027.png" alt="image-20200310131954027"></p>
+<h5 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h5><p>主要评价指标：</p>
+<ol>
+<li><p>CW(cumulative wealth)评价投资表现的核心指标</p>
+</li>
+<li><p>MER(mean excess return)测量系统比市场平均水平好多少</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310161254607.png" alt="image-20200310161254607"></p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310161308353.png" alt="image-20200310161308353"></p>
+<p>其中$r_t$代表第t周期的日回报，$r_{s,t}$是系统的日回报，$r_{m,t}$是市场基准的日回报。</p>
+</li>
+<li><p>α Factor投资者希望知道排除市场风险的影响后系统能获得多少固有的超额收益。一个投资组合的期望回报分为两部分：一是市场回报乘上投资组合的相对波动性，二是投资组合的固有或者说内在超额收益，第二部分在金融业内称为α因子</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310171918502.png" alt="image-20200310171918502"></p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310171939859.png" alt="image-20200310171939859"></p>
+<p>其中$E(\cdot)$代表数学期望，$\hat c(\cdot,\cdot)$代表样本协方差，$\hat \sigma(\cdot)$代表n个周期的STD估计。</p>
+</li>
+<li><p>APY(annual percentage yield)系统累计财富增长的速度</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310172744574.png" alt="image-20200310172744574"></p>
+<p>其中y是与n个投资期相对应的年数。</p>
+</li>
+<li><p>MDD(maximum drawdown)评估下行风险</p>
+<blockquote>
+<p>下行风险：股价下行风险是指未来股价走势有可能低于分析师或投资者预期的目标价位的风险。</p>
+</blockquote>
+<p>投资者需要考虑他们可能面对的最差情况，MDD用来测量在整个投资中一个APO（Automatic Portfolio Optimization）系统从历史峰值到历史谷底的最大损失</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310174638523.png" alt="image-20200310174638523"></p>
+</li>
+<li><p>SR(Sharpe ratio)用于评价风险调整回报</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310173042815.png" alt="image-20200310173042815"></p>
+<p>其中$R_f$代表具有无风险资产的固定年化收益率，分母代表每个收益的年化STD，$APY_s$代表系统的$APY$，因为标准数据集包括的都是风险资产，所以$R_f$置为0。</p>
+</li>
+<li><p>IR(information ratio)用于评价风险调整回报</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310174040354.png" alt="image-20200310174040354"></p>
+<p>代表和market相比较的年化超额收益。</p>
+</li>
+<li><p>CR(Calmar ratio)用于评价风险调整回报，消除了过高和过低的数据。</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310174847862.png" alt="image-20200310174847862"></p>
+</li>
+<li><p>TO(turnover)周转率用来测量一个APO系统的稳定性，因为我们每个交易周期都再平衡投资组合，所以TO代表投资组合在整个投资中被买入卖出的平均百分比</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310175513057.png" alt="image-20200310175513057"></p>
+<p>其中$\tilde{\mathbf b}_{t-1}^{(i)}$代表第t-1周期末的已调整投资组合，$\tilde {\mathbf b}_0$设为$[0,\dots,0]^{\top}$，$(|\hat{\mathbf b}_t-\tilde{\mathbf b}_{t-1}|/2)$代表一个周期的TO。</p>
+</li>
+<li><p>Transaction cost包括佣金和税金，我们调节交易费率$\gamma \in (0,1)$来观察系统的累计财富以此来判断一个系统是否能够承受一定的交易费。那么考虑了交易费的累计财富为</p>
+<p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200310180352861.png" alt="image-20200310180352861"></p>
+<p>其中$(\gamma/2)\sum^d_{i=1}|\hat{\mathbf b}^{(i)}_t-\tilde{\mathbf b}^{(i)}_{t-1}|$是由于把投资组合$\tilde{\mathbf b}_{t-1}$调整为新的投资组合$\hat{\mathbf b}_t$的比例交易费。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -348,7 +546,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 11:54:26" itemprop="dateModified" datetime="2020-03-17T11:54:26+08:00">2020-03-17</time>
+                <time title="修改时间：2020-03-17 13:45:55" itemprop="dateModified" datetime="2020-03-17T13:45:55+08:00">2020-03-17</time>
               </span>
 
           
@@ -389,7 +587,6 @@
 <p>可以看到，EMA是把所有历史价格信息都用到了，但是越近的价格权重越高（他们更能影响预测价格），越久远的价格信息权重越小，所以EMA实际上比SMA要更接近于实际价格。</p>
 <h5 id="PP"><a href="#PP" class="headerlink" title="PP"></a>PP</h5><p>主要是因为一些非理性的投资行为有助于保住资产趋势，于是有一些投资者是跟随价格趋势的，他们把近期出现过的最高价格当作未来可能出现的最高价格。</p>
 <p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200226122413252.png" alt="image-20200226122413252"></p>
-<hr>
 <h4 id="本文主要提出的方法"><a href="#本文主要提出的方法" class="headerlink" title="本文主要提出的方法"></a>本文主要提出的方法</h4><h5 id="AICTR"><a href="#AICTR" class="headerlink" title="AICTR"></a>AICTR</h5><p>我们先看RBF系统的典型形式：</p>
 <p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200226123059537.png" alt="image-20200226123059537"></p>
 <p>其中$\mathbf x$和$\mathbf y$分别是输入和输出，$\mathbf A\in \mathbb{R}^{d\times L}$是混合了很多RBF系统的权重矩阵，其中d是输出的维度，$\boldsymbol {\phi}$是高斯基函数的一个向量，并且$\boldsymbol {\mu}_l$是中心，$\sigma_l$是尺度参数。</p>
@@ -427,18 +624,18 @@ y_L
 <li>$\mathbf 1_{(L)}$是元素都是1的L维向量</li>
 <li>约束条件是强制让新的投资组合$\mathbf b$和当前投资组合$\hat{\mathbf b}_t$之间的距离要小于阈值$\epsilon$</li>
 </ol>
-<p>和之前论文的财富增长因子$\mathbf b^{\top}\hat{\mathbf x}_{t+1}$不同，这里有一个广义的增长因子就是$\text{tr}(\mathbf B\boldsymbol{\Phi}\hat{\mathbf X^{\top}_{t+1}})$，其中的$\boldsymbol {\Phi}$是一个核心，用来调整不同趋势表示的影响。表现好的趋势$\hat{\mathbf x}_{<em>,t+1}$表示有较大的影响，其他的$\{\hat{\mathbf x}_{l,t+1}\}$就影响较小，这取决于它们和$\hat{\mathbf x}_{</em>,t+1}$的相似度。</p>
+<p>和之前论文的财富增长因子$\mathbf b^{\top}\hat{\mathbf x}_{t+1}$不同，这里有一个广义的增长因子就是$\text{tr}(\mathbf B\boldsymbol{\Phi}\hat{\mathbf X^{\top}_{t+1}})$，其中的$\boldsymbol {\Phi}$是一个核心，用来调整不同趋势表示的影响。表现好的趋势$\hat{\mathbf x}_{,t+1}$表示有较大的影响，其他的$\{\hat{\mathbf x}_{l,t+1}\}$就影响较小，这取决于它们和$\hat{\mathbf x}_{,t+1}$的相似度。</p>
 <p>按照PPT一文中的优化方式，可以将目标函数简化为如下形式：</p>
 <p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200226153039662.png" alt="image-20200226153039662"></p>
 <h5 id="求解AICTR算法"><a href="#求解AICTR算法" class="headerlink" title="求解AICTR算法"></a>求解AICTR算法</h5><p>对于上述目标函数解为：</p>
 <script type="math/tex; mode=display">
-\mathbf c_{t+1}=\begin{cases}\frac{\epsilon\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\bold 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\|}&\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\not=0\\
-0&\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}=0\end{cases}</script><p>和求解PPT目标函数的方法类似。现在只需要证明这个解满足目标函数即可。</p>
+\mathbf c_{t+1}=\begin{cases}\frac{\epsilon\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\mathbf 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\|}&\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\not=0\\
+0&\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}=0\end{cases}</script><p>和求解PPT目标函数的方法类似。现在只需要证明这个解满足目标函数即可。</p>
 <p>首先我们看这个解是否满足目标函数的约束限制。</p>
 <ol>
 <li><p>由如下的等价变换可知，该解满足约束$|\mathbf c||\le\epsilon$。</p>
 <script type="math/tex; mode=display">
-\mathbf c_{t+1}=\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\bold 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\|}\iff \|\mathbf c_{t+1}\|=\epsilon</script></li>
+\mathbf c_{t+1}=\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\mathbf 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\|}\iff \|\mathbf c_{t+1}\|=\epsilon</script></li>
 <li><p>那么现在再来看该解是否满足约束$\mathbf 1^{\top}\mathbf c=0$，由如下验证可知也是满足该约束的。</p>
 <p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200227133151006.png" alt="image-20200227133151006"></p>
 </li>
@@ -448,17 +645,16 @@ y_L
 <p>假设存在一个解$\mathring {\mathbf c}$，该解满足所有的约束，且$\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)&gt;\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$，其中$\mathring{\mathbf C}=\mathring{\mathbf c}\mathbf 1^{\top}_{(L)},$$\mathbf{C}_{t+1}=\mathbf{c}_{t+1}\mathbf 1^{\top}_{(L)}$。</p>
 <p>首先我们能发现一个幂等性性质：</p>
 <script type="math/tex; mode=display">
-\begin{aligned}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)^2&=\left(\mathbf I-\frac{2}{d}\mathbf 1\bold 1^{\top}+\frac{1}{d^2}\mathbf 1(\mathbf 1^{\top}\mathbf 1)\mathbf 1^{\top}\right)\\
-&=\left(\mathbf I-\frac{2}{d}\mathbf 1\bold 1^{\top}+\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\\
-&=\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\end{aligned}</script><p>除此之外还能发现另外一个性质（其中用到了约束$\mathbf 1^{\top}\mathring{\mathbf c}=0$）：</p>
+\begin{aligned}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)^2&=\left(\mathbf I-\frac{2}{d}\mathbf 1\mathbf 1^{\top}+\frac{1}{d^2}\mathbf 1(\mathbf 1^{\top}\mathbf 1)\mathbf 1^{\top}\right)\\
+&=\left(\mathbf I-\frac{2}{d}\mathbf 1\mathbf 1^{\top}+\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\\
+&=\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\end{aligned}</script><p>除此之外还能发现另外一个性质（其中用到了约束$\mathbf 1^{\top}\mathring{\mathbf c}=0$）：</p>
 <script type="math/tex; mode=display">
-\left(\mathbf I - \frac{1}{d}\mathbf 1\bold 1^{\top}\right)\mathring{\mathbf c}=\mathring{\mathbf c}-\frac{1}{d}\mathbf 1(\mathbf 1^{\top}\mathring{\mathbf c})=\mathring{\mathbf c}</script><p>接下来我们计算不等式$\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)&gt;\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$的右边</p>
+\left(\mathbf I - \frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\mathring{\mathbf c}=\mathring{\mathbf c}-\frac{1}{d}\mathbf 1(\mathbf 1^{\top}\mathring{\mathbf c})=\mathring{\mathbf c}</script><p>接下来我们计算不等式$\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)&gt;\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$的右边</p>
 <script type="math/tex; mode=display">
 \begin{aligned}\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)&=\text{tr}\left(\mathbf c_{t+1}\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)\\
 &=\text{tr}\left(\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}\right)\\
-&=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}
-\end{aligned}</script><hr>
-<p>我们来解释一下上面这个等式是怎么推算的：</p>
+&=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}
+\end{aligned}</script><p>我们来解释一下上面这个等式是怎么推算的：</p>
 <ol>
 <li><p>第一个等号是由于$\mathbf{C}_{t+1}=\mathbf{c}_{t+1}\mathbf 1^{\top}_{(L)}$，目标函数中也提到过，不过目标函数中的形式是$\mathbf C = \mathbf c\mathbf 1^{\top}_{(L)}$。</p>
 </li>
@@ -476,40 +672,39 @@ y_L
 \mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}\longrightarrow[1,\dots,1]_L\begin{bmatrix}\phi_1&\cdots&0\\\vdots&\ddots&\vdots\\0&\cdots&\phi_L\end{bmatrix}_{L\times L}\begin{bmatrix}\hat{x}^1_{1,t+1}&\cdots&\hat{x}^d_{1,t+1}\\\vdots&\ddots&\vdots\\\hat x^{1}_{L,t+1}&\cdots&\hat x^d_{L,t+1}\end{bmatrix}_{L\times d}\begin{bmatrix}c^1_{t+1}\\\vdots\\c^d_{t+1}\end{bmatrix}_d</script><p>所以现在我们就很容易看出来括号里面的东西是个标量了。</p>
 </li>
 </ol>
-<hr>
 <p>接着将解带入上面的式子，结合上面发现的幂等性性质继续计算：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}&=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}
-\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\bold 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\|}\\
-&=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}
-\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)^2\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\bold 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\|}\\
-&=\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\right\|
+\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}&=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}
+\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\mathbf 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\|}\\
+&=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}
+\epsilon\frac{\left(\mathbf I-\frac{1}{d}\mathbf 1 \mathbf 1^{\top}\right)^2\hat{\mathbf X}_{t+1}\boldsymbol{\Phi\mathbf 1_{(L)}}}{\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\|}\\
+&=\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\right\|
 \end{aligned}</script><p>接下来我们计算不等式$\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)&gt;\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$的左边</p>
 <p>这里利用了上面发现的第二条性质</p>
 <script type="math/tex; mode=display">
-\begin{aligned}\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)&=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathring{\mathbf c}\\&=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\mathring{\mathbf c}\\&=\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\right\|\|\mathring {\mathbf c}\|
+\begin{aligned}\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)&=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathring{\mathbf c}\\&=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\mathring{\mathbf c}\\&=\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\right\|\|\mathring {\mathbf c}\|
 \end{aligned}</script><p>既然不等式的两边我们都进行了计算，所以不等式就变成了如下形式：</p>
 <script type="math/tex; mode=display">
-\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)>\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)\longrightarrow\|\mathring {\mathbf c}\|\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\right\|>\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\right\|</script><p>所以由上式得$|\mathring {\mathbf c}|&gt;\epsilon$，这显然和我们的条件$|\mathring {\mathbf c}|\le\epsilon$矛盾，所以假设不成立。</p>
+\text{tr}\left(\mathring{\mathbf C}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)>\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)\longrightarrow\|\mathring {\mathbf c}\|\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\right\|>\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\right\|</script><p>所以由上式得$|\mathring {\mathbf c}|&gt;\epsilon$，这显然和我们的条件$|\mathring {\mathbf c}|\le\epsilon$矛盾，所以假设不成立。</p>
 <p>$\mathbf c_{t+1}$是目标函数的解，那这个解是不是唯一的解呢，我们需要验证。</p>
 <p>同样的采用反证法：</p>
-<p>假设存在一个解$\mathbf c_<em>\not=\mathbf c_{t+1}$，这个解满足所有的约束条件，且$\text{tr}\left({\mathbf C}_</em>\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)=\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$，其中$\mathbf{C}_{<em>}=\mathbf{c}_{</em>}\mathbf 1^{\top}_{(L)}$。</p>
+<p>假设存在一个解$\mathbf c_\not=\mathbf c_{t+1}$，这个解满足所有的约束条件，且$\text{tr}\left({\mathbf C}_\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)=\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)$，其中$\mathbf{C}_{}=\mathbf{c}_{}\mathbf 1^{\top}_{(L)}$。</p>
 <p>同样的我们知道：</p>
 <script type="math/tex; mode=display">
-\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}\\\text{tr}\left({\mathbf C}_*\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{*}</script><p>从上式可以知道，因为$\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{<em>}$，而$\mathbf c_</em>\not=\mathbf c_{t+1}$。所以$\mathbf c_*$一定和$\mathbf c_{t+1}$不平行，我们同样可以用反证法证明这个结论。</p>
-<p>假设这两个向量平行，一定有$\mathbf c_* =\zeta\mathbf c_{t+1}(\zeta\not=0)$，那么就有</p>
+\text{tr}\left(\mathbf C_{t+1}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}\\\text{tr}\left({\mathbf C}_\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\right)=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{}</script><p>从上式可以知道，因为$\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{}$，而$\mathbf c_\not=\mathbf c_{t+1}$。所以$\mathbf c_$一定和$\mathbf c_{t+1}$不平行，我们同样可以用反证法证明这个结论。</p>
+<p>假设这两个向量平行，一定有$\mathbf c_ =\zeta\mathbf c_{t+1}(\zeta\not=0)$，那么就有</p>
 <p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200227165107523.png" alt="image-20200227165107523"></p>
-<p>由于$\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}\not=0$所以$\zeta = 1$，那么$\mathbf c_<em>=\mathbf c_{t+1}$，这显然和我们的条件$\mathbf c_</em>\not=\mathbf c_{t+1}$矛盾，所以假设不成立，即$\mathbf c_*$一定和$\mathbf c_{t+1}$不平行。</p>
-<p>由于$\mathbf c_*$和$\mathbf c_{t+1}$不平行，所以利用柯西-施瓦兹不等式和我们发现的第二条性质，我们得到严格的不等式：</p>
+<p>由于$\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}\not=0$所以$\zeta = 1$，那么$\mathbf c_=\mathbf c_{t+1}$，这显然和我们的条件$\mathbf c_\not=\mathbf c_{t+1}$矛盾，所以假设不成立，即$\mathbf c_$一定和$\mathbf c_{t+1}$不平行。</p>
+<p>由于$\mathbf c_$和$\mathbf c_{t+1}$不平行，所以利用柯西-施瓦兹不等式和我们发现的第二条性质，我们得到严格的不等式：</p>
 <script type="math/tex; mode=display">
-\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{*}=\bold 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\mathbf c_{*}<\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\right\|\|\mathbf c_{*}\|</script><p>又因为：</p>
+\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{}=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\mathbf c_{}<\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\right\|\|\mathbf c_{}\|</script><p>又因为：</p>
 <script type="math/tex; mode=display">
-\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}=\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\bold 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\bold 1_{(L)}\right\|</script><p>且</p>
+\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}=\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\right\|</script><p>且</p>
 <script type="math/tex; mode=display">
-\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{*}</script><p>所以</p>
+\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{t+1}=\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\mathbf c_{}</script><p>所以</p>
 <script type="math/tex; mode=display">
-\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\right\|<\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\right\|\|\mathbf c_{*}\|</script><p>即$|\mathbf c_<em>|&gt;\epsilon$，这显然和条件$|\mathbf c_</em>||\le\epsilon$矛盾，所以假设不成立。该目标函数只有唯一的解。</p>
+\epsilon\left\|\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}\right\|<\left\|\mathbf 1^{\top}_{(L)}\boldsymbol{\Phi}\hat{\mathbf X}^{\top}_{t+1}\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\right\|\|\mathbf c_{}\|</script><p>即$|\mathbf c_|&gt;\epsilon$，这显然和条件$|\mathbf c_||\le\epsilon$矛盾，所以假设不成立。该目标函数只有唯一的解。</p>
 <p>综上我们就知道了目标函数的最优解只有一个那就是$\mathbf c_{t+1}$。至于当$\left(\mathbf I-\frac{1}{d}\mathbf 1\mathbf 1^{\top}\right)\hat{\mathbf X}_{t+1}\boldsymbol \Phi\mathbf 1_{(L)}=0$时，我们令$\mathbf c_{t+1}=0$。</p>
 <p>由于我们求解上述解时放宽了单纯形限制，所以最后求得的这个解还需要投影到$\epsilon$-Euclidean ball。</p>
 <p><img src="C:\Users\perso\AppData\Roaming\Typora\typora-user-images\image-20200227111248177.png" alt="image-20200227111248177"></p>
@@ -820,7 +1015,7 @@ y_L
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
