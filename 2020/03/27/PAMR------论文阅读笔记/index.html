@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="PAMR———论文阅读笔记PAMR：Passive aggressive mean reversion strategy for portfolio selection动机受金融危机的启发，金融危机发生时所有股票同步下跌或者某些股票大幅下跌。在这种情况下利用均值回归思想进行再平衡显然是不合适的，因为它把太多资金放在”mine” stocks上（这里我也不太懂“mine” stocks是什么，文章举">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PAMR------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="PAMR———论文阅读笔记PAMR：Passive aggressive mean reversion strategy for portfolio selection动机受金融危机的启发，金融危机发生时所有股票同步下跌或者某些股票大幅下跌。在这种情况下利用均值回归思想进行再平衡显然是不合适的，因为它把太多资金放在”mine” stocks上（这里我也不太懂“mine” stocks是什么，文章举">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200325172132806.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326094317106.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326140624151.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326142432580.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326142830391.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326143631056.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326144109509.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326144448113.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326144544586.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326144606420.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326144808458.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326095729038.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326145255682.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326150726382.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326150821104.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326143631056.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326152505473.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326100709196.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326145255682.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326153023845.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326153059218.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326143631056.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326153240021.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326153409415.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326153531495.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326153723363.png">
+<meta property="og:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200326102301267.png">
+<meta property="article:published_time" content="2020-03-27T09:30:00.000Z">
+<meta property="article:modified_time" content="2020-03-27T09:31:26.880Z">
+<meta property="article:author" content="YY">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yy-oops.github.io/Blog/blog/source/images/image-20200325172132806.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>PAMR------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="个人博客personal blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PAMR------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-27 17:30:00 / 修改时间：17:31:26" itemprop="dateCreated datePublished" datetime="2020-03-27T17:30:00+08:00">2020-03-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="PAMR———论文阅读笔记"><a href="#PAMR———论文阅读笔记" class="headerlink" title="PAMR———论文阅读笔记"></a>PAMR———论文阅读笔记</h4><h4 id="PAMR：Passive-aggressive-mean-reversion-strategy-for-portfolio-selection"><a href="#PAMR：Passive-aggressive-mean-reversion-strategy-for-portfolio-selection" class="headerlink" title="PAMR：Passive aggressive mean reversion strategy for portfolio selection"></a>PAMR：Passive aggressive mean reversion strategy for portfolio selection</h4><h5 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h5><p>受金融危机的启发，金融危机发生时所有股票同步下跌或者某些股票大幅下跌。在这种情况下利用均值回归思想进行再平衡显然是不合适的，因为它把太多资金放在”mine” stocks上（这里我也不太懂“mine” stocks是什么，文章举例为Bear Stearns，查了相关资料可能说的是表现很差甚至会破产的股票吧），所以为了避免这种潜在风险，最好的选择就是维持原来的投资组合。</p>
+<p>那么PAMR就是想根据市场情况在“aggressive”和“passive”回归之间交替使用策略。如果使用激进的均值回归方法，那么它就会把大量财富放在这种价格大幅下跌的“mine” stocks上，那么如果使用被动的均值回归策略就能避免这种高风险。</p>
+<blockquote>
+<p>下文频繁用到表现好的股票和表现差的股票，让我来解释一下：</p>
+<p>表现好的股票：价格上涨，投钱进去就能赚钱</p>
+<p>表现差的股票：价格下跌，投钱进去就会亏本</p>
+</blockquote>
+<h5 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h5><p>一方面我们假设表现好的股票在下一个交易日表现差，于是我们就会调整资金，卖掉表现好的股票，买入表现差的股票。但是另一方面如果某一股票连续下跌，或者下跌的太厉害，那么我们就主动的停止这种再平衡以此避免某些“mine” stocks与其带来的高风险。</p>
+<p>如果投资组合的日回报低于我们预定义的阈值，我们就试着保持原来的投资组合；如果投资组合日回报高于我们预定义的阈值，那么就积极的再平衡投资组合确保期望投资组合日回报低于阈值，因为我们相信股票的价比在下一个交易日会恢复。</p>
+<p>上面的说法显然有点违反我们的一般认知：如果日回报超过阈值，说明赚的钱比我们所希望的要多，那么我们应该尽量保持原来的投资组合继续赚钱；如果日回报低于阈值，说明赚的钱没有达到我们的期望，那么肯定投资组合有问题，我们应该积极的改变它才对啊。为什么该文的方法和我们的直观认知不一样呢？</p>
+<p>为了理解上面的说法，搞清楚该文做法的合理性，我们先来看下PA（Passive Aggressive）的思想</p>
+<blockquote>
+<p>最初PA在线学习是用于分类任务的，简单来说，PA的基本思想就是，如果损失为0（代表分类正确），那么我们就被动地保持之前的解决方案（之前的权重参数之类的），如果损失不为0（分类不正确），那么我们就积极地更新解决方案（更新权重参数）。</p>
+</blockquote>
+<p>那么现在我们来想，如果投资组合日回报低于阈值，那说明什么？说明我们进行投资时，大部分资金投在了表现差的股票上，少部分投在了表现好的股票上，所以导致我们的投资组合日回报达不到我们的预期，但是为什么我们不改变投资组合呢？而是保持原来的投资组合呢？实际上我们不要忘记均值回归假设：表现好的股票在下一交易日表现差，表现差的股票在下一交易日表现好。那么在下一交易日时，我们可以预见如果不改变投资组合，那么下一交易日大部分的资金就投在了表现好的股票上（该股票上一交易日表现差），少部分的资金投在了表现差的股票上（该股票上一交易日表现好），于是下一交易日我们就是赚钱的。如果我们继续不改变投资组合的话，那么下下个交易日我们肯定又要亏钱了，所以我们这时候得改变我们的投资组合使其在下个交易日的投资组合回报低于阈值。所以尽管我们看起来像是构建一个投资组合使得投资组合的回报低于阈值，实际上我们是利用了均值回归特性，最大化下一交易日的投资组合回报。如果对于那种价格连续下降的资产，我们的策略就是尽可能的保持原来的投资组合，避免激进的进行再平衡，这只会让我们亏得更多。</p>
+<p>所以结合PA思想和我们的更新原则，我们需要定义：如果投资组合日回报低于阈值我们需要定义这种情况损失为0，不需要更新投资组合；如果投资组合日回报高于我们预定义的阈值，那么这种情况定义损失不为0，需要更新投资组合。</p>
+<h5 id="PAMR"><a href="#PAMR" class="headerlink" title="PAMR"></a>PAMR</h5><p>对于给定一个投资组合向量$\mathbf b$，我们定义损失函数如下：</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200325172132806.png" alt="image-20200325172132806"></p>
+<p>其中$\epsilon\ge 0$是一个敏感性参数，其控制着均值回归阈值。因为投资组合日回报率通常在1左右，所以我们依照经验选择$\epsilon \le 1$，这样的话我们就可以买入表现差的股票。</p>
+<p>接下来是PAMR的三个变体：</p>
+<h5 id="Optimization-Problem-1-PAMR"><a href="#Optimization-Problem-1-PAMR" class="headerlink" title="Optimization Problem 1(PAMR)"></a>Optimization Problem 1(PAMR)</h5><p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326094317106.png" alt="image-20200326094317106"></p>
+<p>上式的意思就是在满足约束即损失为0（日回报率低于我们的期望）时，我们积极的寻找一种新的投资组合，使该新的投资组合与原先最后的投资组合差别尽可能小。</p>
+<p>所以说，上式一方面被动的（passively）保留住最后一个投资组合，另一方面当损失不为0时，那么该方法就强迫损失满足约束来积极地（aggressively）更新解决方案。</p>
+<p>缺点：可能对噪声敏感</p>
+<h5 id="Proposition-1"><a href="#Proposition-1" class="headerlink" title="Proposition 1"></a>Proposition 1</h5><p>不考虑非负限制的结果是</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326140624151.png" alt="image-20200326140624151"></p>
+<p>其中</p>
+<script type="math/tex; mode=display">
+\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}\\\tau_t=\text{max}\left\{0,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2}\right\}</script><h5 id="Proof"><a href="#Proof" class="headerlink" title="Proof"></a>Proof</h5><p>为了方便起见，我们用$\ell^t_\epsilon$代表$\ell_\epsilon(\mathbf b;\mathbf x_t)$。</p>
+<p>如果$\ell_\epsilon^t=0$，那么就有$\mathbf b\cdot\mathbf x_t\le\epsilon$，所以$\tau_t = 0$，所以$\mathbf b = \mathbf b_t$，所以显然是该解是满足我们要求的，如果损失为0，那么投资组合就不改变。</p>
+<p>如果$\ell_\epsilon^t\not=0$，那么带等式约束的优化问题可以用拉格朗日乘子法来解决，</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326142432580.png" alt="image-20200326142432580"></p>
+<p>其中$\tau$是和损失函数有关的拉格朗日乘子，$\lambda$是和单纯型约束有关的拉格朗日乘子。</p>
+<p>然后按照一般方法求解就行了，这个高数里面也学过，对未知参数求偏导：</p>
+<p>先用拉格朗日函数对未知参数$\mathbf b$求偏导并令其为0得到，</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326142830391.png" alt="image-20200326142830391"></p>
+<p>然后两边同时乘以$\mathbf 1^{\top}$得到</p>
+<script type="math/tex; mode=display">
+\lambda = -\frac{\tau}{m}\mathbf x_t\cdot \mathbf 1</script><p>又因为$\bar x_t= \frac{\mathbf x_t\cdot\mathbf 1}{m}$，所以</p>
+<script type="math/tex; mode=display">
+\lambda = -\tau\bar x_t</script><p>将该式带回到上面求偏导的式子中得到</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326143631056.png" alt="image-20200326143631056"></p>
+<p>未知数$\lambda$也知道了（用$\tau$表示），未知数$\mathbf b$也知道了（用$\tau$表示），那么带入到原本的拉格朗日函数中就只剩一个未知数$\tau$了，</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326144109509.png" alt="image-20200326144109509"></p>
+<p>注意上式在推导时使用了下面这个式子</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326144448113.png" alt="image-20200326144448113"></p>
+<p>然后对未知参数$\tau$求偏导并令其为0就可以了</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326144544586.png" alt="image-20200326144544586"></p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326144606420.png" alt="image-20200326144606420"></p>
+<p>因为$\tau\ge0$所以需要投影到$[0,\infty)$</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326144808458.png" alt="image-20200326144808458"></p>
+<p>注意到如果$|\mathbf x_t-\bar x_t\mathbf 1|^2=0$，那么我们就让$\tau = 0$。</p>
+<h5 id="Optimization-Problem-2（PAMR-1）"><a href="#Optimization-Problem-2（PAMR-1）" class="headerlink" title="Optimization Problem 2（PAMR-1）"></a>Optimization Problem 2（PAMR-1）</h5><p>该变体的提出主要是为了避免上述的噪声问题，主要思想是类似于软边缘支持向量机引入一个非负松弛变量。</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326095729038.png" alt="image-20200326095729038"></p>
+<p>可以看到该变体在原来的目标函数基础上增加了一个和$\xi$成比例的项，其中$C$是一个正数，用来控制松弛变量项对目标函数的影响。</p>
+<h5 id="Proposition-2"><a href="#Proposition-2" class="headerlink" title="Proposition 2"></a>Proposition 2</h5><p>不考虑非负限制的结果是</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326145255682.png" alt="image-20200326145255682"></p>
+<p>其中</p>
+<script type="math/tex; mode=display">
+\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}\\\tau_t=\text{max}\left\{0,\text{min}\left\{C,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2}\right\}\right\}</script><h5 id="Proof-1"><a href="#Proof-1" class="headerlink" title="Proof"></a>Proof</h5><p>其实推导PAMR-1的过程和推导PAMR的过程几乎是一样的，为了方便起见，只推导其中的关键部分</p>
+<p>当$\ell_\epsilon^t\not=0$时，拉格朗日函数如下</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326150726382.png" alt="image-20200326150726382"></p>
+<p>用拉格朗日函数对未知数$\mathbf b$求偏导并令其为0</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326150821104.png" alt="image-20200326150821104"></p>
+<p>然后两边同时乘以$\mathbf 1^{\top}$得到</p>
+<script type="math/tex; mode=display">
+\lambda = -\frac{\tau}{m}\mathbf x_t\cdot \mathbf 1=-\tau\bar x_t</script><p>那么近似解为</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326143631056.png" alt="image-20200326143631056"></p>
+<p>注意到拉格朗日函数中这一项$\xi(C-\tau-\mu)$，因为$\xi\ge0$，所以当$C-\tau-\mu=0$时，该项具有最小值为0。如果$C-\tau-\mu\not=0$，那么最小值可能就是负无穷了。</p>
+<p>因为我们需要最大化对偶，所以我们可以排除后一种情况，并对对偶变量施加如下约束$C-\tau-\mu=0$。KKT条件定义了$\mu$是非负值，所以有$\tau\le C$，所以我们最后把$\tau$投影到区间$[0,C]$</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326152505473.png" alt="image-20200326152505473"></p>
+<h5 id="Optimization-Problem-3（PAMR-2）"><a href="#Optimization-Problem-3（PAMR-2）" class="headerlink" title="Optimization Problem 3（PAMR-2）"></a>Optimization Problem 3（PAMR-2）</h5><p>该变体也是为了解决噪声问题的另一种解决方法，但是这一次不是使用松弛变量的线性项，而是引入一个和$\xi$相关的平方项。</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326100709196.png" alt="image-20200326100709196"></p>
+<p>那么上式我们就不需要像第一种变体约束$\xi\ge0$，因为$\xi^2$始终是非负的。</p>
+<h5 id="Proposition-3"><a href="#Proposition-3" class="headerlink" title="Proposition 3"></a>Proposition 3</h5><p>不考虑非负限制的结果是</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326145255682.png" alt="image-20200326145255682"></p>
+<p>其中</p>
+<script type="math/tex; mode=display">
+\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}\\\tau_t=\text{max}\left\{0,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2+\frac{1}{2C}}\right\}</script><h5 id="Proof-2"><a href="#Proof-2" class="headerlink" title="Proof"></a>Proof</h5><p>其实推导PMAR-2的过程和推导PAMR-1和PAMR的过程几乎是一样的，为了方便起见，只推导其中的关键部分</p>
+<p>当$\ell_\epsilon^t\not=0$时，拉格朗日函数如下</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326153023845.png" alt="image-20200326153023845"></p>
+<p>用拉格朗日函数对未知数$\mathbf b$求偏导并令其为0</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326153059218.png" alt="image-20200326153059218"></p>
+<p>然后两边同时乘以$\mathbf 1^{\top}$得到</p>
+<script type="math/tex; mode=display">
+\lambda = -\frac{\tau}{m}\mathbf x_t\cdot \mathbf 1=-\tau\bar x_t</script><p>那么近似解为</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326143631056.png" alt="image-20200326143631056"></p>
+<p>对未知数$\xi$求偏导得到</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326153240021.png" alt="image-20200326153240021"></p>
+<p>未知数$\xi$也知道了（用$\tau$表示），未知数$\mathbf b$也知道了（用$\tau$表示），那么带入到原本的拉格朗日函数中就只剩一个未知数$\tau$了</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326153409415.png" alt="image-20200326153409415"></p>
+<p>然后对未知数$\tau$求偏导并令其为0</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326153531495.png" alt="image-20200326153531495"></p>
+<p>最后将$\tau$投影到$[0,\infty)$</p>
+<p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326153723363.png" alt="image-20200326153723363"></p>
+<h5 id="PAMR策略"><a href="#PAMR策略" class="headerlink" title="PAMR策略"></a>PAMR策略</h5><p><img src="/../../../../../../../../Blog/blog/source/images/image-20200326102301267.png" alt="image-20200326102301267"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/17/RPRT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="RPRT------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> RPRT------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#PAMR———论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">PAMR———论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PAMR：Passive-aggressive-mean-reversion-strategy-for-portfolio-selection"><span class="nav-number">2.</span> <span class="nav-text">PAMR：Passive aggressive mean reversion strategy for portfolio selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动机"><span class="nav-number">2.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基本思想"><span class="nav-number">2.2.</span> <span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PAMR"><span class="nav-number">2.3.</span> <span class="nav-text">PAMR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Optimization-Problem-1-PAMR"><span class="nav-number">2.4.</span> <span class="nav-text">Optimization Problem 1(PAMR)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Proposition-1"><span class="nav-number">2.5.</span> <span class="nav-text">Proposition 1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Proof"><span class="nav-number">2.6.</span> <span class="nav-text">Proof</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Optimization-Problem-2（PAMR-1）"><span class="nav-number">2.7.</span> <span class="nav-text">Optimization Problem 2（PAMR-1）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Proposition-2"><span class="nav-number">2.8.</span> <span class="nav-text">Proposition 2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Proof-1"><span class="nav-number">2.9.</span> <span class="nav-text">Proof</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Optimization-Problem-3（PAMR-2）"><span class="nav-number">2.10.</span> <span class="nav-text">Optimization Problem 3（PAMR-2）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Proposition-3"><span class="nav-number">2.11.</span> <span class="nav-text">Proposition 3</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Proof-2"><span class="nav-number">2.12.</span> <span class="nav-text">Proof</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PAMR策略"><span class="nav-number">2.13.</span> <span class="nav-text">PAMR策略</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">个人博客personal blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
