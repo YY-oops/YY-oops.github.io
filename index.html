@@ -293,7 +293,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-01 21:45:34" itemprop="dateModified" datetime="2020-04-01T21:45:34+08:00">2020-04-01</time>
+                <time title="修改时间：2020-04-01 22:42:10" itemprop="dateModified" datetime="2020-04-01T22:42:10+08:00">2020-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -359,7 +359,8 @@
 <script type="math/tex; mode=display">
 \mathbf b=\mathbf b_t-\tau_t(\mathbf x_t-\bar x_t\mathbf 1)</script><p>其中</p>
 <script type="math/tex; mode=display">
-\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}\\\\\tau_t=\text{max}\left\{0,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2}\right\}</script><h5 id="Proof"><a href="#Proof" class="headerlink" title="Proof"></a>Proof</h5><p>为了方便起见，我们用$\ell^t_\epsilon$代表$\ell_\epsilon(\mathbf b;\mathbf x_t)$。</p>
+\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}</script><script type="math/tex; mode=display">
+\tau_t=\text{max}\left\{0,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2}\right\}</script><h5 id="Proof"><a href="#Proof" class="headerlink" title="Proof"></a>Proof</h5><p>为了方便起见，我们用$\ell^t_\epsilon$代表$\ell_\epsilon(\mathbf b;\mathbf x_t)$。</p>
 <p>如果$\ell_\epsilon^t=0$，那么就有$\mathbf b\cdot\mathbf x_t\le\epsilon$，所以$\tau_t = 0$，所以$\mathbf b = \mathbf b_t$，所以显然是该解是满足我们要求的，如果损失为0，那么投资组合就不改变。</p>
 <p>如果$\ell_\epsilon^t\not=0$，那么带等式约束的优化问题可以用拉格朗日乘子法来解决，</p>
 <script type="math/tex; mode=display">
@@ -391,7 +392,8 @@
 <script type="math/tex; mode=display">
 \mathbf b = \mathbf b_t-\tau_t(\mathbf x_t-\bar x_t\mathbf 1)</script><p>其中</p>
 <script type="math/tex; mode=display">
-\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}\\\\\tau_t=\text{max}\left\{0,\text{min}\left\{C,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2}\right\}\right\}</script><h5 id="Proof-1"><a href="#Proof-1" class="headerlink" title="Proof"></a>Proof</h5><p>其实推导PAMR-1的过程和推导PAMR的过程几乎是一样的，为了方便起见，只推导其中的关键部分</p>
+\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}</script><script type="math/tex; mode=display">
+\tau_t=\text{max}\left\{0,\text{min}\left\{C,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2}\right\}\right\}</script><h5 id="Proof-1"><a href="#Proof-1" class="headerlink" title="Proof"></a>Proof</h5><p>其实推导PAMR-1的过程和推导PAMR的过程几乎是一样的，为了方便起见，只推导其中的关键部分</p>
 <p>当$\ell_\epsilon^t\not=0$时，拉格朗日函数如下</p>
 <script type="math/tex; mode=display">
 \mathcal L(\mathbf b,\xi,\tau,\mu,\lambda)=\frac{1}{2}\|\mathbf b-\mathbf b_t\|^2+\tau(\mathbf x_t\cdot\mathbf b - \epsilon)+\xi(C-\tau-\mu)+\lambda(\mathbf 1\cdot\mathbf b-1)</script><p>用拉格朗日函数对未知数$\mathbf b$求偏导并令其为0</p>
@@ -410,7 +412,8 @@
 <script type="math/tex; mode=display">
 \mathbf b = \mathbf b_t-\tau_t(\mathbf x_t-\bar x_t\mathbf 1)</script><p>其中</p>
 <script type="math/tex; mode=display">
-\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}\\\\\tau_t=\text{max}\left\{0,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2+\frac{1}{2C}}\right\}</script><h5 id="Proof-2"><a href="#Proof-2" class="headerlink" title="Proof"></a>Proof</h5><p>其实推导PMAR-2的过程和推导PAMR-1和PAMR的过程几乎是一样的，为了方便起见，只推导其中的关键部分</p>
+\bar {x}_t=\frac{\mathbf x_t\cdot \mathbf 1}{m}</script><script type="math/tex; mode=display">
+\tau_t=\text{max}\left\{0,\frac{\mathbf b_t\cdot\mathbf x_t - \epsilon}{\|\mathbf x_t-\bar x_t\mathbf 1\|^2+\frac{1}{2C}}\right\}</script><h5 id="Proof-2"><a href="#Proof-2" class="headerlink" title="Proof"></a>Proof</h5><p>其实推导PMAR-2的过程和推导PAMR-1和PAMR的过程几乎是一样的，为了方便起见，只推导其中的关键部分</p>
 <p>当$\ell_\epsilon^t\not=0$时，拉格朗日函数如下</p>
 <script type="math/tex; mode=display">
 \mathcal L(\mathbf b,\xi,\tau,\mu,\lambda)=\frac{1}{2}\|\mathbf b-\mathbf b_t\|^2+\tau(\mathbf x_t\cdot\mathbf b - \epsilon)+C\xi^2-\tau\xi+\lambda(\mathbf 1\cdot\mathbf b-1)</script><p>用拉格朗日函数对未知数$\mathbf b$求偏导并令其为0</p>
