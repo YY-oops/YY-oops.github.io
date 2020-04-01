@@ -184,7 +184,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-01 20:30:09" itemprop="dateModified" datetime="2020-04-01T20:30:09+08:00">2020-04-01</time>
+                <time title="修改时间：2020-04-01 22:33:14" itemprop="dateModified" datetime="2020-04-01T22:33:14+08:00">2020-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -202,7 +202,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -221,15 +221,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="基于2D卷积神经网络的序列化推荐———论文阅读笔记"><a href="#基于2D卷积神经网络的序列化推荐———论文阅读笔记" class="headerlink" title="基于2D卷积神经网络的序列化推荐———论文阅读笔记"></a>基于2D卷积神经网络的序列化推荐———论文阅读笔记</h4><h4 id="CosRec：2D-Convolutional-Neural-Networks-for-Sequential-Recommendation"><a href="#CosRec：2D-Convolutional-Neural-Networks-for-Sequential-Recommendation" class="headerlink" title="CosRec：2D Convolutional Neural Networks for Sequential Recommendation"></a>CosRec：2D Convolutional Neural Networks for Sequential Recommendation</h4><h5 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h5><p>虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的物品关系。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h4 id="基于2D卷积神经网络的序列化推荐———论文阅读笔记"><a href="#基于2D卷积神经网络的序列化推荐———论文阅读笔记" class="headerlink" title="基于2D卷积神经网络的序列化推荐———论文阅读笔记"></a>基于2D卷积神经网络的序列化推荐———论文阅读笔记</h4><h4 id="CosRec：2D-Convolutional-Neural-Networks-for-Sequential-Recommendation"><a href="#CosRec：2D-Convolutional-Neural-Networks-for-Sequential-Recommendation" class="headerlink" title="CosRec：2D Convolutional Neural Networks for Sequential Recommendation"></a>CosRec：2D Convolutional Neural Networks for Sequential Recommendation</h4><h5 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h5><p>虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的物品关系。</p>
+<h5 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h5><p>序列模型：除了利用到用户的历史行为外，还要考虑用户历史行为的顺序</p>
+<h5 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h5><p>接下来我们看看本文提出的结构和前人工作的不同</p>
+<p><img src="/images/image-20200401222853283.png" alt="image-20200401222853283"></p>
+<p>上图中（a）就是基于RNN或者基于马尔科夫链的序列模型，可以看到这种模型是有一个动作序列的单向链结构，比如你连续购买了摄像机、闪存卡、镜头那么我们推测你极有可能会购买三脚架。我们注意到这里其实是有一个约束存在，那就是这些购买行为必须是连续的。</p>
+<p>上图中（b）就是本文提出的结构了，利用了pairwise编码，可以让我们的动作序列没有必要必须连续。例如图中购买自行车显然和上下文没有太大相关性，这虽然破坏了单向链结构的局部，但是可以通过我们的pairwise编码跳过该物品。</p>
+<h5 id="问题设置"><a href="#问题设置" class="headerlink" title="问题设置"></a>问题设置</h5><p>假设我们有一个用户集合$\mathcal U$和一个物品集合$\mathcal I$。对于集合$\mathcal U$中的每个用户$u$都有一个历史交互序列$\mathcal S^u=(\mathcal S^u_1,\dots,\mathcal S^u_{|\mathcal S_u|}),\mathcal S^u\in\mathcal I$，我们的目的就是根据用户的偏好预测下一个物品。</p>
+<hr>
+<h4 id="本文重点：CosRec"><a href="#本文重点：CosRec" class="headerlink" title="本文重点：CosRec"></a>本文重点：CosRec</h4><p><img src="images\image-20200322141746052.png" alt="image-20200322141746052"></p>
+<h5 id="嵌入查找层"><a href="#嵌入查找层" class="headerlink" title="嵌入查找层"></a>嵌入查找层</h5><p>首先把所有物品嵌入为一个矩阵$\mathbf E_{\mathcal I }\in\R^{|\mathcal I|\times d}$，其中d是隐层的维度，那么$\mathbf e_i$和代表矩阵$\mathbf E_{\mathcal I }$中的第i行；把所有用户嵌入为一个矩阵$\mathbf E_{\mathcal U}\in\R^{|\mathcal U|\times d}$，其中d是隐层维度，那么$\mathbf e_u$代表矩阵$\mathbf E_{\mathcal U}$中的第u行。</p>
+<p>那么对于在时间t时刻的一个用户，我们需要构建一个输入嵌入矩阵$\mathbf E^{L}_{(u,t)}\in\R^{L\times d}$，该矩阵由该用户在时间t之前交互过的L个物品组成，那么我们在物品嵌入矩阵$\mathbf E_{\mathcal I}$中找到在时间t之前的L个物品$(\mathcal S^u_{t-L},\dots,\mathcal S^u_{t-1})$。</p>
+<h5 id="成对编码层"><a href="#成对编码层" class="headerlink" title="成对编码层"></a>成对编码层</h5><p>第二层我们看到了一个立方体，维度分别是$L,L,2\times D$，其实这是我们创造的三向张量$\mathbf T^L_{(u,t)}\in\R^{L\times L\times2d}$，其实就是选取输入嵌入矩阵$\mathbf E^L_{(u,t)}$中的任意两个物品$(i,j)$的嵌入表示$[\mathbf e_i;\mathbf e_j]$进行拼接变成变成三向张量中的$(i,j)$向量。</p>
+<p>不像之前的方法直接在输入嵌入矩阵上进行卷积，本篇论文是在我们得到的这个张量上进行卷积的。</p>
+<h5 id="2D卷积层"><a href="#2D卷积层" class="headerlink" title="2D卷积层"></a>2D卷积层</h5><p>接下来就需要把我们的张量$\mathbf T^L_{(u,t)}$送到2D卷积网络进行卷积操作，卷积操作的各层情况如下表</p>
+<p><img src="images\image-20200322152455568.png" alt="image-20200322152455568"></p>
+<p>这里我们看上表，先是输入层，然后是两个卷积块，每个卷积块又包括两个卷积层，这两个卷积块的第一层都是用的$1\times 1$的核，第二层都是用的$3\times3$的核。第一层用于丰富特征表示，第二层用于收集序列特征并提取更复杂的关系。还有一点上表没有显示出来就是：每个卷积层后面紧接着一个batch normalization和一个ReLu激活函数。那么经过这两个卷积块之后，采用了一个带有dropout的全连接层，最终其实已经就获得了序列特征向量$\mathbf v_{u,t}\in\R^d$，但是为了捕获用户的全局偏好，于是把用户嵌入$\mathbf e_u$和序列向量$\mathbf v_{(u,t)}$拼接在一起然后投影到一个具有$|\mathcal I|$个结点的输出层，然后采用一个sigmoid函数来产生最终的概率$\sigma(\mathbf y^{(u,t)})\in R^{|\mathcal I|}$。</p>
+<h5 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h5><p>最后采用的损失函数是二元交叉熵损失</p>
+<script type="math/tex; mode=display">
+-\sum_u\sum_t\left(log\left(\sigma(y^{(u,t)}_{S^u_t})\right)+\sum_{j\not\in S_u}log\left(1-\sigma(y_j^{(u,t)})\right)\right)</script><p>那么优化方式是采用的Adam优化器（SGD的变种）。然后在每次迭代的时候为每个目标物品$\mathcal S^u_t$随机取样N个负样本（$j$）（这个地方不太了解，可能和Adam优化或者二元交叉熵损失有关。查了一下资料应该是为二元交叉熵做准备，需要计算正样本和负样本的概率）。</p>
+<h5 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h5><p>本文的数据集有两个：MovieLens和Gowalla。</p>
+<p>然后分割方法是80%作训练和验证集，20%是测试集。</p>
+<p>评价指标是：Mean Average Precision(MAP)、Precision@N和Recall@N，其中N设置为1，5，10。</p>
+
       
     </div>
 
