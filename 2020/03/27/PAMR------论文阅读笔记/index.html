@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200326102301267.png">
 <meta property="article:published_time" content="2020-03-27T09:30:00.000Z">
-<meta property="article:modified_time" content="2020-04-01T14:42:10.069Z">
+<meta property="article:modified_time" content="2020-04-01T14:50:14.082Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="量化投资">
 <meta property="article:tag" content="机器学习">
@@ -189,7 +189,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-01 22:42:10" itemprop="dateModified" datetime="2020-04-01T22:42:10+08:00">2020-04-01</time>
+                <time title="修改时间：2020-04-01 22:50:14" itemprop="dateModified" datetime="2020-04-01T22:50:14+08:00">2020-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="PAMR———论文阅读笔记"><a href="#PAMR———论文阅读笔记" class="headerlink" title="PAMR———论文阅读笔记"></a>PAMR———论文阅读笔记</h4><h4 id="PAMR：Passive-aggressive-mean-reversion-strategy-for-portfolio-selection"><a href="#PAMR：Passive-aggressive-mean-reversion-strategy-for-portfolio-selection" class="headerlink" title="PAMR：Passive aggressive mean reversion strategy for portfolio selection"></a>PAMR：Passive aggressive mean reversion strategy for portfolio selection</h4><h5 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h5><p>受金融危机的启发，金融危机发生时所有股票同步下跌或者某些股票大幅下跌。在这种情况下利用均值回归思想进行再平衡显然是不合适的，因为它把太多资金放在”mine” stocks上（这里我也不太懂“mine” stocks是什么，文章举例为Bear Stearns，查了相关资料可能说的是表现很差甚至会破产的股票吧），所以为了避免这种潜在风险，最好的选择就是维持原来的投资组合。</p>
+        <h4 id="PAMR———论文阅读笔记"><a href="#PAMR———论文阅读笔记" class="headerlink" title="PAMR———论文阅读笔记"></a>PAMR———论文阅读笔记</h4><h4 id="PAMR：Passive-aggressive-mean-reversion-strategy-for-portfolio-selection"><a href="#PAMR：Passive-aggressive-mean-reversion-strategy-for-portfolio-selection" class="headerlink" title="PAMR：Passive aggressive mean reversion strategy for portfolio selection"></a>PAMR：Passive aggressive mean reversion strategy for portfolio selection</h4><h5 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h5><p>受金融危机的启发，金融危机发生时所有股票同步下跌或者某些股票大幅下跌。在这种情况下利用均值回归思想进行再平衡显然是不合适的，因为它把太多资金放在”mine” stocks上（这里我也不太懂“mine” stocks是什么，文章举例为Bear Stearns，查了相关资料可能说的是表现很差甚至会破产的股票吧），所以为了避免这种潜在风险，最好的选择就是维持原来的投资组合。<a id="more"></a></p>
 <p>那么PAMR就是想根据市场情况在“aggressive”和“passive”回归之间交替使用策略。如果使用激进的均值回归方法，那么它就会把大量财富放在这种价格大幅下跌的“mine” stocks上，那么如果使用被动的均值回归策略就能避免这种高风险。</p>
 <blockquote>
 <p>下文频繁用到表现好的股票和表现差的股票，让我来解释一下：</p>
