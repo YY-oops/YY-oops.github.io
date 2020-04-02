@@ -20,25 +20,24 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="基于2D卷积神经网络的序列化推荐------论文阅读笔记 CosRec：2D Convolutional Neural Networks for Sequential Recommendation 出发点 虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的">
+  <meta name="description" content="基于深度矩阵分解模型的推荐系统------论文阅读笔记 Deep Matrix Factorization Models for Recommender Systems 本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。 出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。 创新点：1. 之前的用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于2D卷积神经网络的序列化推荐------论文阅读笔记">
-<meta property="og:url" content="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="基于深度矩阵分解模型的推荐系统------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/03/09/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="基于2D卷积神经网络的序列化推荐------论文阅读笔记 CosRec：2D Convolutional Neural Networks for Sequential Recommendation 出发点 虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的">
+<meta property="og:description" content="基于深度矩阵分解模型的推荐系统------论文阅读笔记 Deep Matrix Factorization Models for Recommender Systems 本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。 出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。 创新点：1. 之前的用">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200401222853283.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200322141746052.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200322152455568.png">
-<meta property="article:published_time" content="2020-03-28T03:31:00.000Z">
-<meta property="article:modified_time" content="2020-04-02T08:34:25.320Z">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200308172056767.png">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200308194530453.png">
+<meta property="article:published_time" content="2020-03-09T03:28:00.000Z">
+<meta property="article:modified_time" content="2020-04-02T08:35:29.373Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="深度学习">
 <meta property="article:tag" content="推荐系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200401222853283.png">
+<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200308172056767.png">
 
-<link rel="canonical" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://yy-oops.github.io/2020/03/09/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
 
 <script id="page-configurations">
@@ -50,7 +49,7 @@
   };
 </script>
 
-  <title>基于2D卷积神经网络的序列化推荐------论文阅读笔记 | YY's blog</title>
+  <title>基于深度矩阵分解模型的推荐系统------论文阅读笔记 | YY's blog</title>
   
 
 
@@ -161,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/09/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
@@ -174,7 +173,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          基于2D卷积神经网络的序列化推荐------论文阅读笔记
+          基于深度矩阵分解模型的推荐系统------论文阅读笔记
         </h1>
 
         <div class="post-meta">
@@ -184,14 +183,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-28 11:31:00" itemprop="dateCreated datePublished" datetime="2020-03-28T11:31:00+08:00">2020-03-28</time>
+              <time title="创建时间：2020-03-09 11:28:00" itemprop="dateCreated datePublished" datetime="2020-03-09T11:28:00+08:00">2020-03-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-02 16:34:25" itemprop="dateModified" datetime="2020-04-02T16:34:25+08:00">2020-04-02</time>
+                <time title="修改时间：2020-04-02 16:35:29" itemprop="dateModified" datetime="2020-04-02T16:35:29+08:00">2020-04-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -216,14 +215,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
+              <span>3.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -235,41 +234,89 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="基于2d卷积神经网络的序列化推荐------论文阅读笔记">基于2D卷积神经网络的序列化推荐------论文阅读笔记</h4>
-<h4 id="cosrec2d-convolutional-neural-networks-for-sequential-recommendation">CosRec：2D Convolutional Neural Networks for Sequential Recommendation</h4>
-<h5 id="出发点">出发点</h5>
-<p>虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的物品关系。<a id="more"></a></p>
-<h5 id="名词解释">名词解释</h5>
-<p>序列模型：除了利用到用户的历史行为外，还要考虑用户历史行为的顺序</p>
-<h5 id="创新点">创新点</h5>
-<p>接下来我们看看本文提出的结构和前人工作的不同</p>
-<p><img src="/images/image-20200401222853283.png" /></p>
-<p>上图中（a）就是基于RNN或者基于马尔科夫链的序列模型，可以看到这种模型是有一个动作序列的单向链结构，比如你连续购买了摄像机、闪存卡、镜头那么我们推测你极有可能会购买三脚架。我们注意到这里其实是有一个约束存在，那就是这些购买行为必须是连续的。</p>
-<p>上图中（b）就是本文提出的结构了，利用了pairwise编码，可以让我们的动作序列没有必要必须连续。例如图中购买自行车显然和上下文没有太大相关性，这虽然破坏了单向链结构的局部，但是可以通过我们的pairwise编码跳过该物品。</p>
-<h5 id="问题设置">问题设置</h5>
-<p>假设我们有一个用户集合<span class="math inline">\(\mathcal U\)</span>和一个物品集合<span class="math inline">\(\mathcal I\)</span>。对于集合<span class="math inline">\(\mathcal U\)</span>中的每个用户<span class="math inline">\(u\)</span>都有一个历史交互序列<span class="math inline">\(\mathcal S^u=(\mathcal S^u_1,\dots,\mathcal S^u_{|\mathcal S_u|}),\mathcal S^u\in\mathcal I\)</span>，我们的目的就是根据用户的偏好预测下一个物品。</p>
-<hr />
-<h4 id="本文重点cosrec">本文重点：CosRec</h4>
-<p><img src="/images/image-20200322141746052.png" /></p>
-<h5 id="嵌入查找层">嵌入查找层</h5>
-<p>首先把所有物品嵌入为一个矩阵<span class="math inline">\(\mathbf E_{\mathcal I }\in\mathbb R^{|\mathcal I|\times d}\)</span>，其中d是隐层的维度，那么<span class="math inline">\(\mathbf e_i\)</span>和代表矩阵<span class="math inline">\(\mathbf E_{\mathcal I }\)</span>中的第i行；把所有用户嵌入为一个矩阵<span class="math inline">\(\mathbf E_{\mathcal U}\in\mathbb R^{|\mathcal U|\times d}\)</span>，其中d是隐层维度，那么<span class="math inline">\(\mathbf e_u\)</span>代表矩阵<span class="math inline">\(\mathbf E_{\mathcal U}\)</span>中的第u行。</p>
-<p>那么对于在时间t时刻的一个用户，我们需要构建一个输入嵌入矩阵<span class="math inline">\(\mathbf E^{L}_{(u,t)}\in\mathbb R^{L\times d}\)</span>，该矩阵由该用户在时间t之前交互过的L个物品组成，那么我们在物品嵌入矩阵<span class="math inline">\(\mathbf E_{\mathcal I}\)</span>中找到在时间t之前的L个物品<span class="math inline">\((\mathcal S^u_{t-L},\dots,\mathcal S^u_{t-1})\)</span>。</p>
-<h5 id="成对编码层">成对编码层</h5>
-<p>第二层我们看到了一个立方体，维度分别是<span class="math inline">\(L,L,2\times D\)</span>，其实这是我们创造的三向张量<span class="math inline">\(\mathbf T^L_{(u,t)}\in\mathbb R^{L\times L\times2d}\)</span>，其实就是选取输入嵌入矩阵<span class="math inline">\(\mathbf E^L_{(u,t)}\)</span>中的任意两个物品<span class="math inline">\((i,j)\)</span>的嵌入表示<span class="math inline">\([\mathbf e_i;\mathbf e_j]\)</span>进行拼接变成变成三向张量中的<span class="math inline">\((i,j)\)</span>向量。</p>
-<p>不像之前的方法直接在输入嵌入矩阵上进行卷积，本篇论文是在我们得到的这个张量上进行卷积的。</p>
-<h5 id="d卷积层">2D卷积层</h5>
-<p>接下来就需要把我们的张量<span class="math inline">\(\mathbf T^L_{(u,t)}\)</span>送到2D卷积网络进行卷积操作，卷积操作的各层情况如下表</p>
-<p><img src="/images/image-20200322152455568.png" /></p>
-<p>这里我们看上表，先是输入层，然后是两个卷积块，每个卷积块又包括两个卷积层，这两个卷积块的第一层都是用的<span class="math inline">\(1\times 1\)</span>的核，第二层都是用的<span class="math inline">\(3\times3\)</span>的核。第一层用于丰富特征表示，第二层用于收集序列特征并提取更复杂的关系。还有一点上表没有显示出来就是：每个卷积层后面紧接着一个batch normalization和一个ReLu激活函数。那么经过这两个卷积块之后，采用了一个带有dropout的全连接层，最终其实已经就获得了序列特征向量<span class="math inline">\(\mathbf v_{u,t}\in\mathbb R^d\)</span>，但是为了捕获用户的全局偏好，于是把用户嵌入<span class="math inline">\(\mathbf e_u\)</span>和序列向量<span class="math inline">\(\mathbf v_{(u,t)}\)</span>拼接在一起然后投影到一个具有<span class="math inline">\(|\mathcal I|\)</span>个结点的输出层，然后采用一个sigmoid函数来产生最终的概率<span class="math inline">\(\sigma(\mathbf y^{(u,t)})\in R^{|\mathcal I|}\)</span>。</p>
-<h5 id="模型训练">模型训练</h5>
-<p>最后采用的损失函数是二元交叉熵损失</p>
+        <h4 id="基于深度矩阵分解模型的推荐系统------论文阅读笔记">基于深度矩阵分解模型的推荐系统------论文阅读笔记</h4>
+<h4 id="deep-matrix-factorization-models-for-recommender-systems">Deep Matrix Factorization Models for Recommender Systems</h4>
+<p>本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。</p>
+<p>出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。</p>
+<p>创新点：1. 之前的用户-物品评分矩阵要么只用显式评分要么只用隐式评分，在本文中用户-物品评分矩阵既包括显式评分也包括隐式评分；2. 设计一种新的损失函数使其既考虑显式评分又考虑了隐式反馈。<a id="more"></a></p>
+<h5 id="问题陈述">问题陈述</h5>
+<p>在了解模型前先来看看我们要解决什么样的问题吧。</p>
+<p>假设有<span class="math inline">\(M\)</span>个用户<span class="math inline">\(U = \{u_1,\dots,u_M\}\)</span>，<span class="math inline">\(N\)</span>个物品<span class="math inline">\(V = \{v_1,\dots,v_N\}\)</span>。<span class="math inline">\(R\in \mathbb R^{M\times N}\)</span>代表评分矩阵，那么其中<span class="math inline">\(R_{ij}\)</span>就代表用户<span class="math inline">\(i\)</span>在物品<span class="math inline">\(j\)</span>上的评分，我们用<span class="math inline">\(unk\)</span>代表未知的评分。那么现在有两种方法利用<span class="math inline">\(R\)</span>来构建用户-物品交互矩阵<span class="math inline">\(Y\in \mathbb R^{M\times N}\)</span></p>
 <p><span class="math display">\[
--\sum_u\sum_t\left(log\left(\sigma(y^{(u,t)}_{S^u_t})\right)+\sum_{j\not\in S_u}log\left(1-\sigma(y_j^{(u,t)})\right)\right)
-\]</span> 那么优化方式是采用的Adam优化器（SGD的变种）。然后在每次迭代的时候为每个目标物品<span class="math inline">\(\mathcal S^u_t\)</span>随机取样N个负样本（<span class="math inline">\(j\)</span>）（这个地方不太了解，可能和Adam优化或者二元交叉熵损失有关。查了一下资料应该是为二元交叉熵做准备，需要计算正样本和负样本的概率）。</p>
-<h5 id="实验">实验</h5>
-<p>本文的数据集有两个：MovieLens和Gowalla。</p>
-<p>然后分割方法是80%作训练和验证集，20%是测试集。</p>
-<p>评价指标是：Mean Average Precision(MAP)、Precision@N和Recall<span class="citation" data-cites="N">@N</span>，其中N设置为1，5，10。</p>
+Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\1, &amp;otherwise\end{cases}
+\]</span></p>
+<p><span class="math display">\[
+Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\R_{ij}, &amp;otherwise\end{cases}
+\]</span></p>
+<p>那么大多数的推荐方案都是利用第一种方法构建的01交互矩阵，但是本篇文章用的是第二种方法，因为保留原有的评分不仅能知道用户<span class="math inline">\(i\)</span>和产品<span class="math inline">\(j\)</span>之间有交互，还能知道用户<span class="math inline">\(i\)</span>对产品<span class="math inline">\(j\)</span>的偏好程度，同时如果评分未知，就把它置为0，这就是文章中提到的"non-preference implicit feedback"（在我看来这哪利用了无偏好程度的隐式反馈，这分明就是没有利用隐式反馈，我着实不懂）。其中<span class="math inline">\(Y^+\)</span>代表已观测到的交互，<span class="math inline">\(Y^-\)</span>代表矩阵<span class="math inline">\(Y\)</span>中的0元素，<span class="math inline">\(Y^-_{sampled}\)</span>代表一组负实例，可以是<span class="math inline">\(Y^-\)</span>中所有元素组成，也可以是从<span class="math inline">\(Y^-\)</span>中抽样的一些元素组成。那么<span class="math inline">\(Y^+\cup Y^-_{sampled}\)</span>就是我们的所有训练样本。我们用<span class="math inline">\(Y_{i*}\)</span>代表矩阵<span class="math inline">\(Y\)</span>的第<span class="math inline">\(i\)</span>行，用<span class="math inline">\(Y_{*j}\)</span>代表矩阵<span class="math inline">\(Y\)</span>的第<span class="math inline">\(j\)</span>列，那么<span class="math inline">\(Y_{ij}\)</span>就代表用户<span class="math inline">\(i\)</span>对物品<span class="math inline">\(j\)</span>的交互。</p>
+<h5 id="目标">目标</h5>
+<p>那么推荐系统的目标就是估计矩阵<span class="math inline">\(Y\)</span>中的未知评分项。</p>
+<p><span class="math display">\[
+\hat Y_{ij}=F(u_i,v_j|\Theta)
+\]</span> 就是上面的式子：在输入<span class="math inline">\(u_i,v_j\)</span>且参数为<span class="math inline">\(\Theta\)</span>的情况下由模型得到预测评分。</p>
+<h5 id="dmf模型deep-matrix-factorization">DMF模型（Deep Matrix Factorization）</h5>
+<h5 id="模型">模型</h5>
+<p><img src="/images/image-20200308172056767.png" /></p>
+<p>将交互矩阵<span class="math inline">\(Y\)</span>作为输入，其中每个用户可以用一个高维向量<span class="math inline">\(Y_{i*}\)</span>来表示，这代表着该用户<span class="math inline">\(i\)</span>对所有物品的评分向量；而每个物品也可以用一个高维向量<span class="math inline">\(Y_{*j}\)</span>来表示，这代表着所有用户对物品<span class="math inline">\(j\)</span>的评分向量。那么每一层我们把这高维向量映射到一个新的空间中的一个向量。如果我们以<span class="math inline">\(x\)</span>作为输入向量，<span class="math inline">\(y\)</span>作为输出向量，<span class="math inline">\(\{l_i,i=1,\dots,N-1\}\)</span>作为隐向量，第<span class="math inline">\(i\)</span>层的权重矩阵用<span class="math inline">\(W_i\)</span>表示，第<span class="math inline">\(i\)</span>层的偏置用<span class="math inline">\(b_i\)</span>表示，那么最终的输出为<span class="math inline">\(h\)</span>。所以整个计算过程如下：</p>
+<p><span class="math display">\[
+l_1=W_1x
+\]</span></p>
+<p><span class="math display">\[
+l_i=f(W_{i-1}l_{i-1}+b_i),i=2,\dots,N-1
+\]</span></p>
+<p><span class="math display">\[
+h=f(W_Nl_{N-1}+b_N)
+\]</span></p>
+<p>其中涉及到激活函数，本篇文章使用的是<span class="math inline">\(ReLU\)</span>。</p>
+<p>我们看到网络中分别为用户<span class="math inline">\(u_i\)</span>和<span class="math inline">\(v_j\)</span>设计了两个多层网络，分别将他们的原始输入映射到隐空间中的低维向量，最后分别得到的隐语义输出如下：</p>
+<p><span class="math display">\[
+p_i=f_{\theta^U_N}(\dots f_{\theta^U_3}(W_{U2}f_{\theta^U_2}(Y_{i*}W_{U1}))\dots)
+\]</span></p>
+<p><span class="math display">\[
+q_j=f_{\theta^I_N}(\dots f_{\theta^I_3}(W_{V2}f_{\theta^I_2}(Y^T_{*j}W_{V1}))\dots)
+\]</span></p>
+<p>最后我们用余弦相似度判断用户<span class="math inline">\(u_i\)</span>和物品<span class="math inline">\(v_j\)</span>之间的相似度 <span class="math display">\[
+\hat Y_{ij}=F^{DMF}(u_i,v_j|\Theta)=cosine(p_i,q_j)=\frac{p_i^{T}q_j}{\|p_i\|\|q_j\|}
+\]</span> （不明白为什么用相似度当作评分啊，不应该是两个隐语义输出的内积：<span class="math inline">\(p_i^{T}q_j\)</span>直接作为用户<span class="math inline">\(u_i\)</span>对物品<span class="math inline">\(v_j\)</span>的预测评分吗？）</p>
+<h5 id="学习">学习</h5>
+<p>对于模型优化问题，我们需要定义一个合适的目标函数。一般的目标函数基本上是损失函数加上正则化项，如下形式：</p>
+<p><span class="math display">\[
+L=\sum_{y\in Y^+\cup Y^-}l(y,\hat y)+\lambda\Omega(\Theta)
+\]</span> 一般我们的损失函数是采用的平方误差函数，并且假设观测实例都服从高斯分布。</p>
+<p><span class="math display">\[
+L_{sqr}=\sum_{(i,j)\in Y^+\cup Y^-}w_{ij}(Y_{ij}-\hat Y_{ij})^2
+\]</span> 但是这在隐式数据上表现不好，因为隐式数据用<span class="math inline">\(Y_{ij}=0\ or\ 1\)</span>来表示用户<span class="math inline">\(i\)</span>和物品<span class="math inline">\(j\)</span>之间有没有交互（之前不是说未观测到均为0么，这前后不一致啊），对于隐式数据的这种二元属性提出了一种损失函数：</p>
+<p><span class="math display">\[
+L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij})
+\]</span> 这个损失是二元交叉熵损失（binary cross-entropy loss）能够把有隐式反馈的推荐作为一种二分类问题。</p>
+<p>总结就是平方损失用于显式评分，而交叉熵损失用于隐式评分。对于我们设计的新的损失函数，是把显式评分并入交叉熵损失函数中，那么显式数据和隐式数据信息就能在优化中都被使用到。这个新的损失函数我们称之为归一化交叉熵损失（normalized cross entropy loss ） <span class="math display">\[
+L=-\sum_{(i,j)\in Y^+\cup Y^-}\left(\frac{Y_{ij}}{max(R)}log \hat Y_{ij}+\left(1-\frac{Y_{ij}}{max(R)}\right)log(1-\hat Y_{ij})\right)
+\]</span> 用<span class="math inline">\(max(R)\)</span>代表所有评分中的最高分，用它来进行归一化。</p>
+<p>因为预测评分<span class="math inline">\(Y_{ij}\)</span>可能为负，我们在算法中把这个负值用一个很小很小的数<span class="math inline">\(\mu\)</span>代替，本实验中是用的<span class="math inline">\(1.0e^{-6}\)</span>。</p>
+<p><span class="math display">\[
+\hat{Y}^o_{ij}=max(\mu,\hat Y_{ij})
+\]</span> 得到损失函数后，参数更新学习的办法是常见的反向传播算法。</p>
+<p>下面是整个DMF模型的算法：</p>
+<p><img src="/images/image-20200308194530453.png" /></p>
+<p>算法中涉及到几个式子，总结罗列如下：</p>
+<p><span class="math display">\[
+Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\R_{ij}, &amp;otherwise\end{cases}\tag{2}
+\]</span></p>
+<p><span class="math display">\[
+p_i=f_{\theta^U_N}(\dots f_{\theta^U_3}(W_{U2}f_{\theta^U_2}(Y_{i*}W_{U1}))\dots)\tag{7}
+\]</span></p>
+<p><span class="math display">\[
+q_j=f_{\theta^I_N}(\dots f_{\theta^I_3}(W_{V2}f_{\theta^I_2}(Y^T_{*j}W_{V1}))\dots)\tag{7}
+\]</span></p>
+<p><span class="math display">\[
+\hat Y_{ij}=F^{DMF}(u_i,v_j|\Theta)=cosine(p_i,q_j)=\frac{p_i^{T}q_j}{\|p_i\|\|q_j\|}\tag{8}
+\]</span></p>
+<p><span class="math display">\[
+\hat{Y}^o_{ij}=max(\mu,\hat Y_{ij})\tag{13}
+\]</span></p>
+<p><span class="math display">\[
+L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij})\tag{11}
+\]</span></p>
 
     </div>
 
@@ -289,10 +336,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="PAMR------论文阅读笔记">
-      <i class="fa fa-chevron-left"></i> PAMR------论文阅读笔记
+    <a href="/2020/02/10/%E5%9F%BA%E4%BA%8EItem%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="基于Item的协同过滤推荐算法------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 基于Item的协同过滤推荐算法------论文阅读笔记
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="PAMR------论文阅读笔记">
+      PAMR------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -352,7 +402,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于2d卷积神经网络的序列化推荐------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于2D卷积神经网络的序列化推荐------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cosrec2d-convolutional-neural-networks-for-sequential-recommendation"><span class="nav-number">2.</span> <span class="nav-text">CosRec：2D Convolutional Neural Networks for Sequential Recommendation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#出发点"><span class="nav-number">2.1.</span> <span class="nav-text">出发点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#名词解释"><span class="nav-number">2.2.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创新点"><span class="nav-number">2.3.</span> <span class="nav-text">创新点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#问题设置"><span class="nav-number">2.4.</span> <span class="nav-text">问题设置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文重点cosrec"><span class="nav-number">3.</span> <span class="nav-text">本文重点：CosRec</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#嵌入查找层"><span class="nav-number">3.1.</span> <span class="nav-text">嵌入查找层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#成对编码层"><span class="nav-number">3.2.</span> <span class="nav-text">成对编码层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#d卷积层"><span class="nav-number">3.3.</span> <span class="nav-text">2D卷积层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型训练"><span class="nav-number">3.4.</span> <span class="nav-text">模型训练</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实验"><span class="nav-number">3.5.</span> <span class="nav-text">实验</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于深度矩阵分解模型的推荐系统------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于深度矩阵分解模型的推荐系统------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#deep-matrix-factorization-models-for-recommender-systems"><span class="nav-number">2.</span> <span class="nav-text">Deep Matrix Factorization Models for Recommender Systems</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#问题陈述"><span class="nav-number">2.1.</span> <span class="nav-text">问题陈述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#目标"><span class="nav-number">2.2.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dmf模型deep-matrix-factorization"><span class="nav-number">2.3.</span> <span class="nav-text">DMF模型（Deep Matrix Factorization）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型"><span class="nav-number">2.4.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#学习"><span class="nav-number">2.5.</span> <span class="nav-text">学习</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
