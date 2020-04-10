@@ -20,25 +20,25 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="基于2D卷积神经网络的序列化推荐------论文阅读笔记 CosRec：2D Convolutional Neural Networks for Sequential Recommendation 出发点 虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的">
+  <meta name="description" content="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记 CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection 动机 Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于2D卷积神经网络的序列化推荐------论文阅读笔记">
-<meta property="og:url" content="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/04/06/CORN------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="基于2D卷积神经网络的序列化推荐------论文阅读笔记 CosRec：2D Convolutional Neural Networks for Sequential Recommendation 出发点 虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的">
+<meta property="og:description" content="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记 CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection 动机 Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200401222853283.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200322141746052.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200322152455568.png">
-<meta property="article:published_time" content="2020-03-28T03:31:00.000Z">
-<meta property="article:modified_time" content="2020-04-02T08:34:25.320Z">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200407160815837.png">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200408113511729.png">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200408113728405.png">
+<meta property="article:published_time" content="2020-04-06T02:49:00.000Z">
+<meta property="article:modified_time" content="2020-04-10T08:26:31.041Z">
 <meta property="article:author" content="YY">
-<meta property="article:tag" content="深度学习">
-<meta property="article:tag" content="推荐系统">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200401222853283.png">
+<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200407160815837.png">
 
-<link rel="canonical" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://yy-oops.github.io/2020/04/06/CORN------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
 
 <script id="page-configurations">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>基于2D卷积神经网络的序列化推荐------论文阅读笔记 | YY's blog</title>
+  <title>投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记 | YY's blog</title>
   
 
 
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/04/06/CORN------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          基于2D卷积神经网络的序列化推荐------论文阅读笔记
+          投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记
         </h1>
 
         <div class="post-meta">
@@ -184,14 +184,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-28 11:31:00" itemprop="dateCreated datePublished" datetime="2020-03-28T11:31:00+08:00">2020-03-28</time>
+              <time title="创建时间：2020-04-06 10:49:00" itemprop="dateCreated datePublished" datetime="2020-04-06T10:49:00+08:00">2020-04-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-02 16:34:25" itemprop="dateModified" datetime="2020-04-02T16:34:25+08:00">2020-04-02</time>
+                <time title="修改时间：2020-04-10 16:26:31" itemprop="dateModified" datetime="2020-04-10T16:26:31+08:00">2020-04-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -216,7 +216,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -235,41 +235,55 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="基于2d卷积神经网络的序列化推荐------论文阅读笔记">基于2D卷积神经网络的序列化推荐------论文阅读笔记</h4>
-<h4 id="cosrec2d-convolutional-neural-networks-for-sequential-recommendation">CosRec：2D Convolutional Neural Networks for Sequential Recommendation</h4>
-<h5 id="出发点">出发点</h5>
-<p>虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的物品关系。<a id="more"></a></p>
-<h5 id="名词解释">名词解释</h5>
-<p>序列模型：除了利用到用户的历史行为外，还要考虑用户历史行为的顺序</p>
-<h5 id="创新点">创新点</h5>
-<p>接下来我们看看本文提出的结构和前人工作的不同</p>
-<p><img src="/images/image-20200401222853283.png" /></p>
-<p>上图中（a）就是基于RNN或者基于马尔科夫链的序列模型，可以看到这种模型是有一个动作序列的单向链结构，比如你连续购买了摄像机、闪存卡、镜头那么我们推测你极有可能会购买三脚架。我们注意到这里其实是有一个约束存在，那就是这些购买行为必须是连续的。</p>
-<p>上图中（b）就是本文提出的结构了，利用了pairwise编码，可以让我们的动作序列没有必要必须连续。例如图中购买自行车显然和上下文没有太大相关性，这虽然破坏了单向链结构的局部，但是可以通过我们的pairwise编码跳过该物品。</p>
-<h5 id="问题设置">问题设置</h5>
-<p>假设我们有一个用户集合<span class="math inline">\(\mathcal U\)</span>和一个物品集合<span class="math inline">\(\mathcal I\)</span>。对于集合<span class="math inline">\(\mathcal U\)</span>中的每个用户<span class="math inline">\(u\)</span>都有一个历史交互序列<span class="math inline">\(\mathcal S^u=(\mathcal S^u_1,\dots,\mathcal S^u_{|\mathcal S_u|}),\mathcal S^u\in\mathcal I\)</span>，我们的目的就是根据用户的偏好预测下一个物品。</p>
+        <h4 id="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记">投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记</h4>
+<h4 id="corncorrelation-driven-nonparametric-learning-approach-for-portfolio-selection">CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection</h4>
+<h5 id="动机">动机</h5>
+<p>Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具有启发性，这可能会导致次优解。</p>
+<p>除此之外，现有的非参数学习方法通常用欧几里得距离来衡量相似性，但是欧式距离没有利用市场窗口运动的方向信息，因此虽然它能检测到相似的表现，但是可能其中包含有一些无用的甚至有害的价比，而排除了有益的价比。<a id="more"></a></p>
 <hr />
-<h4 id="本文重点cosrec">本文重点：CosRec</h4>
-<p><img src="/images/image-20200322141746052.png" /></p>
-<h5 id="嵌入查找层">嵌入查找层</h5>
-<p>首先把所有物品嵌入为一个矩阵<span class="math inline">\(\mathbf E_{\mathcal I }\in\mathbb R^{|\mathcal I|\times d}\)</span>，其中d是隐层的维度，那么<span class="math inline">\(\mathbf e_i\)</span>和代表矩阵<span class="math inline">\(\mathbf E_{\mathcal I }\)</span>中的第i行；把所有用户嵌入为一个矩阵<span class="math inline">\(\mathbf E_{\mathcal U}\in\mathbb R^{|\mathcal U|\times d}\)</span>，其中d是隐层维度，那么<span class="math inline">\(\mathbf e_u\)</span>代表矩阵<span class="math inline">\(\mathbf E_{\mathcal U}\)</span>中的第u行。</p>
-<p>那么对于在时间t时刻的一个用户，我们需要构建一个输入嵌入矩阵<span class="math inline">\(\mathbf E^{L}_{(u,t)}\in\mathbb R^{L\times d}\)</span>，该矩阵由该用户在时间t之前交互过的L个物品组成，那么我们在物品嵌入矩阵<span class="math inline">\(\mathbf E_{\mathcal I}\)</span>中找到在时间t之前的L个物品<span class="math inline">\((\mathcal S^u_{t-L},\dots,\mathcal S^u_{t-1})\)</span>。</p>
-<h5 id="成对编码层">成对编码层</h5>
-<p>第二层我们看到了一个立方体，维度分别是<span class="math inline">\(L,L,2\times D\)</span>，其实这是我们创造的三向张量<span class="math inline">\(\mathbf T^L_{(u,t)}\in\mathbb R^{L\times L\times2d}\)</span>，其实就是选取输入嵌入矩阵<span class="math inline">\(\mathbf E^L_{(u,t)}\)</span>中的任意两个物品<span class="math inline">\((i,j)\)</span>的嵌入表示<span class="math inline">\([\mathbf e_i;\mathbf e_j]\)</span>进行拼接变成变成三向张量中的<span class="math inline">\((i,j)\)</span>向量。</p>
-<p>不像之前的方法直接在输入嵌入矩阵上进行卷积，本篇论文是在我们得到的这个张量上进行卷积的。</p>
-<h5 id="d卷积层">2D卷积层</h5>
-<p>接下来就需要把我们的张量<span class="math inline">\(\mathbf T^L_{(u,t)}\)</span>送到2D卷积网络进行卷积操作，卷积操作的各层情况如下表</p>
-<p><img src="/images/image-20200322152455568.png" /></p>
-<p>这里我们看上表，先是输入层，然后是两个卷积块，每个卷积块又包括两个卷积层，这两个卷积块的第一层都是用的<span class="math inline">\(1\times 1\)</span>的核，第二层都是用的<span class="math inline">\(3\times3\)</span>的核。第一层用于丰富特征表示，第二层用于收集序列特征并提取更复杂的关系。还有一点上表没有显示出来就是：每个卷积层后面紧接着一个batch normalization和一个ReLu激活函数。那么经过这两个卷积块之后，采用了一个带有dropout的全连接层，最终其实已经就获得了序列特征向量<span class="math inline">\(\mathbf v_{u,t}\in\mathbb R^d\)</span>，但是为了捕获用户的全局偏好，于是把用户嵌入<span class="math inline">\(\mathbf e_u\)</span>和序列向量<span class="math inline">\(\mathbf v_{(u,t)}\)</span>拼接在一起然后投影到一个具有<span class="math inline">\(|\mathcal I|\)</span>个结点的输出层，然后采用一个sigmoid函数来产生最终的概率<span class="math inline">\(\sigma(\mathbf y^{(u,t)})\in R^{|\mathcal I|}\)</span>。</p>
-<h5 id="模型训练">模型训练</h5>
-<p>最后采用的损失函数是二元交叉熵损失</p>
+<h4 id="corn">CORN</h4>
+<p>首先声明一个相关相似集合（correlation-similar set），它包含与最近的市场窗口统计相关的之前市场窗口中的历史价比。 <span class="math display">\[
+C_t(w,\rho)=\left\{w&lt;i&lt;t-1\Bigg\arrowvert\frac{\text{cov}(\mathbf X^{i-1}_{i-w},\mathbf X^{t-1}_{t-w})}{\text{std}(\mathbf X^{i-1}_{i-w})\text{std}(\mathbf X^{t-1}_{t-w})}\ge\rho\right\}
+\]</span> 那么这里度量两个窗口相似性是用的person相关系数。其中<span class="math inline">\(w\)</span>是窗口大小，<span class="math inline">\(-1\le\rho\le1\)</span>是相关系数阈值，<span class="math inline">\(\text{cov}(A,B)\)</span>是窗口A和窗口B的协方差，<span class="math inline">\(\text{std}(A)\)</span>是市场窗口的标准差。</p>
+<p>如果分母为0,也就是有一个市场是零波动性，那么就设置相关系数为0。</p>
+<h5 id="算法">算法</h5>
+<p>第一步：定义一个系统能够定位那些相似的历史价比，并且根据相似历史价比能够找到最优的投资组合。</p>
+<p>第二步：有效的将所有的系统找到的投资组合组合起来形成最终的投资组合。</p>
+<p>一步一步来看，首先我们定义一些系统，每个系统的索引为<span class="math inline">\((w,\rho)\)</span>，<span class="math inline">\(\{\mathcal E(w,\rho):w\ge1,-1\le\rho\le1\}\)</span>，那么不同的系统会有不同的窗口大小<span class="math inline">\(w\)</span>和相关系数阈值<span class="math inline">\(\rho\)</span>。注意我们定义<span class="math inline">\(\mathcal E(w,\rho)=\mathbf b(w,\rho)\)</span>。</p>
+<p>然后我们用最大化累计财富的方式学习最优的投资组合 <span class="math display">\[
+\mathbf b_t(w,\rho)=\mathop{\text{argmax}}\limits_{\mathbf b\in\bigtriangleup_m}\prod_{i\in C_t(w,\rho)}(\mathbf b\cdot\mathbf x_i)
+\]</span> 如果相关性为0，即<span class="math inline">\(C_t(w,\rho)=0\)</span>那么我们就直接采用一个统一的投资组合<span class="math inline">\((\frac{1}{m},\dots,\frac{1}{m})\)</span></p>
+<p>基本的流程如下</p>
+<p><img src="/images/image-20200407160815837.png" /></p>
+<p>接下来，我们考虑把一系列系统的输出根据它们的历史表现<span class="math inline">\(s_{t-1}(w,\rho)\)</span>和概率分布<span class="math inline">\(q(w,\rho)\)</span>组合起来。那么第t交易日的最终的投资组合如下 <span class="math display">\[
+\mathbf b_t=\frac{\sum_{w,\rho}q(w,\rho)s_{t-1}(w,\rho)\mathbf b_t(w,\rho)}{\sum_{w,\rho}q(w,\rho)s_{t-1}(w,\rho)}
+\]</span> 其中<span class="math inline">\(\mathbf b_t(w,\rho)\)</span>代表每个系统<span class="math inline">\(\mathcal E(w,\rho)\)</span>的输出，而<span class="math inline">\(s_{t-1}(w,\rho)\)</span>代表的是历史表现（用累积财富来衡量）。</p>
+<p>如果一个系统的历史表现越好，那么相应的在组合时给它分配的权重就越高。</p>
+<p>最后我们的累计财富迭代公式为 <span class="math display">\[
+\mathbf S_t=\mathbf S_{t-1}\times(\mathbf b_t\cdot\mathbf x_t)
+\]</span></p>
 <p><span class="math display">\[
--\sum_u\sum_t\left(log\left(\sigma(y^{(u,t)}_{S^u_t})\right)+\sum_{j\not\in S_u}log\left(1-\sigma(y_j^{(u,t)})\right)\right)
-\]</span> 那么优化方式是采用的Adam优化器（SGD的变种）。然后在每次迭代的时候为每个目标物品<span class="math inline">\(\mathcal S^u_t\)</span>随机取样N个负样本（<span class="math inline">\(j\)</span>）（这个地方不太了解，可能和Adam优化或者二元交叉熵损失有关。查了一下资料应该是为二元交叉熵做准备，需要计算正样本和负样本的概率）。</p>
-<h5 id="实验">实验</h5>
-<p>本文的数据集有两个：MovieLens和Gowalla。</p>
-<p>然后分割方法是80%作训练和验证集，20%是测试集。</p>
-<p>评价指标是：Mean Average Precision(MAP)、Precision@N和Recall<span class="citation" data-cites="N">@N</span>，其中N设置为1，5，10。</p>
+\mathbf S_0=1
+\]</span></p>
+<p>那么同样的 <span class="math display">\[
+s_t(w,\rho)=s_{t-1}(w,\rho)\times(\mathbf b_t(w,\rho)\cdot\mathbf x_t)
+\]</span></p>
+<p><span class="math display">\[
+s_0=1
+\]</span></p>
+<p>那么可以知道通过CORN策略得到的累计财富就是各个系统基于概率分布的回报加权和 <span class="math display">\[
+\mathbf S_T=\sum_{w,\rho}q(w,\rho)s_T(w,\rho)
+\]</span></p>
+<h5 id="组合方式">组合方式</h5>
+<p>有两种：1. Uniform组合（CORN-U）；2. top-K组合（CORN-K）</p>
+<ol type="1">
+<li><p>CORN-U是简单的把<span class="math inline">\(q(w,\rho)\)</span>考虑成统一分布<span class="math inline">\(q(w,\rho)=\frac{1}{W}\)</span>，其中<span class="math inline">\(W\)</span>是最大的窗口数量，在这种方法中，给所有的系统分配一样的权重，如果我们能够获得更多的系统分布的信息的话，也可以调整这些权重。</p>
+<p>其算法过程如下</p>
+<p><img src="/images/image-20200408113511729.png" /></p></li>
+<li><p>第二种是为了克服第一种可能把表现不好的系统包括进来的缺点。CORN-K是组合top-K个最好的系统，然后统一组合，统一分布为<span class="math inline">\(q(w,\rho)=\frac{1}{K}\)</span>，那么top-K以外的系统就给它们分配权重为0就行了。对于每个<span class="math inline">\(W\)</span>，我们分配<span class="math inline">\(P\)</span>个相关系统，按照经验，第i个系统的<span class="math inline">\(\rho\)</span>值应该设为<span class="math inline">\(\frac{i-1}{P}\)</span></p>
+<p>其算法过程如下</p>
+<p><img src="/images/image-20200408113728405.png" /></p></li>
+</ol>
 
     </div>
 
@@ -279,8 +293,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
-              <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag"># 推荐系统</a>
+              <a href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" rel="tag"># 量化投资</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
           </div>
 
         
@@ -289,13 +303,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="PAMR------论文阅读笔记">
-      <i class="fa fa-chevron-left"></i> PAMR------论文阅读笔记
+    <a href="/2020/04/04/%E5%9F%BA%E4%BA%8E%E8%87%AA%E6%B3%A8%E6%84%8F%E7%9A%84Next%20Item%20%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="基于自注意的Next Item推荐------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 基于自注意的Next Item推荐------论文阅读笔记
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/04/04/%E5%9F%BA%E4%BA%8E%E8%87%AA%E6%B3%A8%E6%84%8F%E7%9A%84Next%20Item%20%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="基于自注意的Next Item推荐------论文阅读笔记">
-      基于自注意的Next Item推荐------论文阅读笔记 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -355,7 +366,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于2d卷积神经网络的序列化推荐------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于2D卷积神经网络的序列化推荐------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cosrec2d-convolutional-neural-networks-for-sequential-recommendation"><span class="nav-number">2.</span> <span class="nav-text">CosRec：2D Convolutional Neural Networks for Sequential Recommendation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#出发点"><span class="nav-number">2.1.</span> <span class="nav-text">出发点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#名词解释"><span class="nav-number">2.2.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创新点"><span class="nav-number">2.3.</span> <span class="nav-text">创新点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#问题设置"><span class="nav-number">2.4.</span> <span class="nav-text">问题设置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文重点cosrec"><span class="nav-number">3.</span> <span class="nav-text">本文重点：CosRec</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#嵌入查找层"><span class="nav-number">3.1.</span> <span class="nav-text">嵌入查找层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#成对编码层"><span class="nav-number">3.2.</span> <span class="nav-text">成对编码层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#d卷积层"><span class="nav-number">3.3.</span> <span class="nav-text">2D卷积层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型训练"><span class="nav-number">3.4.</span> <span class="nav-text">模型训练</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实验"><span class="nav-number">3.5.</span> <span class="nav-text">实验</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corncorrelation-driven-nonparametric-learning-approach-for-portfolio-selection"><span class="nav-number">2.</span> <span class="nav-text">CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动机"><span class="nav-number">2.1.</span> <span class="nav-text">动机</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corn"><span class="nav-number">3.</span> <span class="nav-text">CORN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#算法"><span class="nav-number">3.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#组合方式"><span class="nav-number">3.2.</span> <span class="nav-text">组合方式</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
