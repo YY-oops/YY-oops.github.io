@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="PS------论文阅读笔记 Portfolio Selection 这篇paper的年份可能比较久远了，所以里面的符号意思都和近年来的文章不太一样。 投资组合选择问题通常包括两个阶段：第一个阶段我们通过观察和经验得到未来证券可能的表现；第二个阶段我们根据我们预测的证券的未来表现选择一个投资组合。本文聚焦于第二阶段，提出最大化贴现收益的假设是不好的，并且指明多元化的投资比非多元化投资更好，进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portfolio Selection------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/04/14/PS------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="PS------论文阅读笔记 Portfolio Selection 这篇paper的年份可能比较久远了，所以里面的符号意思都和近年来的文章不太一样。 投资组合选择问题通常包括两个阶段：第一个阶段我们通过观察和经验得到未来证券可能的表现；第二个阶段我们根据我们预测的证券的未来表现选择一个投资组合。本文聚焦于第二阶段，提出最大化贴现收益的假设是不好的，并且指明多元化的投资比非多元化投资更好，进">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200420152632904.png">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200421135629234.png">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200421151914350.png">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200421152556120.png">
+<meta property="og:image" content="http://yy-oops.github.io/images/image-20200421154601420.png">
+<meta property="article:published_time" content="2020-04-14T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-21T07:57:09.962Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200420152632904.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/04/14/PS------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Portfolio Selection------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">10</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/04/14/PS------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Portfolio Selection------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-14 12:00:00" itemprop="dateCreated datePublished" datetime="2020-04-14T12:00:00+08:00">2020-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-21 15:57:09" itemprop="dateModified" datetime="2020-04-21T15:57:09+08:00">2020-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="ps------论文阅读笔记">PS------论文阅读笔记</h4>
+<h4 id="portfolio-selection">Portfolio Selection</h4>
+<p>这篇paper的年份可能比较久远了，所以里面的符号意思都和近年来的文章不太一样。</p>
+<p>投资组合选择问题通常包括两个阶段：第一个阶段我们通过观察和经验得到未来证券可能的表现；第二个阶段我们根据我们预测的证券的未来表现选择一个投资组合。本文聚焦于第二阶段，提出最大化贴现收益的假设是不好的，并且指明多元化的投资比非多元化投资更好，进而提出了均值方差原则。<a id="more"></a></p>
+<p>假设有<span class="math inline">\(N\)</span>个证券；<span class="math inline">\(r_u\)</span>代表每在证券<span class="math inline">\(i\)</span>上投资1美元所获得的预期回报；而<span class="math inline">\(d_{it}\)</span>代表时间<span class="math inline">\(t\)</span>时第<span class="math inline">\(i\)</span>种证券的收益率折现回当前的比率；而<span class="math inline">\(X_i\)</span>代表投资在第<span class="math inline">\(i\)</span>种证券上的财富比例。不允许卖空，所以<span class="math inline">\(X_i\ge 0\)</span>，而且<span class="math inline">\(\sum X_i=1\)</span>（这个就像投资组合）。</p>
+<blockquote>
+<p>补充一个知识点：折现率。因为资金是有时间价值的，所以一年后的一块钱可能和当前的一块钱的价值不是等同的，所以折现就是说把一年后的一块钱转化成当前的价值。</p>
+<p>一年后一块钱在今天的价值=一年后的一块钱/(1 + <em>t</em>)</p>
+<p>二年后一块钱在今天的价值=二年后的一块钱/(1 + <em>t</em>)<sup>2</sup></p>
+<p>t指折现率，是指将未来有限期预期收益折算成现值的比率</p>
+</blockquote>
+<p>那么投资组合的折现预期收益 <span class="math display">\[
+R=\sum^\infty_{t=1}\sum^N_{i=1}d_{it}r_{it}X=\sum^N_{i=1}X_i\left(\sum^{\infty}_{t=1}d_{it}r_{it}\right)
+\]</span> 那么其中<span class="math inline">\(R_i=\sum^\infty_{t=1}d_{it}r_{it}\)</span>就是第<span class="math inline">\(i\)</span>个证券的折现回报（有点像价比这个概念）。</p>
+<p>那么上面的式子就可以简化成 <span class="math display">\[
+R=\sum X_iR_i
+\]</span> 这其实就有点像下面讲的加权和（线性组合）了。</p>
+<hr />
+<h5 id="数理统计中的一些概念">数理统计中的一些概念</h5>
+<p>接下来，描述一些数理统计的基本概念和结论。</p>
+<p>如果<span class="math inline">\(Y\)</span>是一个随机变量，那么假设它可以取有限个值<span class="math inline">\(y_1,y_2\dots,y_N\)</span>那么我们假定<span class="math inline">\(Y\)</span>取值<span class="math inline">\(y_1\)</span>的概率为<span class="math inline">\(p_1\)</span>，<span class="math inline">\(Y\)</span>取值为<span class="math inline">\(y_2\)</span>的概率为<span class="math inline">\(p_2\)</span>等等，那么我们就知道了<span class="math inline">\(Y\)</span>的期望就是 <span class="math display">\[
+E=p_1y_1+p_2y_2+\dots+p_Ny_N
+\]</span> <span class="math inline">\(Y\)</span>的方差就是 <span class="math display">\[
+V=p_1(y_1-E)^2+p_2(y_2-E)^2+\dots+p_N(y_N-E)^2
+\]</span> <span class="math inline">\(Y\)</span>的标准差就是 <span class="math display">\[
+\sigma=\sqrt V
+\]</span> 那么离散系数就是 <span class="math display">\[
+\frac{\sigma}{E}
+\]</span> 那么假如有一组随机变量<span class="math inline">\(R_1,\dots,R_n\)</span>，并且让<span class="math inline">\(R\)</span>为这些<span class="math inline">\(R_i\)</span>的加权和（线性组合） <span class="math display">\[
+R=a_1R_1+a_2R_2+\dots+a_nR_n
+\]</span> 那么<span class="math inline">\(R\)</span>也是一个随机变量。</p>
+<p>那么现在对于这样一个线性组合的期望是什么呢 <span class="math display">\[
+E(R) = a_1E(R_1)+a_2E(R_2)+\dots+a_nE(R_n)
+\]</span> 而定义这个线性组合的方差却不是那么容易，不如我们先看下协方差是什么 <span class="math display">\[
+\sigma_{ij}=E\{[R_i-E(R_i)][R_i-E(R_j)]\}
+\]</span> 用我们熟悉的person相关系数<span class="math inline">\(\rho_{ij}\)</span>表示 <span class="math display">\[
+\sigma_{ij} = \rho_{ij}\sigma_i\sigma_j
+\]</span> 那么线性组合的方差如下 <span class="math display">\[
+V(R)=\sum^N_{i=1}\sum^N_{j=1}a_ia_j\sigma_{ij}
+\]</span></p>
+<hr />
+<p>讲完这些概念，我们再回到这个式子，其中<span class="math inline">\(R_i\)</span>是第<span class="math inline">\(i\)</span>个资产的回报，<span class="math inline">\(X_i\)</span>是投资在第<span class="math inline">\(i\)</span>个资产上的财富比例。 <span class="math display">\[
+R=\sum R_iX_i
+\]</span> 那么这个东西的均值和方差我们就能出来了 <span class="math display">\[
+E=\sum^N_{i=1}X_i\mu_i
+\]</span></p>
+<p><span class="math display">\[
+V=\sum^N_{i=1}\sum^N_{j=1}\sigma_{ij}X_iX_j
+\]</span></p>
+<p>其中<span class="math inline">\(\mu_i\)</span>是<span class="math inline">\(R_i\)</span>的期望，<span class="math inline">\(\sigma_{ij}\)</span>是<span class="math inline">\(R_i\)</span>和<span class="math inline">\(R_j\)</span>之间的协方差。</p>
+<p>那么我们的目的就是在给定分布<span class="math inline">\(\mu_{i},\sigma_{ij}\)</span>的情况下对<span class="math inline">\(E\)</span>和<span class="math inline">\(V\)</span>进行一个组合。我们希望在<span class="math inline">\(E\)</span>确定的情况下最小化<span class="math inline">\(V\)</span>（好比收益一定时最小化风险），在<span class="math inline">\(V\)</span>确定的情况下最大化<span class="math inline">\(E\)</span>（好比风险一定时最大化收益）。</p>
+<h5 id="一个小例子">一个小例子</h5>
+<p>假设这个例子中有三个证券，那么我们已知的信息如下： <span class="math display">\[
+E=\sum^3_{i=1}X_i\mu_i
+\]</span></p>
+<p><span class="math display">\[
+V=\sum^3_{i=1}\sum^3_{j=1}X_iX_j\sigma_{ij}
+\]</span></p>
+<p><span class="math display">\[
+\sum^3_{i=1}X_i=1
+\]</span></p>
+<p><span class="math display">\[
+X_i\ge 0\quad\text{for}\quad i=1,2,3.
+\]</span></p>
+<p>那么从第三个式子我们可以看出 <span class="math display">\[
+X_3=1-X_1-X_2
+\]</span> 将这个式子代入第一个式子和第二个式子得到像下面这样的式子 <span class="math display">\[
+\begin{aligned}E&amp;= X_1\mu_1+X_2\mu_2+X_3\mu_3\\
+&amp;=X_1\mu_1+X_2\mu_2+(1-X_1-X_2)\mu_3\\
+&amp;=\mu_3+X_1(\mu_1-\mu_3)+X_2(\mu_2-\mu_3)
+\end{aligned}
+\]</span> 其实式子具体是怎么样的不重要，我们要关注到上面那个式子<span class="math inline">\(E\)</span>就成了关于<span class="math inline">\(X_1\)</span>和<span class="math inline">\(X_2\)</span>的函数，同理<span class="math inline">\(V\)</span>也一样。那我们简单的写成如下的式子 <span class="math display">\[
+E=E(X_1,X_2)
+\]</span></p>
+<p><span class="math display">\[
+V=V(X_1,X_2)
+\]</span></p>
+<p><span class="math display">\[
+X_1\ge0,\ X_2\ge0,\ 1-X_1-X_2\ge0
+\]</span></p>
+<p>有了上面的三个式子，我们就可以来从二维几何的角度找到我们需要的投资组合了。</p>
+<h5 id="几何解释">几何解释</h5>
+<p>我按照如下的图来解释</p>
+<p><img src="/images/image-20200420152632904.png" /></p>
+<p>假设投资组合的可行域是满足约束的所有可能取值，上图中的三角形<span class="math inline">\(abc\)</span>就是<span class="math inline">\(X_1\)</span>和<span class="math inline">\(X_2\)</span>所有可取的线性组合区域。</p>
+<p>之所以是这样一个三角形区域，是因为首先<span class="math inline">\(X_1\ge0,X_2\ge0\)</span>，所以负数均不能取，然后<span class="math inline">\(X_3=1-X_1-X_2\ge0\)</span>即<span class="math inline">\(X_1+X_2\le1\)</span>，所以在直线<span class="math inline">\(X_1+X_2=1\)</span>右侧的点不能取，且易知图中<span class="math inline">\(c(0,0),b(1,0),a(0,1)\)</span>。</p>
+<p>然后图中的虚线是一组均值线，它们是给定期望回报（<span class="math inline">\(E\)</span>取某个确定值）的所有点的集合，图中的椭圆是一组方差线，它们是给定了回报方差（<span class="math inline">\(V\)</span>取某个确定值）的所有点的集合。</p>
+<p>至于为什么是这种椭圆和直线，我下面来解释，<span class="math inline">\(E\)</span>大家还记得，它是<span class="math inline">\(X_1\)</span>和<span class="math inline">\(X_2\)</span>的函数， <span class="math display">\[
+E=\mu_3+X_1(\mu_1-\mu_3)+X_2(\mu_2-\mu_3)
+\]</span> 所以自然是直线，而我们稍加变换这个式子（假设<span class="math inline">\(\mu_2\not=\mu_3\)</span>）就得到 <span class="math display">\[
+X_2=\frac{E-\mu_3}{\mu_2-\mu_3}-\frac{\mu_1-\mu_3}{\mu_2-\mu_3}X_1
+\]</span> 所以我们又可以看出如果改变<span class="math inline">\(E\)</span>，相当于只改变了截距，而斜率没变，所以是一组平行的直线。</p>
+<p>而椭圆的由来证明则困难许多，但是你现在只需要知道给定了回报方差后形成的是一组同心椭圆就行了。</p>
+<p>那么最小的那个椭圆就是给定了一个值最小的方差<span class="math inline">\(V\)</span>，它的中心我们假设是<span class="math inline">\(X\)</span>。</p>
+<h5 id="寻找有效投资组合集合">寻找有效投资组合集合</h5>
+<p>我们知道<span class="math inline">\(X\)</span>可能落在可行域（就是那个三角形）内部或者外部，上面那个图是落在内部的情况。</p>
+<p>现在回顾一下我们的目标：有效的集合应该满足在<span class="math inline">\(E\)</span>给定时，<span class="math inline">\(V\)</span>要尽可能小，在<span class="math inline">\(V\)</span>给定时，<span class="math inline">\(E\)</span>要尽可能大。</p>
+<ol type="1">
+<li><p><span class="math inline">\(X\)</span>在可行域内部的情况</p>
+<p>现在我们知道<span class="math inline">\(X\)</span>这个点肯定是给定了一个具体的<span class="math inline">\(E\)</span>后<span class="math inline">\(V\)</span>最小的一个点，那么给定了一个<span class="math inline">\(V\)</span>后<span class="math inline">\(E\)</span>最大的一个点应该是哪个呢？观察上面那个图如果只存在一个椭圆，在椭圆上找一个点使其<span class="math inline">\(E\)</span>最大，应该是均值线与方差线相切的地方，应该有两个切点地方，我们要取的是在<span class="math inline">\(E\)</span>增长方向上的切点，上图直观点就是靠右边的那个切点，这个切点我们称作<span class="math inline">\(\hat X(E)\)</span>，如果让<span class="math inline">\(E\)</span>变化我们就可以连接出一条曲线。</p>
+<p>而我们看到这个椭圆是同心椭圆，而且是很规则的，上面讲到的那个曲线实际上在这种情况下是一条射线，我们把这条线称作<span class="math inline">\(l\)</span>。</p>
+<p>我们看到图中还有一段在线段<span class="math inline">\(ab\)</span>上的线段也是有效的投资组合集合，至于为什么，我现在还不是太清楚，等会写。终于想通了，我们还是考虑一个椭圆，这相当于确定了<span class="math inline">\(V\)</span>，然后我们要在这个椭圆上取<span class="math inline">\(E\)</span>最大的一个点，本应该是均值线与这个椭圆的有切点，但是这切点根本不在我们的可行域中了啊，那么我们需要在可行域中找。我们干脆看那图中画出来的那个最大的那个椭圆吧，我们用平行于均值线的一根线去挪，（你可以拿你的笔平行于均值线往右挪，相当于让<span class="math inline">\(E\)</span>增大）我们看笔与椭圆的两个交点，当我们挪到<span class="math inline">\(E\)</span>最大时，可以发现我们的笔与最大的那个椭圆还有线段<span class="math inline">\(ab\)</span>交于一点，这一点就是在给定<span class="math inline">\(V\)</span>的情况下，在可行域中最大的那个<span class="math inline">\(E\)</span>，我们让<span class="math inline">\(V\)</span>取不同的值，并找到有最大<span class="math inline">\(E\)</span>的每个点，它们形成的就是位于线段<span class="math inline">\(ab\)</span>上的那段加粗的线段了。</p></li>
+<li><p><span class="math inline">\(X\)</span>在可行域外部的情况</p>
+<p>如下图所示</p>
+<p><img src="/images/image-20200421135629234.png" /></p>
+<p>所以<span class="math inline">\(l\)</span>那条线段有一部分就在可行域外部，这一部分是不行的，在三角形内部的那一小部分线段才是有效的投资组合集合点。剩下的两条线段和我在上一种情况中解释的方法是一样的，我就不多讲了。</p></li>
+</ol>
+<p>其实这里还有一些其他的情况（1）<span class="math inline">\(X\)</span>在可行域外面，但是<span class="math inline">\(l\)</span>这根线和可行域也不相交，这种情况下有效投资组合中就不会包括任何证券。（2）两个证券有同样的<span class="math inline">\(\mu_i\)</span>，这种情况下均值线平行于边界线。（3）只有一个投资组合有效。</p>
+<h5 id="拓展">拓展</h5>
+<p>上面的例子我们只是有三个证券，对于有四个证券或者<span class="math inline">\(N\)</span>个证券的情况也是一样的，有效投资组合集合都是一系列线段相连，并且起点都是方差最小的点，而终点是均值最大的点。</p>
+<p>在有三个证券的例子中<span class="math inline">\(E=a_0+a_1X_1+a_2X_2\)</span>是一个平面，而<span class="math inline">\(V=b_0+b_1X_1+b_2X_2+b_{12}X_1X_2+b_{11}X_1^2+b_{22}X^2_2\)</span>是一个抛物面。我们可以看到类似下面这个图</p>
+<p><img src="/images/image-20200421151914350.png" /></p>
+<p>如果我们以<span class="math inline">\(E\)</span>和<span class="math inline">\(V\)</span>为横纵轴，得到如下图</p>
+<p><img src="/images/image-20200421152556120.png" /></p>
+<h5 id="e-v原则"><span class="math inline">\(E-V\)</span>原则</h5>
+<p>如果一个投资者在两个投资组合之间进行多元化投资（即他的一部分资金用于一个投资组合，剩余资金用于另一个投资组合，一个具体的例子就是购买两个不同投资公司的股票）如果两个投资组合具有相等的方差，那么复合这两个投资组合得到的方差一定比原来的两个中的任意一个都小。</p>
+<p>形式化的表达如下，<span class="math inline">\(P&#39;=(X&#39;_1,X&#39;_2)\)</span>和<span class="math inline">\(P&#39;=(X_1&#39;&#39;,X_2&#39;&#39;)\)</span>。那么组合后的投资组合<span class="math inline">\(P=\lambda P&#39;+(1-\lambda)P&#39;&#39;\)</span></p>
+<p>上述结论如下图</p>
+<figure>
+<img src="/images/image-20200421154601420.png" alt="" /><figcaption>image-20200421154601420</figcaption>
+</figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" rel="tag"># 量化投资</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/06/CORN------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ps------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">PS------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#portfolio-selection"><span class="nav-number">2.</span> <span class="nav-text">Portfolio Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数理统计中的一些概念"><span class="nav-number">2.1.</span> <span class="nav-text">数理统计中的一些概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个小例子"><span class="nav-number">2.2.</span> <span class="nav-text">一个小例子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#几何解释"><span class="nav-number">2.3.</span> <span class="nav-text">几何解释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#寻找有效投资组合集合"><span class="nav-number">2.4.</span> <span class="nav-text">寻找有效投资组合集合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拓展"><span class="nav-number">2.5.</span> <span class="nav-text">拓展</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#e-v原则"><span class="nav-number">2.6.</span> <span class="nav-text">\(E-V\)原则</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>
