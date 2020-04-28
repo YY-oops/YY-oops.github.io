@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Anticor———论文阅读笔记Can we learn to beat the best stock我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。 假设市场有m只股票，让$\mathbf v_t&#x3D;(v_t(1),\dots ,v_t(">
+  <meta name="description" content="Anticor———论文阅读笔记Can we learn to beat the best stock我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Anticor------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/04/12/Anticor------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="Anticor———论文阅读笔记Can we learn to beat the best stock我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。 假设市场有m只股票，让$\mathbf v_t&#x3D;(v_t(1),\dots ,v_t(">
+<meta property="og:description" content="Anticor———论文阅读笔记Can we learn to beat the best stock我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428152028.png">
 <meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428152056.png">
 <meta property="article:published_time" content="2020-04-12T04:51:00.000Z">
-<meta property="article:modified_time" content="2020-04-28T07:21:26.506Z">
+<meta property="article:modified_time" content="2020-04-28T10:15:20.767Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="量化投资">
 <meta property="article:tag" content="机器学习">
@@ -190,7 +190,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-28 15:21:26" itemprop="dateModified" datetime="2020-04-28T15:21:26+08:00">2020-04-28</time>
+                <time title="修改时间：2020-04-28 18:15:20" itemprop="dateModified" datetime="2020-04-28T18:15:20+08:00">2020-04-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,7 +234,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="Anticor———论文阅读笔记"><a href="#Anticor———论文阅读笔记" class="headerlink" title="Anticor———论文阅读笔记"></a>Anticor———论文阅读笔记</h4><h4 id="Can-we-learn-to-beat-the-best-stock"><a href="#Can-we-learn-to-beat-the-best-stock" class="headerlink" title="Can we learn to beat the best stock"></a>Can we learn to beat the best stock</h4><p>我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。</p>
+        <h4 id="Anticor———论文阅读笔记"><a href="#Anticor———论文阅读笔记" class="headerlink" title="Anticor———论文阅读笔记"></a>Anticor———论文阅读笔记</h4><h4 id="Can-we-learn-to-beat-the-best-stock"><a href="#Can-we-learn-to-beat-the-best-stock" class="headerlink" title="Can we learn to beat the best stock"></a>Can we learn to beat the best stock</h4><p>我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。<a id="more"></a></p>
 <p>假设市场有m只股票，让$\mathbf v_t=(v_t(1),\dots ,v_t(m))$代表第t日m只股票的收盘价，那么$v_t(j)$就代表第j只股票的价格。那么价比$x_t(j)=\frac{v_t(j)}{v_{t-1}(j)}$。那么如果第t周期前在第j只股票上投资d美元，就能产出$dx_t(j)$美元。用$\mathbf x_t=(x_t(1), \dots ,x_t(m))$代表第t周期的价比向量，投资组合$\mathbf{b}=(b(1),\dots ,b(m))$就代表当前资产按比例分配到每只股票上，注意：$b(j)\ge 0$且$\sum_jb(j)=1$。投资组合$\mathbf b$的日回报是$\mathbf {b}·x=\sum_jb(j)x(j)$，总回报$\mathbf{ret}_\mathbf x(\mathbf b_1,\dots,\mathbf b_n)$是$\prod_{t=1}^{n}\mathbf b_t·\mathbf x_t$。</p>
 <p><strong>BAH~b~:</strong> 最简单的一个策略就是”buy-and-hold”策略，就是用一个固定的投资组合$\mathbf  b$进行投资。</p>
 <p><strong>U-BAH:</strong> 属于online benchmark，代表用统一的投资组合，其中$\mathbf b=(1/m,\dots,1/m)$。</p>

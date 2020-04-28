@@ -184,7 +184,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-28 15:28:59" itemprop="dateModified" datetime="2020-04-28T15:28:59+08:00">2020-04-28</time>
+                <time title="修改时间：2020-04-28 18:14:54" itemprop="dateModified" datetime="2020-04-28T18:14:54+08:00">2020-04-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -221,7 +221,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="PS———论文阅读笔记"><a href="#PS———论文阅读笔记" class="headerlink" title="PS———论文阅读笔记"></a>PS———论文阅读笔记</h4><h4 id="CAPM———论文阅读笔记"><a href="#CAPM———论文阅读笔记" class="headerlink" title="CAPM———论文阅读笔记"></a>CAPM———论文阅读笔记</h4><h4 id="Capital-Asset-Prices-A-Theory-of-Market-Equilibrium-under-Conditions-of-Risk"><a href="#Capital-Asset-Prices-A-Theory-of-Market-Equilibrium-under-Conditions-of-Risk" class="headerlink" title="Capital Asset Prices: A Theory of Market Equilibrium under Conditions of Risk"></a>Capital Asset Prices: A Theory of Market Equilibrium under Conditions of Risk</h4><p>这篇文章没有看太懂，看完了也不知道它到底在解决一个什么问题或者论证一个什么问题，后面有时间再看。
+          <h4 id="CAPM———论文阅读笔记"><a href="#CAPM———论文阅读笔记" class="headerlink" title="CAPM———论文阅读笔记"></a>CAPM———论文阅读笔记</h4><h4 id="Capital-Asset-Prices-A-Theory-of-Market-Equilibrium-under-Conditions-of-Risk"><a href="#Capital-Asset-Prices-A-Theory-of-Market-Equilibrium-under-Conditions-of-Risk" class="headerlink" title="Capital Asset Prices: A Theory of Market Equilibrium under Conditions of Risk"></a>Capital Asset Prices: A Theory of Market Equilibrium under Conditions of Risk</h4><p>这篇文章没有看太懂，看完了也不知道它到底在解决一个什么问题或者论证一个什么问题，后面有时间再看。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/04/25/CAPM------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#more" rel="contents">
@@ -375,7 +375,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-28 15:21:26" itemprop="dateModified" datetime="2020-04-28T15:21:26+08:00">2020-04-28</time>
+                <time title="修改时间：2020-04-28 18:15:20" itemprop="dateModified" datetime="2020-04-28T18:15:20+08:00">2020-04-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -412,53 +412,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="Anticor———论文阅读笔记"><a href="#Anticor———论文阅读笔记" class="headerlink" title="Anticor———论文阅读笔记"></a>Anticor———论文阅读笔记</h4><h4 id="Can-we-learn-to-beat-the-best-stock"><a href="#Can-we-learn-to-beat-the-best-stock" class="headerlink" title="Can we learn to beat the best stock"></a>Can we learn to beat the best stock</h4><p>我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。</p>
-<p>假设市场有m只股票，让$\mathbf v_t=(v_t(1),\dots ,v_t(m))$代表第t日m只股票的收盘价，那么$v_t(j)$就代表第j只股票的价格。那么价比$x_t(j)=\frac{v_t(j)}{v_{t-1}(j)}$。那么如果第t周期前在第j只股票上投资d美元，就能产出$dx_t(j)$美元。用$\mathbf x_t=(x_t(1), \dots ,x_t(m))$代表第t周期的价比向量，投资组合$\mathbf{b}=(b(1),\dots ,b(m))$就代表当前资产按比例分配到每只股票上，注意：$b(j)\ge 0$且$\sum_jb(j)=1$。投资组合$\mathbf b$的日回报是$\mathbf {b}·x=\sum_jb(j)x(j)$，总回报$\mathbf{ret}_\mathbf x(\mathbf b_1,\dots,\mathbf b_n)$是$\prod_{t=1}^{n}\mathbf b_t·\mathbf x_t$。</p>
-<p><strong>BAH~b~:</strong> 最简单的一个策略就是”buy-and-hold”策略，就是用一个固定的投资组合$\mathbf  b$进行投资。</p>
-<p><strong>U-BAH:</strong> 属于online benchmark，代表用统一的投资组合，其中$\mathbf b=(1/m,\dots,1/m)$。</p>
-<p><strong>BAH*:</strong> 属于offline benchmark，代表事后买入并持有策略，就是观察市场，选择一个最好的股票，进行投资时只投资给这个最好的股票。</p>
-<p><strong>CBAL~b~(CRP):</strong> 连续再平衡策略选定一个投资组合$\mathbf b$然后每天都要把投资组合重新调整为$\mathbf b$。</p>
-<p><strong>U-CBAL:</strong> 属于online benchmark，代表使用统一的投资组合，其中$\mathbf b=(1/m,\dots,1/m)$。</p>
-<p><strong>CBAL*(BCRP):</strong> 属于offline benchmark，代表选择最优的CBAL，也就是事后选择一个最好的投资组合$\mathbf b$。CBAL<em> 通常至少和BAH</em>一样好</p>
-<p><strong>EG($\eta$):</strong> 指数梯度算法计算下一投资组合的公式如下</p>
-<script type="math/tex; mode=display">
-\mathbf b_{t+1}(j)=\frac{\mathbf b_t(j)\text{exp}\{\eta\mathbf x_t(j)/(\mathbf b_t\cdot\mathbf x_t)\}}{\sum^m_{j=1}\mathbf b_t(j)\text{exp}\{\eta\mathbf x_t(j)/(\mathbf b_t\cdot\mathbf x_t)\}}</script><p>其中$\eta$是指学习率。Helmbold等人把学习率$\eta$设置为$\eta=2x_{min}\sqrt{2(logm)/n}$，其中$x_{min}$是所有价比中的最小值。</p>
-<p><strong>Cover’s UP:</strong> 初始投资组合是$\mathbf b_1=(1/m,\dots,1/m)$，更新方式是所有CBAL的历史表现的加权平均，通过增加成功的CBALS的权重自适应的学习每天的投资组合，它的更新规则是</p>
-<script type="math/tex; mode=display">
-\mathbf b_{t+1}=\frac{\int\mathbf b\cdot\mathbf{ret}_t(CBAL_{\mathbf b})d\mu(\mathbf b)}{\int\mathbf{ret}_t(CBAL_{\mathbf b})d\mu(\mathbf b)}</script><p>其中$\mu(·)$是投资组合上的一些先验分布。$\mathbf{ret}_t(CBAL_\mathbf b)$代表CBAL的累计回报。</p>
-<h5 id="The-Anticor-Algorithm"><a href="#The-Anticor-Algorithm" class="headerlink" title="The Anticor Algorithm"></a>The Anticor Algorithm</h5><p>考虑一个比较短的市场历史（包括两个连续的窗口windows，每个包含w个交易日），形式化表达如下</p>
-<script type="math/tex; mode=display">
-\mathbf{LX}_1=\text{log}(\mathbf x_{t-2w+1}),\dots,\text{log}(\mathbf x_{t-w})^{\top}\quad \text{and}\quad \mathbf{LX}_2=\text{log}(\mathbf x_{t-w+1}),\dots,\text{log}(\mathbf x_t)^{\top}</script><p>其中LX~1~代表第1个窗口中w个交易日的对数价比，LX~2~代表第2个窗口中w个交易日的对数价比，该窗口更靠近当前交易日t。其中$log(\mathbf x_k)$代表$(log(x_k(1)),\dots,log(x_k(m)))$。所以，LX~1~和LX~2~其实是两个$w\times m$的矩阵。</p>
-<p>我们用$LX_K(j)$来代表$LX_k$中的第j列，$\mu_k=(\mu_k(1),\dots,\mu_k(m))$向量由$LX_k$中每一列的平均值组成，其中$\mu_k(j)=E\{LX_k(j)\}$，同样的，$\sigma_k$向量由$LX_k$中列的标准差组成。那么LX~1~和LX~2~列向量之间的互相关矩阵定义如下</p>
-<script type="math/tex; mode=display">
-M_{cov}(i,j)=(\mathbf{LX}_1(i)-\mu_1(i))^{\top}(\mathbf{LX}_2(j)-\mu_2(j))</script><script type="math/tex; mode=display">
-M_{cor}(i,j)\begin{cases}\frac{M_{cov}(i,j)}{\sigma_1(i)\sigma_2(j)}&\sigma_1(i),\sigma_2(j)\not=0\\
-0&\text{otherwise}
-\end{cases}</script><p>$M_{cor}(i,j)\in [-1,1]$度量了在第一个窗口股票i的对数价比和第二个窗口股票j的对数价比之间的相关性。然后我们对每一对股票i和j计算$claim_{i\rightarrow j}$,这个符号代表我们希望把资产从i转移到j的程度。当且仅当$\mu_2(i)&gt;\mu_2(j)$且$M_{cor}(i,j)&gt;0$时，有</p>
-<script type="math/tex; mode=display">
-clam_{i\rightarrow j}=M_{cor}(i,j)+A(i)+A(j)</script><p>其中</p>
-<script type="math/tex; mode=display">
-A(h)=
-\begin{cases}
-|M_{cor}(h,h)|&M_{cor}(h,h)<0\\
-0&else
-\end{cases}</script><p>$M_{cor}(h,h)&lt;0$代表股票h在两个连续的窗口中时反相关的。</p>
-<p>最后投资组合的更新方式是</p>
-<p>$\mathbf b_{t+1}(i)=\tilde {\mathbf b}_t(i)+\sum_{j\not=i}[transfer_{j\rightarrow i}-transfer_{i\rightarrow j}]$</p>
-<p>其中</p>
-<p>$transfer_{i\rightarrow j}=\tilde{\mathbf b}_t(i)\cdot claim_{i\rightarrow j}/\sum_jclaim_{i\rightarrow j}$</p>
-<p>$\tilde {\mathbf b}_t$是在交易日t时市场收盘后产生的投资组合。</p>
-<h5 id="BAH-w-ANTICOR"><a href="#BAH-w-ANTICOR" class="headerlink" title="BAH~w~(ANTICOR)"></a>BAH~w~(ANTICOR)</h5><p>考虑到Anticor算法对窗口大小是比较敏感的，有的w可以获得较高的收益，但是有些w获得的收益较低，且窗口大小和收益之间没有规律可循。如下图</p>
-<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428152028.png" alt=""></p>
-<p>所以考虑一种方案BAH~w~(ANTICOR)，利用多个Anticor系统，每个系统采用的w都不相同，具体取值为$w\in [2,W]$，其中W是预设的窗口最大值。多个系统采用加权平均的方式更新。从下面左图可以看出这种方案获得的回报远远高于best stock</p>
-<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428152056.png" alt=""></p>
-<p>本文一个比较有意思的地方是先用Anticor算法对各个股票进行投资组合选择，然后把不同（主要是w不同）的Anticor算法看作是股票，把不同Anticor算法获得的累计收益看作是价格，再用Anticor算法对不同的Anticor算法进行投资。从上面右图看出这里复合了两次，当然可以复合任意多次。这样复合的一个重要意义就是可以平滑股票间的反相关性，可以看出经过两次复合后收益变得完全相关了，所以就没有必要再进行复合了。</p>
-<h5 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h5><p>当处理具有m个股票的投资组合时，该算法每天可以执行多达m个交易，一个不可忽略的问题就是产生的佣金问题。在proportional commission 模型中，存在一个分数$\gamma \in (0,1)$，这样投资者每次买卖支付的利率就是$\gamma/2$。因此在市场序列$\mathbf x_1,\dots,\mathbf x_n$下投资组合序列$\mathbf b_1,\dots,\mathbf b_n$的回报是</p>
-<script type="math/tex; mode=display">
-\prod_{t}(\mathbf b_t\cdot\mathbf x_t(1-\sum_j\frac{\gamma}{2}|\mathbf b_t(j)-\tilde{\mathbf b}_t(j)|))</script><p>其中</p>
-<p>$\tilde{\mathbf b}_t=\frac{1}{\mathbf b_t\cdot\mathbf x_t}(\mathbf b_t(1)\mathbf x_t(1),\dots,\mathbf b_t(m)\mathbf x_t(m))$</p>
-<p>这样Anticor算法在很少的比例的佣金存在时仍然可以beat the best sock。</p>
-
+          <h4 id="Anticor———论文阅读笔记"><a href="#Anticor———论文阅读笔记" class="headerlink" title="Anticor———论文阅读笔记"></a>Anticor———论文阅读笔记</h4><h4 id="Can-we-learn-to-beat-the-best-stock"><a href="#Can-we-learn-to-beat-the-best-stock" class="headerlink" title="Can we learn to beat the best stock"></a>Can we learn to beat the best stock</h4><p>我们说“beats the market”意思是某投资组合选择算法在给定的市场序列下的表现优于U-BAH；那么”best stock”是指在一个价比序列上的最优BAH策略，其实就是在一段交易期内只购买最优股票。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/12/Anticor------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
