@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="基于深度矩阵分解模型的推荐系统------论文阅读笔记 Deep Matrix Factorization Models for Recommender Systems 本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。 出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。 创新点：1. 之前的用">
+  <meta name="description" content="基于深度矩阵分解模型的推荐系统———论文阅读笔记Deep Matrix Factorization Models for Recommender Systems本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。 出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。 创新点：1. 之前的用户-物品评分矩阵要">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于深度矩阵分解模型的推荐系统------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/03/09/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="基于深度矩阵分解模型的推荐系统------论文阅读笔记 Deep Matrix Factorization Models for Recommender Systems 本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。 出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。 创新点：1. 之前的用">
+<meta property="og:description" content="基于深度矩阵分解模型的推荐系统———论文阅读笔记Deep Matrix Factorization Models for Recommender Systems本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。 出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。 创新点：1. 之前的用户-物品评分矩阵要">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200308172056767.png">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200308194530453.png">
@@ -215,7 +215,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.5k</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -234,90 +234,52 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="基于深度矩阵分解模型的推荐系统------论文阅读笔记">基于深度矩阵分解模型的推荐系统------论文阅读笔记</h4>
-<h4 id="deep-matrix-factorization-models-for-recommender-systems">Deep Matrix Factorization Models for Recommender Systems</h4>
-<p>本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。</p>
+        <h4 id="基于深度矩阵分解模型的推荐系统———论文阅读笔记"><a href="#基于深度矩阵分解模型的推荐系统———论文阅读笔记" class="headerlink" title="基于深度矩阵分解模型的推荐系统———论文阅读笔记"></a>基于深度矩阵分解模型的推荐系统———论文阅读笔记</h4><h4 id="Deep-Matrix-Factorization-Models-for-Recommender-Systems"><a href="#Deep-Matrix-Factorization-Models-for-Recommender-Systems" class="headerlink" title="Deep Matrix Factorization Models for Recommender Systems"></a>Deep Matrix Factorization Models for Recommender Systems</h4><p>本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。</p>
 <p>出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。</p>
 <p>创新点：1. 之前的用户-物品评分矩阵要么只用显式评分要么只用隐式评分，在本文中用户-物品评分矩阵既包括显式评分也包括隐式评分；2. 设计一种新的损失函数使其既考虑显式评分又考虑了隐式反馈。<a id="more"></a></p>
-<h5 id="问题陈述">问题陈述</h5>
-<p>在了解模型前先来看看我们要解决什么样的问题吧。</p>
-<p>假设有<span class="math inline">\(M\)</span>个用户<span class="math inline">\(U = \{u_1,\dots,u_M\}\)</span>，<span class="math inline">\(N\)</span>个物品<span class="math inline">\(V = \{v_1,\dots,v_N\}\)</span>。<span class="math inline">\(R\in \mathbb R^{M\times N}\)</span>代表评分矩阵，那么其中<span class="math inline">\(R_{ij}\)</span>就代表用户<span class="math inline">\(i\)</span>在物品<span class="math inline">\(j\)</span>上的评分，我们用<span class="math inline">\(unk\)</span>代表未知的评分。那么现在有两种方法利用<span class="math inline">\(R\)</span>来构建用户-物品交互矩阵<span class="math inline">\(Y\in \mathbb R^{M\times N}\)</span></p>
-<p><span class="math display">\[
-Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\1, &amp;otherwise\end{cases}
-\]</span></p>
-<p><span class="math display">\[
-Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\R_{ij}, &amp;otherwise\end{cases}
-\]</span></p>
-<p>那么大多数的推荐方案都是利用第一种方法构建的01交互矩阵，但是本篇文章用的是第二种方法，因为保留原有的评分不仅能知道用户<span class="math inline">\(i\)</span>和产品<span class="math inline">\(j\)</span>之间有交互，还能知道用户<span class="math inline">\(i\)</span>对产品<span class="math inline">\(j\)</span>的偏好程度，同时如果评分未知，就把它置为0，这就是文章中提到的"non-preference implicit feedback"（在我看来这哪利用了无偏好程度的隐式反馈，这分明就是没有利用隐式反馈，我着实不懂）。其中<span class="math inline">\(Y^+\)</span>代表已观测到的交互，<span class="math inline">\(Y^-\)</span>代表矩阵<span class="math inline">\(Y\)</span>中的0元素，<span class="math inline">\(Y^-_{sampled}\)</span>代表一组负实例，可以是<span class="math inline">\(Y^-\)</span>中所有元素组成，也可以是从<span class="math inline">\(Y^-\)</span>中抽样的一些元素组成。那么<span class="math inline">\(Y^+\cup Y^-_{sampled}\)</span>就是我们的所有训练样本。我们用<span class="math inline">\(Y_{i*}\)</span>代表矩阵<span class="math inline">\(Y\)</span>的第<span class="math inline">\(i\)</span>行，用<span class="math inline">\(Y_{*j}\)</span>代表矩阵<span class="math inline">\(Y\)</span>的第<span class="math inline">\(j\)</span>列，那么<span class="math inline">\(Y_{ij}\)</span>就代表用户<span class="math inline">\(i\)</span>对物品<span class="math inline">\(j\)</span>的交互。</p>
-<h5 id="目标">目标</h5>
-<p>那么推荐系统的目标就是估计矩阵<span class="math inline">\(Y\)</span>中的未知评分项。</p>
-<p><span class="math display">\[
-\hat Y_{ij}=F(u_i,v_j|\Theta)
-\]</span> 就是上面的式子：在输入<span class="math inline">\(u_i,v_j\)</span>且参数为<span class="math inline">\(\Theta\)</span>的情况下由模型得到预测评分。</p>
-<h5 id="dmf模型deep-matrix-factorization">DMF模型（Deep Matrix Factorization）</h5>
-<h5 id="模型">模型</h5>
-<p><img src="/images/image-20200308172056767.png" /></p>
-<p>将交互矩阵<span class="math inline">\(Y\)</span>作为输入，其中每个用户可以用一个高维向量<span class="math inline">\(Y_{i*}\)</span>来表示，这代表着该用户<span class="math inline">\(i\)</span>对所有物品的评分向量；而每个物品也可以用一个高维向量<span class="math inline">\(Y_{*j}\)</span>来表示，这代表着所有用户对物品<span class="math inline">\(j\)</span>的评分向量。那么每一层我们把这高维向量映射到一个新的空间中的一个向量。如果我们以<span class="math inline">\(x\)</span>作为输入向量，<span class="math inline">\(y\)</span>作为输出向量，<span class="math inline">\(\{l_i,i=1,\dots,N-1\}\)</span>作为隐向量，第<span class="math inline">\(i\)</span>层的权重矩阵用<span class="math inline">\(W_i\)</span>表示，第<span class="math inline">\(i\)</span>层的偏置用<span class="math inline">\(b_i\)</span>表示，那么最终的输出为<span class="math inline">\(h\)</span>。所以整个计算过程如下：</p>
-<p><span class="math display">\[
-l_1=W_1x
-\]</span></p>
-<p><span class="math display">\[
-l_i=f(W_{i-1}l_{i-1}+b_i),i=2,\dots,N-1
-\]</span></p>
-<p><span class="math display">\[
-h=f(W_Nl_{N-1}+b_N)
-\]</span></p>
-<p>其中涉及到激活函数，本篇文章使用的是<span class="math inline">\(ReLU\)</span>。</p>
-<p>我们看到网络中分别为用户<span class="math inline">\(u_i\)</span>和<span class="math inline">\(v_j\)</span>设计了两个多层网络，分别将他们的原始输入映射到隐空间中的低维向量，最后分别得到的隐语义输出如下：</p>
-<p><span class="math display">\[
-p_i=f_{\theta^U_N}(\dots f_{\theta^U_3}(W_{U2}f_{\theta^U_2}(Y_{i*}W_{U1}))\dots)
-\]</span></p>
-<p><span class="math display">\[
-q_j=f_{\theta^I_N}(\dots f_{\theta^I_3}(W_{V2}f_{\theta^I_2}(Y^T_{*j}W_{V1}))\dots)
-\]</span></p>
-<p>最后我们用余弦相似度判断用户<span class="math inline">\(u_i\)</span>和物品<span class="math inline">\(v_j\)</span>之间的相似度 <span class="math display">\[
-\hat Y_{ij}=F^{DMF}(u_i,v_j|\Theta)=cosine(p_i,q_j)=\frac{p_i^{T}q_j}{\|p_i\|\|q_j\|}
-\]</span> （不明白为什么用相似度当作评分啊，不应该是两个隐语义输出的内积：<span class="math inline">\(p_i^{T}q_j\)</span>直接作为用户<span class="math inline">\(u_i\)</span>对物品<span class="math inline">\(v_j\)</span>的预测评分吗？）</p>
-<h5 id="学习">学习</h5>
-<p>对于模型优化问题，我们需要定义一个合适的目标函数。一般的目标函数基本上是损失函数加上正则化项，如下形式：</p>
-<p><span class="math display">\[
-L=\sum_{y\in Y^+\cup Y^-}l(y,\hat y)+\lambda\Omega(\Theta)
-\]</span> 一般我们的损失函数是采用的平方误差函数，并且假设观测实例都服从高斯分布。</p>
-<p><span class="math display">\[
-L_{sqr}=\sum_{(i,j)\in Y^+\cup Y^-}w_{ij}(Y_{ij}-\hat Y_{ij})^2
-\]</span> 但是这在隐式数据上表现不好，因为隐式数据用<span class="math inline">\(Y_{ij}=0\ or\ 1\)</span>来表示用户<span class="math inline">\(i\)</span>和物品<span class="math inline">\(j\)</span>之间有没有交互（之前不是说未观测到均为0么，这前后不一致啊），对于隐式数据的这种二元属性提出了一种损失函数：</p>
-<p><span class="math display">\[
-L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij})
-\]</span> 这个损失是二元交叉熵损失（binary cross-entropy loss）能够把有隐式反馈的推荐作为一种二分类问题。</p>
-<p>总结就是平方损失用于显式评分，而交叉熵损失用于隐式评分。对于我们设计的新的损失函数，是把显式评分并入交叉熵损失函数中，那么显式数据和隐式数据信息就能在优化中都被使用到。这个新的损失函数我们称之为归一化交叉熵损失（normalized cross entropy loss ） <span class="math display">\[
-L=-\sum_{(i,j)\in Y^+\cup Y^-}\left(\frac{Y_{ij}}{max(R)}log \hat Y_{ij}+\left(1-\frac{Y_{ij}}{max(R)}\right)log(1-\hat Y_{ij})\right)
-\]</span> 用<span class="math inline">\(max(R)\)</span>代表所有评分中的最高分，用它来进行归一化。</p>
-<p>因为预测评分<span class="math inline">\(Y_{ij}\)</span>可能为负，我们在算法中把这个负值用一个很小很小的数<span class="math inline">\(\mu\)</span>代替，本实验中是用的<span class="math inline">\(1.0e^{-6}\)</span>。</p>
-<p><span class="math display">\[
-\hat{Y}^o_{ij}=max(\mu,\hat Y_{ij})
-\]</span> 得到损失函数后，参数更新学习的办法是常见的反向传播算法。</p>
+<h5 id="问题陈述"><a href="#问题陈述" class="headerlink" title="问题陈述"></a>问题陈述</h5><p>在了解模型前先来看看我们要解决什么样的问题吧。</p>
+<p>假设有$M$个用户$U = \{u_1,\dots,u_M\}$，$N$个物品$V = \{v_1,\dots,v_N\}$。$R\in \mathbb R^{M\times N}$代表评分矩阵，那么其中$R_{ij}$就代表用户$i$在物品$j$上的评分，我们用$unk$代表未知的评分。那么现在有两种方法利用$R$来构建用户-物品交互矩阵$Y\in \mathbb R^{M\times N}$</p>
+<script type="math/tex; mode=display">
+Y_{i,j}=\begin{cases}0, & if\quad R_{ij}=unk\\\\1, &otherwise\end{cases}</script><script type="math/tex; mode=display">
+Y_{i,j}=\begin{cases}0, & if\quad R_{ij}=unk\\\\R_{ij}, &otherwise\end{cases}</script><p>那么大多数的推荐方案都是利用第一种方法构建的01交互矩阵，但是本篇文章用的是第二种方法，因为保留原有的评分不仅能知道用户$i$和产品$j$之间有交互，还能知道用户$i$对产品$j$的偏好程度，同时如果评分未知，就把它置为0，这就是文章中提到的”non-preference implicit feedback”（在我看来这哪利用了无偏好程度的隐式反馈，这分明就是没有利用隐式反馈，我着实不懂）。其中$Y^+$代表已观测到的交互，$Y^-$代表矩阵$Y$中的0元素，$Y^-_{sampled}$代表一组负实例，可以是$Y^-$中所有元素组成，也可以是从$Y^-$中抽样的一些元素组成。那么$Y^+\cup Y^-_{sampled}$就是我们的所有训练样本。我们用$Y_{i<em>}$代表矩阵$Y$的第$i$行，用$Y_{</em>j}$代表矩阵$Y$的第$j$列，那么$Y_{ij}$就代表用户$i$对物品$j$的交互。</p>
+<h5 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h5><p>那么推荐系统的目标就是估计矩阵$Y$中的未知评分项。</p>
+<script type="math/tex; mode=display">
+\hat Y_{ij}=F(u_i,v_j|\Theta)</script><p>就是上面的式子：在输入$u_i,v_j$且参数为$\Theta$的情况下由模型得到预测评分。</p>
+<h5 id="DMF模型（Deep-Matrix-Factorization）"><a href="#DMF模型（Deep-Matrix-Factorization）" class="headerlink" title="DMF模型（Deep Matrix Factorization）"></a>DMF模型（Deep Matrix Factorization）</h5><h5 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h5><p><img src="/images/image-20200308172056767.png" alt=""></p>
+<p>将交互矩阵$Y$作为输入，其中每个用户可以用一个高维向量$Y_{i<em>}$来表示，这代表着该用户$i$对所有物品的评分向量；而每个物品也可以用一个高维向量$Y_{</em>j}$来表示，这代表着所有用户对物品$j$的评分向量。那么每一层我们把这高维向量映射到一个新的空间中的一个向量。如果我们以$x$作为输入向量，$y$作为输出向量，$\{l_i,i=1,\dots,N-1\}$作为隐向量，第$i$层的权重矩阵用$W_i$表示，第$i$层的偏置用$b_i$表示，那么最终的输出为$h$。所以整个计算过程如下：</p>
+<script type="math/tex; mode=display">
+l_1=W_1x</script><script type="math/tex; mode=display">
+l_i=f(W_{i-1}l_{i-1}+b_i),i=2,\dots,N-1</script><script type="math/tex; mode=display">
+h=f(W_Nl_{N-1}+b_N)</script><p>其中涉及到激活函数，本篇文章使用的是$ReLU$。</p>
+<p>我们看到网络中分别为用户$u_i$和$v_j$设计了两个多层网络，分别将他们的原始输入映射到隐空间中的低维向量，最后分别得到的隐语义输出如下：</p>
+<script type="math/tex; mode=display">
+p_i=f_{\theta^U_N}(\dots f_{\theta^U_3}(W_{U2}f_{\theta^U_2}(Y_{i*}W_{U1}))\dots)</script><script type="math/tex; mode=display">
+q_j=f_{\theta^I_N}(\dots f_{\theta^I_3}(W_{V2}f_{\theta^I_2}(Y^T_{*j}W_{V1}))\dots)</script><p>最后我们用余弦相似度判断用户$u_i$和物品$v_j$之间的相似度</p>
+<script type="math/tex; mode=display">
+\hat Y_{ij}=F^{DMF}(u_i,v_j|\Theta)=cosine(p_i,q_j)=\frac{p_i^{T}q_j}{\|p_i\|\|q_j\|}</script><p>（不明白为什么用相似度当作评分啊，不应该是两个隐语义输出的内积：$p_i^{T}q_j$直接作为用户$u_i$对物品$v_j$的预测评分吗？）</p>
+<h5 id="学习"><a href="#学习" class="headerlink" title="学习"></a>学习</h5><p>对于模型优化问题，我们需要定义一个合适的目标函数。一般的目标函数基本上是损失函数加上正则化项，如下形式：</p>
+<script type="math/tex; mode=display">
+L=\sum_{y\in Y^+\cup Y^-}l(y,\hat y)+\lambda\Omega(\Theta)</script><p>一般我们的损失函数是采用的平方误差函数，并且假设观测实例都服从高斯分布。</p>
+<script type="math/tex; mode=display">
+L_{sqr}=\sum_{(i,j)\in Y^+\cup Y^-}w_{ij}(Y_{ij}-\hat Y_{ij})^2</script><p>但是这在隐式数据上表现不好，因为隐式数据用$Y_{ij}=0\ or\ 1$来表示用户$i$和物品$j$之间有没有交互（之前不是说未观测到均为0么，这前后不一致啊），对于隐式数据的这种二元属性提出了一种损失函数：</p>
+<script type="math/tex; mode=display">
+L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij})</script><p>这个损失是二元交叉熵损失（binary cross-entropy loss）能够把有隐式反馈的推荐作为一种二分类问题。</p>
+<p>总结就是平方损失用于显式评分，而交叉熵损失用于隐式评分。对于我们设计的新的损失函数，是把显式评分并入交叉熵损失函数中，那么显式数据和隐式数据信息就能在优化中都被使用到。这个新的损失函数我们称之为归一化交叉熵损失（normalized cross entropy loss ）</p>
+<script type="math/tex; mode=display">
+L=-\sum_{(i,j)\in Y^+\cup Y^-}\left(\frac{Y_{ij}}{max(R)}log \hat Y_{ij}+\left(1-\frac{Y_{ij}}{max(R)}\right)log(1-\hat Y_{ij})\right)</script><p>用$max(R)$代表所有评分中的最高分，用它来进行归一化。</p>
+<p>因为预测评分$Y_{ij}$可能为负，我们在算法中把这个负值用一个很小很小的数$\mu$代替，本实验中是用的$1.0e^{-6}$。</p>
+<script type="math/tex; mode=display">
+\hat{Y}^o_{ij}=max(\mu,\hat Y_{ij})</script><p>得到损失函数后，参数更新学习的办法是常见的反向传播算法。</p>
 <p>下面是整个DMF模型的算法：</p>
-<p><img src="/images/image-20200308194530453.png" /></p>
+<p><img src="/images/image-20200308194530453.png" alt=""></p>
 <p>算法中涉及到几个式子，总结罗列如下：</p>
-<p><span class="math display">\[
-Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\R_{ij}, &amp;otherwise\end{cases}\tag{2}
-\]</span></p>
-<p><span class="math display">\[
-p_i=f_{\theta^U_N}(\dots f_{\theta^U_3}(W_{U2}f_{\theta^U_2}(Y_{i*}W_{U1}))\dots)\tag{7}
-\]</span></p>
-<p><span class="math display">\[
-q_j=f_{\theta^I_N}(\dots f_{\theta^I_3}(W_{V2}f_{\theta^I_2}(Y^T_{*j}W_{V1}))\dots)\tag{7}
-\]</span></p>
-<p><span class="math display">\[
-\hat Y_{ij}=F^{DMF}(u_i,v_j|\Theta)=cosine(p_i,q_j)=\frac{p_i^{T}q_j}{\|p_i\|\|q_j\|}\tag{8}
-\]</span></p>
-<p><span class="math display">\[
-\hat{Y}^o_{ij}=max(\mu,\hat Y_{ij})\tag{13}
-\]</span></p>
-<p><span class="math display">\[
-L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij})\tag{11}
-\]</span></p>
-
+<script type="math/tex; mode=display">
+Y_{i,j}=\begin{cases}0, & if\quad R_{ij}=unk\\\\R_{ij}, &otherwise\end{cases}\tag{2}</script><script type="math/tex; mode=display">
+p_i=f_{\theta^U_N}(\dots f_{\theta^U_3}(W_{U2}f_{\theta^U_2}(Y_{i*}W_{U1}))\dots)\tag{7}</script><script type="math/tex; mode=display">
+q_j=f_{\theta^I_N}(\dots f_{\theta^I_3}(W_{V2}f_{\theta^I_2}(Y^T_{*j}W_{V1}))\dots)\tag{7}</script><script type="math/tex; mode=display">
+\hat Y_{ij}=F^{DMF}(u_i,v_j|\Theta)=cosine(p_i,q_j)=\frac{p_i^{T}q_j}{\|p_i\|\|q_j\|}\tag{8}</script><script type="math/tex; mode=display">
+\hat{Y}^o_{ij}=max(\mu,\hat Y_{ij})\tag{13}</script><script type="math/tex; mode=display">
+L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij})\tag{11}</script>
     </div>
 
     
@@ -402,7 +364,7 @@ L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于深度矩阵分解模型的推荐系统------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于深度矩阵分解模型的推荐系统------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#deep-matrix-factorization-models-for-recommender-systems"><span class="nav-number">2.</span> <span class="nav-text">Deep Matrix Factorization Models for Recommender Systems</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#问题陈述"><span class="nav-number">2.1.</span> <span class="nav-text">问题陈述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#目标"><span class="nav-number">2.2.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dmf模型deep-matrix-factorization"><span class="nav-number">2.3.</span> <span class="nav-text">DMF模型（Deep Matrix Factorization）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型"><span class="nav-number">2.4.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#学习"><span class="nav-number">2.5.</span> <span class="nav-text">学习</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于深度矩阵分解模型的推荐系统———论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于深度矩阵分解模型的推荐系统———论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Deep-Matrix-Factorization-Models-for-Recommender-Systems"><span class="nav-number">2.</span> <span class="nav-text">Deep Matrix Factorization Models for Recommender Systems</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#问题陈述"><span class="nav-number">2.1.</span> <span class="nav-text">问题陈述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#目标"><span class="nav-number">2.2.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DMF模型（Deep-Matrix-Factorization）"><span class="nav-number">2.3.</span> <span class="nav-text">DMF模型（Deep Matrix Factorization）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型"><span class="nav-number">2.4.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#学习"><span class="nav-number">2.5.</span> <span class="nav-text">学习</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

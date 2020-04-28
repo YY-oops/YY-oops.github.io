@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="基于受限玻尔兹曼机（RBM）的协同过滤------论文阅读笔记 Restricted Boltzmann Machines for Collaborative Filtering 现在现存的协同过滤方法不能处理大型数据集">
+  <meta name="description" content="基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记Restricted Boltzmann Machines for Collaborative Filtering现在现存的协同过滤方法不能处理大型数据集">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于受限玻尔兹曼机（RBM）的协同过滤------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/02/25/%E5%9F%BA%E4%BA%8E%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA%EF%BC%88RBM%EF%BC%89%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="基于受限玻尔兹曼机（RBM）的协同过滤------论文阅读笔记 Restricted Boltzmann Machines for Collaborative Filtering 现在现存的协同过滤方法不能处理大型数据集">
+<meta property="og:description" content="基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记Restricted Boltzmann Machines for Collaborative Filtering现在现存的协同过滤方法不能处理大型数据集">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200224132626671.png">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200225131644851.png">
@@ -215,14 +215,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.2k</span>
+              <span>5.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -234,118 +234,82 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="基于受限玻尔兹曼机rbm的协同过滤------论文阅读笔记">基于受限玻尔兹曼机（RBM）的协同过滤------论文阅读笔记</h4>
-<h4 id="restricted-boltzmann-machines-for-collaborative-filtering">Restricted Boltzmann Machines for Collaborative Filtering</h4>
-<p>现在现存的协同过滤方法不能处理大型数据集<a id="more"></a></p>
-<h5 id="rbm">RBM</h5>
-<p>假设有M个电影，N个用户，评分值范围是从1到K。注意该文RBM是以每一个用户作为一个训练案例进行建模的，就是说一个用户对应一个模型。</p>
-<p><img src="/images/image-20200224132626671.png" /></p>
+        <h4 id="基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记"><a href="#基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记" class="headerlink" title="基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记"></a>基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记</h4><h4 id="Restricted-Boltzmann-Machines-for-Collaborative-Filtering"><a href="#Restricted-Boltzmann-Machines-for-Collaborative-Filtering" class="headerlink" title="Restricted Boltzmann Machines for Collaborative Filtering"></a>Restricted Boltzmann Machines for Collaborative Filtering</h4><p>现在现存的协同过滤方法不能处理大型数据集<a id="more"></a></p>
+<h5 id="RBM"><a href="#RBM" class="headerlink" title="RBM"></a>RBM</h5><p>假设有M个电影，N个用户，评分值范围是从1到K。注意该文RBM是以每一个用户作为一个训练案例进行建模的，就是说一个用户对应一个模型。</p>
+<p><img src="/images/image-20200224132626671.png" alt=""></p>
 <p>上面这幅图其实就是一个简单的玻尔兹曼机模型，只有两层：一层是可见层，一层是隐藏层。</p>
-<p>其中圆圈代表的是二元隐藏层（隐藏层的值是二元的，就是说只能是0或者1）隐藏层的值用向量<span class="math inline">\(\mathbf h\)</span>表示，其实这个向量可以看作是一个01编码向量。</p>
-<p>而最下面的是softmax（各项取值在（0，1）之间，且和为1）可见单元，这里是用一个矩阵V来表示的，每一列就代表一个可见层输入单元。这个矩阵其实是一个<span class="math inline">\(K\times M\)</span>的用户（一个用户对M个电影的）评分矩阵，K就是上面说的评分值范围，显然我们看到图中<span class="math inline">\(K=5\)</span>，M就是上面说的电影的个数。可以看到图中的某些信息：1.从这个矩阵来看具体不知道M是多少；2.可以看出评分最大值是5；3.可以看到该用户对某些电影没有评分（Missing状态）；4.可以看到图中对有评分的三部电影的评分值分别是3，5，1。</p>
-<p>隐藏层和可见层是以全连接方式连接的，而对缺失值的单元不连接，对有值的单元全连接。中间的这些线或者说边就是全连接产生的边，而每条边上实际上都有一个权重，所有的边的权重我们用一个矩阵W来表示,该矩阵的维度显然是：有评分的电影个数（我们假设是m）<span class="math inline">\(\times\)</span>隐藏层单元数(我们假设是F)。</p>
-<h5 id="模型">模型</h5>
-<p>用条件多项式分布（conditional multinomial distribution）对观测到的可见二元评分矩阵V的每一列建模，用伯努利分布（Bernoulli distribution）对隐藏用户特征h建模：</p>
-<p><span class="math display">\[
-p(v^k_i=1|\mathbf h)=\frac{\text{exp}(b^k_i+\sum^F_{j=1}h_jW^k_{ij})}{\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1}h_jW^l_{ij})}
-\]</span> 上面的分母<span class="math inline">\(Z=\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1})h_jW^l_{ij}\)</span>，其实是归一化因子用符号<span class="math inline">\(Z\)</span>表示，<span class="math inline">\(b^k_i\)</span>是电影i上的评分k的偏置</p>
-<p><span class="math display">\[
-p(h_j=1|\mathbf V)=\sigma(b_j+\sum^m_{i=1}\sum^K_{k=1}v^k_iW^k_{ij})
-\]</span> 其中<span class="math inline">\(\sigma(x)=1/(1+e^{-x})\)</span>是逻辑函数其实就是sigmod函数，<span class="math inline">\(W_{ij}^k\)</span>是特征j和电影i上的评分k之间的对称交互参数（这里不是太懂），<span class="math inline">\(b_j\)</span>是特征j的偏置。</p>
+<p>其中圆圈代表的是二元隐藏层（隐藏层的值是二元的，就是说只能是0或者1）隐藏层的值用向量$\mathbf h$表示，其实这个向量可以看作是一个01编码向量。</p>
+<p>而最下面的是softmax（各项取值在（0，1）之间，且和为1）可见单元，这里是用一个矩阵V来表示的，每一列就代表一个可见层输入单元。这个矩阵其实是一个$K\times M$的用户（一个用户对M个电影的）评分矩阵，K就是上面说的评分值范围，显然我们看到图中$K=5$，M就是上面说的电影的个数。可以看到图中的某些信息：1.从这个矩阵来看具体不知道M是多少；2.可以看出评分最大值是5；3.可以看到该用户对某些电影没有评分（Missing状态）；4.可以看到图中对有评分的三部电影的评分值分别是3，5，1。</p>
+<p>隐藏层和可见层是以全连接方式连接的，而对缺失值的单元不连接，对有值的单元全连接。中间的这些线或者说边就是全连接产生的边，而每条边上实际上都有一个权重，所有的边的权重我们用一个矩阵W来表示,该矩阵的维度显然是：有评分的电影个数（我们假设是m）$\times$隐藏层单元数(我们假设是F)。</p>
+<h5 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h5><p>用条件多项式分布（conditional multinomial distribution）对观测到的可见二元评分矩阵V的每一列建模，用伯努利分布（Bernoulli distribution）对隐藏用户特征h建模：</p>
+<script type="math/tex; mode=display">
+p(v^k_i=1|\mathbf h)=\frac{\text{exp}(b^k_i+\sum^F_{j=1}h_jW^k_{ij})}{\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1}h_jW^l_{ij})}</script><p>上面的分母$Z=\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1})h_jW^l_{ij}$，其实是归一化因子用符号$Z$表示，$b^k_i$是电影i上的评分k的偏置</p>
+<script type="math/tex; mode=display">
+p(h_j=1|\mathbf V)=\sigma(b_j+\sum^m_{i=1}\sum^K_{k=1}v^k_iW^k_{ij})</script><p>其中$\sigma(x)=1/(1+e^{-x})$是逻辑函数其实就是sigmod函数，$W_{ij}^k$是特征j和电影i上的评分k之间的对称交互参数（这里不是太懂），$b_j$是特征j的偏置。</p>
 <p>可见评分矩阵V的边缘分布：</p>
-<p><span class="math display">\[
-p(\mathbf V)=\sum_{\mathbf h}\frac{\text{exp}(-E(\mathbf V,\mathbf h))}{\sum_{\mathbf V&#39;,\mathbf h&#39;}\text{exp}(-E(\mathbf V&#39;,\mathbf h&#39;))}
-\]</span> 其中势函数的定义如下： <span class="math display">\[
-E(\mathbf V,\mathbf h)=-\sum^m_{i=1}\sum^F_{j=1}\sum^K_{k=1}W^k_{ij}h_jv_i^k-\sum^m_{i=1}\sum^K_{k=1}v_i^kb_i^k-\sum^F_{j=1}h_jb_j+\sum^m_{i=1}logZ_i
-\]</span> 其中的<span class="math inline">\(Z_i=\sum^K_{l=1}\text{exp}(b^l_i+\sum_jh_jW^l_{ij})\)</span>是normalization term，用来保证<span class="math inline">\(\sum^K_{l=1}p(v^l_i=1|h)=1\)</span>。</p>
-<h5 id="学习">学习</h5>
-<p>在对数似然中执行梯度上升来更新参数： <span class="math display">\[
-\bigtriangleup W^k_{ij}=\epsilon\frac{\partial\log p(\mathbf V)}{\partial W^k_{ij}}=\epsilon \left(&lt;v_i^kh_j&gt;_{data}-&lt;v_i^kh_j&gt;_{model}\right)
-\]</span> 其中<span class="math inline">\(\epsilon\)</span>是学习率。</p>
+<script type="math/tex; mode=display">
+p(\mathbf V)=\sum_{\mathbf h}\frac{\text{exp}(-E(\mathbf V,\mathbf h))}{\sum_{\mathbf V',\mathbf h'}\text{exp}(-E(\mathbf V',\mathbf h'))}</script><p>其中势函数的定义如下：</p>
+<script type="math/tex; mode=display">
+E(\mathbf V,\mathbf h)=-\sum^m_{i=1}\sum^F_{j=1}\sum^K_{k=1}W^k_{ij}h_jv_i^k-\sum^m_{i=1}\sum^K_{k=1}v_i^kb_i^k-\sum^F_{j=1}h_jb_j+\sum^m_{i=1}logZ_i</script><p>其中的$Z_i=\sum^K_{l=1}\text{exp}(b^l_i+\sum_jh_jW^l_{ij})$是normalization term，用来保证$\sum^K_{l=1}p(v^l_i=1|h)=1$。</p>
+<h5 id="学习"><a href="#学习" class="headerlink" title="学习"></a>学习</h5><p>在对数似然中执行梯度上升来更新参数：</p>
+<script type="math/tex; mode=display">
+\bigtriangleup W^k_{ij}=\epsilon\frac{\partial\log p(\mathbf V)}{\partial W^k_{ij}}=\epsilon \left(<v_i^kh_j>_{data}-<v_i^kh_j>_{model}\right)</script><p>其中$\epsilon$是学习率。</p>
 <p>上面这个式子其实有一点不好理解，看了腾讯的一篇文章总算搞清楚了。</p>
-<hr />
-<p><strong>引用：</strong>首先我们看一下我们的目标函数，我们的目标就是：期望经过RBM编码和解码后的数据和原始的输入数据尽量接近，这也是最大似然参数估计的思想，那么我们的最优化目标函数就是： <span class="math display">\[
-\mathop{\text{min}}\limits_\theta L(\theta)=\left(-\sum^m_{i=1}log(p(v_i))\right)
-\]</span> 然后我们要对矩阵W求偏导，把边缘分布<span class="math inline">\(p(v)\)</span>带入那么我们求得： <span class="math display">\[
-\frac{\partial L}{\partial W_{ij}}=\sum^m_{k=1}\Bigg\lgroup p(h_j=1|v^k)v^k_i-\sum_vp(v)p(h_j=1|v)v_i\Bigg \rgroup
-\]</span></p>
-<hr />
+<hr>
+<p><strong>引用：</strong>首先我们看一下我们的目标函数，我们的目标就是：期望经过RBM编码和解码后的数据和原始的输入数据尽量接近，这也是最大似然参数估计的思想，那么我们的最优化目标函数就是：</p>
+<script type="math/tex; mode=display">
+\mathop{\text{min}}\limits_\theta L(\theta)=\left(-\sum^m_{i=1}log(p(v_i))\right)</script><p>然后我们要对矩阵W求偏导，把边缘分布$p(v)$带入那么我们求得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial W_{ij}}=\sum^m_{k=1}\Bigg\lgroup p(h_j=1|v^k)v^k_i-\sum_vp(v)p(h_j=1|v)v_i\Bigg \rgroup</script><hr>
 <p>上面这个式子和文章中那个更新参数的式子是一样的道理，用损失函数对参数W求偏导。</p>
-<p>减号的前一项称作是正梯度，后一项称作负梯度，其实后面这一项<span class="math inline">\(&lt;\cdot&gt;_{model}\)</span>不能在指数时间内计算出来，MCMC方法于是被提出来，它可以用来近似这个期望，但是这些方法也有缺点，就是非常慢而且估计的方差太大。</p>
-<p>为了避免计算<span class="math inline">\(&lt;\cdot&gt;_{model}\)</span>，我们采用一个叫做对比散度（Contrastive Divergence CD）的方法：</p>
-<p><span class="math display">\[
-\bigtriangleup W^k_{ij}=\epsilon(&lt;v^k_ih_j&gt;_{data}-&lt;v^k_ih_j&gt;_{T})
-\]</span></p>
-<hr />
+<p>减号的前一项称作是正梯度，后一项称作负梯度，其实后面这一项$&lt;\cdot&gt;_{model}$不能在指数时间内计算出来，MCMC方法于是被提出来，它可以用来近似这个期望，但是这些方法也有缺点，就是非常慢而且估计的方差太大。</p>
+<p>为了避免计算$&lt;\cdot&gt;_{model}$，我们采用一个叫做对比散度（Contrastive Divergence CD）的方法：</p>
+<script type="math/tex; mode=display">
+\bigtriangleup W^k_{ij}=\epsilon(<v^k_ih_j>_{data}-<v^k_ih_j>_{T})</script><hr>
 <p><strong>引用：</strong>对比散度的思想是通过一种合理的采样方法，以较少的采样样本来近似负梯度的所有组合空间，具体实现过程就是：我们从原始的输入数据出发，经过编码解码后得到新的可视层输入，这个过程称为1步Gibbs采样，然后再编码解码，重复这个过程k次，最后得到的值就是负梯度的近似，这整个过程被称作Gibbs采样过程。实际上，k的取值不是越大越好，一般取1-10就可以了，避免进行多余的操作。</p>
-<hr />
+<hr>
 <p>其实上面的式子也是一样的道理，只不过这里是进行T步Gibbs采样。CD方法非常高效，并且能够减小估计的方差。那么其实对可视层和隐藏层偏置的求法也和上面的矩阵求法是一致的。</p>
-<h5 id="预测">预测</h5>
-<p>给定一个观测评分矩阵V后，我们可以在与隐藏层单元数量成线性关系的时间内预测出一个新的电影评分。 <span class="math display">\[
-p(v^k_q=1|\mathbf V)\propto \sum_{h_1,\dots,h_p}\text{exp}(-E(v^k_q,\mathbf V,\mathbf h))
-\]</span> <span class="math display">\[
-\propto \text{exp}(v^k_qb^k_q)\prod^F_{j=1}\sum_{h_j\in \{0,1\}}exp(\sum_{il}v_i^lh_jW^l_{ij}+v^k_qh_jW^k_{qj}+h_jb_j)
-\]</span></p>
-<p><span class="math display">\[
-=\text{exp}(v^k_qb^k_q)\prod^F_{j=1}\left(1+\text{exp}(\sum_{il}v^l_iW^l_{ij}+v^k_qW^k_{qj}+b_j)\right)
-\]</span></p>
-<p>这里有必要解释一下各个符号是什么意思：<span class="math inline">\(p(v^k_q=1|\mathbf V)\)</span>代表的是已知评分矩阵<span class="math inline">\(\mathbf V\)</span>的情况下未知评分的电影q的第k个值为1的概率，<span class="math inline">\(\propto\)</span>是正比于的意思，<span class="math inline">\(\mathbf h\)</span>是隐藏层状态向量，<span class="math inline">\(h_1,\dots,h_p\)</span>（这个东西目前还不太了解，好像是隐藏层的结点单元），<span class="math inline">\(b^k_q\)</span>是未知评分的电影q的评分k的偏置，<span class="math inline">\(b_j\)</span>是第j个隐藏层单元的偏置。注意三个符号：隐藏层<span class="math inline">\(1,\dots,j,\dots,F\)</span>，评分<span class="math inline">\(1,\dots,l,\dots k\)</span>，可视层<span class="math inline">\(1,\dots,i,\dots m\)</span>。</p>
-<p>一旦我们获得了非标准化的评分，我们可以选择最大的那个分数作为我们的预测，还有一种更好的方法就是将K个值进行标准化，获得概率<span class="math inline">\(p(v_q=k|\mathbf V)\)</span>，然后把期望<span class="math inline">\(E[v_q]\)</span>作为我们的预测。</p>
-<p>当然上面我们只讨论了一个未知评分的电影，如果我们要知道n个电影的分数<span class="math inline">\(q_1,q_2,\dots,q_n\)</span>，那么我们可以计算：</p>
-<p><span class="math display">\[
-p(v^{k_1}_{q_1}=1,v^{k_2}_{q_2}=1,\dots,v^{k_n}_{q_n}=1|\mathbf V)
-\]</span> 然而，这就要求我们对每个用户进行<span class="math inline">\(K^n\)</span>次估计。例如一个用户有n个未评分的电影，我们知道对一个未知的电影的评分有K种情况，那么就相当于有n个空，每个空可以填K种值，那么总的情况就是<span class="math inline">\(K^n\)</span>种状态。</p>
+<h5 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h5><p>给定一个观测评分矩阵V后，我们可以在与隐藏层单元数量成线性关系的时间内预测出一个新的电影评分。</p>
+<script type="math/tex; mode=display">
+p(v^k_q=1|\mathbf V)\propto \sum_{h_1,\dots,h_p}\text{exp}(-E(v^k_q,\mathbf V,\mathbf h))</script><script type="math/tex; mode=display">
+\propto \text{exp}(v^k_qb^k_q)\prod^F_{j=1}\sum_{h_j\in \{0,1\}}exp(\sum_{il}v_i^lh_jW^l_{ij}+v^k_qh_jW^k_{qj}+h_jb_j)</script><script type="math/tex; mode=display">
+=\text{exp}(v^k_qb^k_q)\prod^F_{j=1}\left(1+\text{exp}(\sum_{il}v^l_iW^l_{ij}+v^k_qW^k_{qj}+b_j)\right)</script><p>这里有必要解释一下各个符号是什么意思：$p(v^k_q=1|\mathbf V)$代表的是已知评分矩阵$\mathbf V$的情况下未知评分的电影q的第k个值为1的概率，$\propto$是正比于的意思，$\mathbf h$是隐藏层状态向量，$h_1,\dots,h_p$（这个东西目前还不太了解，好像是隐藏层的结点单元），$b^k_q$是未知评分的电影q的评分k的偏置，$b_j$是第j个隐藏层单元的偏置。注意三个符号：隐藏层$1,\dots,j,\dots,F$，评分$1,\dots,l,\dots k$，可视层$1,\dots,i,\dots m$。</p>
+<p>一旦我们获得了非标准化的评分，我们可以选择最大的那个分数作为我们的预测，还有一种更好的方法就是将K个值进行标准化，获得概率$p(v_q=k|\mathbf V)$，然后把期望$E[v_q]$作为我们的预测。</p>
+<p>当然上面我们只讨论了一个未知评分的电影，如果我们要知道n个电影的分数$q_1,q_2,\dots,q_n$，那么我们可以计算：</p>
+<script type="math/tex; mode=display">
+p(v^{k_1}_{q_1}=1,v^{k_2}_{q_2}=1,\dots,v^{k_n}_{q_n}=1|\mathbf V)</script><p>然而，这就要求我们对每个用户进行$K^n$次估计。例如一个用户有n个未评分的电影，我们知道对一个未知的电影的评分有K种情况，那么就相当于有n个空，每个空可以填K种值，那么总的情况就是$K^n$种状态。</p>
 <p>或者我们可以通过迭代更新来获得电影q的评分K的概率分布，</p>
-<p><span class="math display">\[
-\hat p_j=p(h_j=1|\mathbf V)=\sigma(b_j+\sum^m_{i=1}\sum^K_{k=1}v^k_iW^k_{ij})
-\]</span> <span class="math display">\[
-p(v^k_q=1|\hat{\mathbf p})=\frac{\text{exp}(b^k_q+\sum^F_{j=1}\hat p_jW^k_{qj})}{\sum^K_{l=1}\text{exp}(b^l_q+\sum^F_{j=1}\hat p_jW^l_{qj})}
-\]</span></p>
-<p>然后把期望作为我们的预测。当然这个方法的准确度没有上面的高，但是计算要快很多。</p>
-<h5 id="高斯隐藏单元的rbm">高斯隐藏单元的RBM</h5>
-<p>把隐藏的用户特征建模为高斯隐变量。</p>
-<p><span class="math display">\[
-p(v^k_{i}=1|\mathbf h)=\frac{\text{exp}(b^k_i+\sum^F_{j=1}h_jW^k_{ij})}{\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1}h_jW^l_{ij})}
-\]</span> <span class="math display">\[
-p(h_j=h|\mathbf V)=\frac{1}{\sqrt{2\pi}\sigma_j}\text{exp}\left(-\frac{(h-b_j-\sigma_j\sum_{ik}v^k_iW^k_{ij})^2}{2\sigma^2_j}\right)
-\]</span></p>
-<p>其中<span class="math inline">\(\sigma^2_j\)</span>是隐藏单元j的方差。</p>
-<p>那么可视单元<span class="math inline">\(\mathbf V\)</span>的边缘分布（加上势函数）为： <span class="math display">\[
-E(\mathbf V,\mathbf h)=-\sum_{ijk}W^k_{ij}h_jv_i^k+\sum_i\text{log}Z_i-\sum_{ik}v^k_ib^k_i+\sum_j\frac{(h_j-b_j)^2}{2\sigma _j^2}
-\]</span> 对于所有的隐藏单元j我们固定方差为<span class="math inline">\(\sigma^2_j=1\)</span>，在这种情况下，参数更新方式也是损失函数分别对参数求偏导。</p>
-<h5 id="conditional-rbm">Conditional RBM</h5>
-<p>当我们的用户观看了电影但是并未做出评分时，这也是一种宝贵的信息，尤其是在训练集中只有少量评分的情况下。条件RBM模型把这种额外的信息考虑在内，让<span class="math inline">\(\mathbf r\in\{0,1\}^M\)</span>是长度为M的二元向量，这里的M是指电影总数，那么如果用户浏览过电影但是没有打分或者打分未知，对应的位置就为1。</p>
-<p><img src="/images/image-20200225131644851.png" /></p>
-<p>思想就是在条件<span class="math inline">\(\mathbf r\)</span>上定义联合概率分布<span class="math inline">\((\mathbf V,\mathbf h)\)</span></p>
-<p><span class="math display">\[
-p(v^k_{i}=1|\mathbf h)=\frac{\text{exp}(b^k_i+\sum^F_{j=1}h_jW^k_{ij})}{\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1}h_jW^l_{ij})}
-\]</span> <span class="math display">\[
-p(h_j=1|\mathbf V,\mathbf r)=\sigma\left(b_j+\sum^m_{i=1}\sum^K_{k=1}v^k_iW^k_{ij}+\sum^M_{i=1}r_iD_{ij}\right)
-\]</span></p>
-<p>其中<span class="math inline">\(D_ij\)</span>代表以学习矩阵<span class="math inline">\(\mathbf D\)</span>的一个元素，这个矩阵<span class="math inline">\(\mathbf D\)</span>代表的是<span class="math inline">\(\mathbf r\)</span>对<span class="math inline">\(\mathbf h\)</span>的影响。</p>
-<p>用对比散度（CD）方法学习矩阵<span class="math inline">\(\mathbf D\)</span>和学习偏置是相似的：</p>
-<p><span class="math display">\[
-\bigtriangleup D_{ij}=\epsilon\left(&lt;h_j&gt;_{data}-&lt;h_j&gt;_T\right)r_i
-\]</span> 我们定义一个任意非线性函数<span class="math inline">\(f(\mathbf r|\theta)\)</span>，<span class="math inline">\(f\)</span>关于<span class="math inline">\(\theta\)</span>是可微的，我们用反向传播来学习<span class="math inline">\(\theta\)</span>（不太懂这样搞干啥）：</p>
-<p><span class="math display">\[
-\bigtriangleup\theta=\epsilon\left(&lt;h_j&gt;_{data}-&lt;h_j&gt;_T\right)\frac{\partial f(\mathbf r|\theta)}{\partial\theta}
-\]</span> 假设一个用户对电影t进行了评分，但是他的评分丢失了，我们可以初始化<span class="math inline">\(\mathbf v_t\)</span>为电影t的基本分数，并且计算相对于该输入的数据的对数概率的梯度，对比散度（CD）的学习形式为:</p>
-<p><span class="math display">\[
-\bigtriangleup v^k_t=\epsilon\left(&lt;\sum_jW^k_th_j&gt;_{data}-&lt;\sum_jW^k_th_j&gt;_T\right)
-\]</span></p>
-<h5 id="conditional-factored-rbm">Conditional Factored RBM</h5>
-<p>然而RBM模型是有缺陷的，那就是<span class="math inline">\(W\in R^{M\times K \times F}\)</span>当前参数化结果中存在大量的自由参数。如果<span class="math inline">\(F=100, M=17770,K=5\)</span>那么我们的结果里面就包含九百万个自由参数。</p>
+<script type="math/tex; mode=display">
+\hat p_j=p(h_j=1|\mathbf V)=\sigma(b_j+\sum^m_{i=1}\sum^K_{k=1}v^k_iW^k_{ij})</script><script type="math/tex; mode=display">
+p(v^k_q=1|\hat{\mathbf p})=\frac{\text{exp}(b^k_q+\sum^F_{j=1}\hat p_jW^k_{qj})}{\sum^K_{l=1}\text{exp}(b^l_q+\sum^F_{j=1}\hat p_jW^l_{qj})}</script><p>然后把期望作为我们的预测。当然这个方法的准确度没有上面的高，但是计算要快很多。</p>
+<h5 id="高斯隐藏单元的RBM"><a href="#高斯隐藏单元的RBM" class="headerlink" title="高斯隐藏单元的RBM"></a>高斯隐藏单元的RBM</h5><p>把隐藏的用户特征建模为高斯隐变量。</p>
+<script type="math/tex; mode=display">
+p(v^k_{i}=1|\mathbf h)=\frac{\text{exp}(b^k_i+\sum^F_{j=1}h_jW^k_{ij})}{\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1}h_jW^l_{ij})}</script><script type="math/tex; mode=display">
+p(h_j=h|\mathbf V)=\frac{1}{\sqrt{2\pi}\sigma_j}\text{exp}\left(-\frac{(h-b_j-\sigma_j\sum_{ik}v^k_iW^k_{ij})^2}{2\sigma^2_j}\right)</script><p>其中$\sigma^2_j$是隐藏单元j的方差。</p>
+<p>那么可视单元$\mathbf V$的边缘分布（加上势函数）为：</p>
+<script type="math/tex; mode=display">
+E(\mathbf V,\mathbf h)=-\sum_{ijk}W^k_{ij}h_jv_i^k+\sum_i\text{log}Z_i-\sum_{ik}v^k_ib^k_i+\sum_j\frac{(h_j-b_j)^2}{2\sigma _j^2}</script><p>对于所有的隐藏单元j我们固定方差为$\sigma^2_j=1$，在这种情况下，参数更新方式也是损失函数分别对参数求偏导。</p>
+<h5 id="Conditional-RBM"><a href="#Conditional-RBM" class="headerlink" title="Conditional RBM"></a>Conditional RBM</h5><p>当我们的用户观看了电影但是并未做出评分时，这也是一种宝贵的信息，尤其是在训练集中只有少量评分的情况下。条件RBM模型把这种额外的信息考虑在内，让$\mathbf r\in\{0,1\}^M$是长度为M的二元向量，这里的M是指电影总数，那么如果用户浏览过电影但是没有打分或者打分未知，对应的位置就为1。</p>
+<p><img src="/images/image-20200225131644851.png" alt=""></p>
+<p>思想就是在条件$\mathbf r$上定义联合概率分布$(\mathbf V,\mathbf h)$</p>
+<script type="math/tex; mode=display">
+p(v^k_{i}=1|\mathbf h)=\frac{\text{exp}(b^k_i+\sum^F_{j=1}h_jW^k_{ij})}{\sum^K_{l=1}\text{exp}(b^l_i+\sum^F_{j=1}h_jW^l_{ij})}</script><script type="math/tex; mode=display">
+p(h_j=1|\mathbf V,\mathbf r)=\sigma\left(b_j+\sum^m_{i=1}\sum^K_{k=1}v^k_iW^k_{ij}+\sum^M_{i=1}r_iD_{ij}\right)</script><p>其中$D_ij$代表以学习矩阵$\mathbf D$的一个元素，这个矩阵$\mathbf D$代表的是$\mathbf r$对$\mathbf h$的影响。</p>
+<p>用对比散度（CD）方法学习矩阵$\mathbf D$和学习偏置是相似的：</p>
+<script type="math/tex; mode=display">
+\bigtriangleup D_{ij}=\epsilon\left(<h_j>_{data}-<h_j>_T\right)r_i</script><p>我们定义一个任意非线性函数$f(\mathbf r|\theta)$，$f$关于$\theta$是可微的，我们用反向传播来学习$\theta$（不太懂这样搞干啥）：</p>
+<script type="math/tex; mode=display">
+\bigtriangleup\theta=\epsilon\left(<h_j>_{data}-<h_j>_T\right)\frac{\partial f(\mathbf r|\theta)}{\partial\theta}</script><p>假设一个用户对电影t进行了评分，但是他的评分丢失了，我们可以初始化$\mathbf v_t$为电影t的基本分数，并且计算相对于该输入的数据的对数概率的梯度，对比散度（CD）的学习形式为:</p>
+<script type="math/tex; mode=display">
+\bigtriangleup v^k_t=\epsilon\left(<\sum_jW^k_th_j>_{data}-<\sum_jW^k_th_j>_T\right)</script><h5 id="Conditional-Factored-RBM"><a href="#Conditional-Factored-RBM" class="headerlink" title="Conditional Factored RBM"></a>Conditional Factored RBM</h5><p>然而RBM模型是有缺陷的，那就是$W\in R^{M\times K \times F}$当前参数化结果中存在大量的自由参数。如果$F=100, M=17770,K=5$那么我们的结果里面就包含九百万个自由参数。</p>
 <p>其实白话说就是参数矩阵W过大，如果简单的减少隐藏单元的数量，那么就不能得到一个好的结果。</p>
 <p>我们采用的方法是将矩阵W分解为两个低维矩阵A和B的积:</p>
-<p><span class="math display">\[
-W^k_{ij}=\sum^C_{c=1}A^k_{ic}B_{cj}
-\]</span> 中间那维C远小于M和F。</p>
-<p>学习矩阵A和B其实和学习W也是相似的： <span class="math display">\[
-\bigtriangleup A^k_{ic}=\epsilon\left(&lt;[\sum_jB_{cj}h_j]v^k_j&gt;_{data}-&lt;[\sum_jB_{cj}v^k_i]&gt;_T\right)
-\]</span> <span class="math display">\[
-\bigtriangleup B_cj=\epsilon\left(&lt;[\sum_{ik}A^k_{ic}v^k_i]h_j&gt;_{data}-&lt;[\sum_{ik}A^k_{ic}v^k_i]h_j&gt;_T\right)
-\]</span></p>
-<p>显然这个方法比原来的Conditional unfactored RBM要快。</p>
+<script type="math/tex; mode=display">
+W^k_{ij}=\sum^C_{c=1}A^k_{ic}B_{cj}</script><p>中间那维C远小于M和F。</p>
+<p>学习矩阵A和B其实和学习W也是相似的：</p>
+<script type="math/tex; mode=display">
+\bigtriangleup A^k_{ic}=\epsilon\left(<[\sum_jB_{cj}h_j]v^k_j>_{data}-<[\sum_jB_{cj}v^k_i]>_T\right)</script><script type="math/tex; mode=display">
+\bigtriangleup B_cj=\epsilon\left(<[\sum_{ik}A^k_{ic}v^k_i]h_j>_{data}-<[\sum_{ik}A^k_{ic}v^k_i]h_j>_T\right)</script><p>显然这个方法比原来的Conditional unfactored RBM要快。</p>
 
     </div>
 
@@ -431,7 +395,7 @@ W^k_{ij}=\sum^C_{c=1}A^k_{ic}B_{cj}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于受限玻尔兹曼机rbm的协同过滤------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于受限玻尔兹曼机（RBM）的协同过滤------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#restricted-boltzmann-machines-for-collaborative-filtering"><span class="nav-number">2.</span> <span class="nav-text">Restricted Boltzmann Machines for Collaborative Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#rbm"><span class="nav-number">2.1.</span> <span class="nav-text">RBM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型"><span class="nav-number">2.2.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#学习"><span class="nav-number">2.3.</span> <span class="nav-text">学习</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#预测"><span class="nav-number">2.4.</span> <span class="nav-text">预测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#高斯隐藏单元的rbm"><span class="nav-number">2.5.</span> <span class="nav-text">高斯隐藏单元的RBM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#conditional-rbm"><span class="nav-number">2.6.</span> <span class="nav-text">Conditional RBM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#conditional-factored-rbm"><span class="nav-number">2.7.</span> <span class="nav-text">Conditional Factored RBM</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于受限玻尔兹曼机（RBM）的协同过滤———论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Restricted-Boltzmann-Machines-for-Collaborative-Filtering"><span class="nav-number">2.</span> <span class="nav-text">Restricted Boltzmann Machines for Collaborative Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RBM"><span class="nav-number">2.1.</span> <span class="nav-text">RBM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型"><span class="nav-number">2.2.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#学习"><span class="nav-number">2.3.</span> <span class="nav-text">学习</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#预测"><span class="nav-number">2.4.</span> <span class="nav-text">预测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#高斯隐藏单元的RBM"><span class="nav-number">2.5.</span> <span class="nav-text">高斯隐藏单元的RBM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Conditional-RBM"><span class="nav-number">2.6.</span> <span class="nav-text">Conditional RBM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Conditional-Factored-RBM"><span class="nav-number">2.7.</span> <span class="nav-text">Conditional Factored RBM</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

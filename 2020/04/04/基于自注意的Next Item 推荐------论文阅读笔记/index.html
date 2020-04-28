@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="基于自注意的Next Item 推荐------论文阅读笔记 Next Item Recommendation with Self-Attention  本文重点：ATTREC 使用self-attention module 来建模用户短期意向，用collaborative metric learning 来建模用户的长期偏好。">
+  <meta name="description" content="基于自注意的Next Item 推荐———论文阅读笔记Next Item Recommendation with Self-Attention 本文重点：ATTREC使用self-attention module 来建模用户短期意向，用collaborative metric learning 来建模用户的长期偏好。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于自注意的Next Item推荐------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/04/04/%E5%9F%BA%E4%BA%8E%E8%87%AA%E6%B3%A8%E6%84%8F%E7%9A%84Next%20Item%20%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="基于自注意的Next Item 推荐------论文阅读笔记 Next Item Recommendation with Self-Attention  本文重点：ATTREC 使用self-attention module 来建模用户短期意向，用collaborative metric learning 来建模用户的长期偏好。">
+<meta property="og:description" content="基于自注意的Next Item 推荐———论文阅读笔记Next Item Recommendation with Self-Attention 本文重点：ATTREC使用self-attention module 来建模用户短期意向，用collaborative metric learning 来建模用户的长期偏好。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200404160653.png">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200404175948475.png">
@@ -217,7 +217,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.7k</span>
+              <span>4.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -236,102 +236,88 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="基于自注意的next-item-推荐------论文阅读笔记">基于自注意的Next Item 推荐------论文阅读笔记</h4>
-<h4 id="next-item-recommendation-with-self-attention">Next Item Recommendation with Self-Attention</h4>
-<hr />
-<h4 id="本文重点attrec">本文重点：ATTREC</h4>
-<p>使用self-attention module 来建模用户短期意向，用collaborative metric learning 来建模用户的长期偏好。<a id="more"></a></p>
-<h5 id="序列推荐问题">序列推荐问题</h5>
-<p>假设<span class="math inline">\(\mathcal U\)</span>是一个用户集合，<span class="math inline">\(\mathcal I\)</span>是一个物品集合，其中<span class="math inline">\(|\mathcal U|=M,|\mathcal I|=N\)</span>。然后用<span class="math inline">\(\mathcal H^u=(\mathcal H^u_1,\dots,\mathcal H^u_{|\mathcal H^u|})\)</span>表示按照用户之前对物品的交互顺序的一个序列物品集，其中<span class="math inline">\(\mathcal H^u\sqsubseteq\mathcal I\)</span>。那么我们的目标就是在给定用户消费轨迹的情况下预测用户下一次将会交互的物品。</p>
-<h5 id="用self-attention-建模短期意向">用self-attention 建模短期意向</h5>
-<blockquote>
+        <h4 id="基于自注意的Next-Item-推荐———论文阅读笔记"><a href="#基于自注意的Next-Item-推荐———论文阅读笔记" class="headerlink" title="基于自注意的Next Item 推荐———论文阅读笔记"></a>基于自注意的Next Item 推荐———论文阅读笔记</h4><h4 id="Next-Item-Recommendation-with-Self-Attention"><a href="#Next-Item-Recommendation-with-Self-Attention" class="headerlink" title="Next Item Recommendation with Self-Attention"></a>Next Item Recommendation with Self-Attention</h4><hr>
+<h4 id="本文重点：ATTREC"><a href="#本文重点：ATTREC" class="headerlink" title="本文重点：ATTREC"></a>本文重点：ATTREC</h4><p>使用self-attention module 来建模用户短期意向，用collaborative metric learning 来建模用户的长期偏好。<a id="more"></a></p>
+<h5 id="序列推荐问题"><a href="#序列推荐问题" class="headerlink" title="序列推荐问题"></a>序列推荐问题</h5><p>假设$\mathcal U$是一个用户集合，$\mathcal I$是一个物品集合，其中$|\mathcal U|=M,|\mathcal I|=N$。然后用$\mathcal H^u=(\mathcal H^u_1,\dots,\mathcal H^u_{|\mathcal H^u|})$表示按照用户之前对物品的交互顺序的一个序列物品集，其中$\mathcal H^u\sqsubseteq\mathcal I$。那么我们的目标就是在给定用户消费轨迹的情况下预测用户下一次将会交互的物品。</p>
+<h5 id="用self-attention-建模短期意向"><a href="#用self-attention-建模短期意向" class="headerlink" title="用self-attention 建模短期意向"></a>用self-attention 建模短期意向</h5><blockquote>
 <p>Attention计算主要分为三步：1. 将query和每个key进行相似度计算得到权重，常用的相似度函数有点积，拼接，感知机等；2. 一般用一个softmax函数对权重进行归一化；3. 将权重和相应的键值value进行加权求和得到最后的attention。</p>
-<p><img src="/images/image-20200404160653.png" /></p>
+<p><img src="/images/image-20200404160653.png" alt=""></p>
 </blockquote>
 <p>Attention module 的输入包括query，key，value，输出是value的加权和。其中权重矩阵或者说关联矩阵是由query及相应的key决定的。</p>
 <p>但是在我们的文章中，(query, key, value)这三个都相等，并且由用户交互历史组成。</p>
-<p>假设用户的短期意向来源于最近的交互信息。并且每个物品可以被表示为一个d维的嵌入向量。那么<span class="math inline">\(X\in\mathcal R^{N\times d}\)</span>就代表整个物品集合的嵌入表示。那么最近的L个物品（从物品t-L+1到物品t）按照顺序堆叠在一起得到了如下矩阵 <span class="math display">\[
+<p>假设用户的短期意向来源于最近的交互信息。并且每个物品可以被表示为一个d维的嵌入向量。那么$X\in\mathcal R^{N\times d}$就代表整个物品集合的嵌入表示。那么最近的L个物品（从物品t-L+1到物品t）按照顺序堆叠在一起得到了如下矩阵</p>
+<script type="math/tex; mode=display">
 X^u_t=\begin{bmatrix}
-X_{(t-L+1)1}&amp;X_{(t-L+1)2}&amp;\dots&amp;X_{(t-L+1)d}\\
-\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
-X_{(t-1)1}&amp;X_{(t-1)2}&amp;\dots&amp;X_{(t-1)d}\\
-X_{t1}&amp;X_{t2}&amp;\dots&amp;X_{td}
-\end{bmatrix}
-\]</span> 这里最近的L个物品应该是<span class="math inline">\(\mathcal H^u\)</span>的子集。而在时间t时用户u的query, key, value这三个东西全都等于<span class="math inline">\(X^u_t\in\mathcal R^{L\times d}\)</span>。</p>
-<p>然后通过一个具有相同参数的非线性变换将query和key投影到相同空间 <span class="math display">\[
-Q&#39;=ReLU(X^u_tW_Q)
-\]</span></p>
-<p><span class="math display">\[
-K&#39;=ReLU(X^u_tW_K)
-\]</span></p>
-<p>其中<span class="math inline">\(W_Q\in\mathcal R^{d\times d}=W_K\in\mathcal R^{(d\times d)}\)</span>分别是query和key的权重矩阵。那么得到的<span class="math inline">\(Q&#39;\)</span>和<span class="math inline">\(K&#39;\)</span>就是<span class="math inline">\(L\times d\)</span>维的矩阵。</p>
-<p>然后关联矩阵用下式计算 <span class="math display">\[
-s^u_t=\text{softmax}(\frac{Q&#39;K&#39;^T}{\sqrt d})
-\]</span> 那么输出的就是一个<span class="math inline">\(L\times L\)</span>的关联矩阵（或者叫attention map），它代表着L个物品的相似度。这里的<span class="math inline">\(\sqrt d\)</span>的解释有点不明白，原文是这样写的：Note that the <span class="math inline">\(\sqrt d\)</span> is used to scale the dot product attention. As in our case, d is usually set to a large value (e.g., 100), so the scaling factor could reduce the extremely small gradients effect. 然后这里还有一个masking 操作也不是太懂：A masking operation (which masks the diagonal of the affinity matrix) is applied before the softmax, to avoid high matching scores between identical vectors of query and key.</p>
+X_{(t-L+1)1}&X_{(t-L+1)2}&\dots&X_{(t-L+1)d}\\
+\vdots&\vdots&\vdots&\vdots\\
+X_{(t-1)1}&X_{(t-1)2}&\dots&X_{(t-1)d}\\
+X_{t1}&X_{t2}&\dots&X_{td}
+\end{bmatrix}</script><p>这里最近的L个物品应该是$\mathcal H^u$的子集。而在时间t时用户u的query, key, value这三个东西全都等于$X^u_t\in\mathcal R^{L\times d}$。</p>
+<p>然后通过一个具有相同参数的非线性变换将query和key投影到相同空间</p>
+<script type="math/tex; mode=display">
+Q'=ReLU(X^u_tW_Q)</script><script type="math/tex; mode=display">
+K'=ReLU(X^u_tW_K)</script><p>其中$W_Q\in\mathcal R^{d\times d}=W_K\in\mathcal R^{(d\times  d)}$分别是query和key的权重矩阵。那么得到的$Q’$和$K’$就是$L\times d$维的矩阵。</p>
+<p>然后关联矩阵用下式计算</p>
+<script type="math/tex; mode=display">
+s^u_t=\text{softmax}(\frac{Q'K'^T}{\sqrt d})</script><p>那么输出的就是一个$L\times L$的关联矩阵（或者叫attention map），它代表着L个物品的相似度。这里的$\sqrt d$的解释有点不明白，原文是这样写的：Note that the $\sqrt d$ is used to scale the dot product attention. As in our case, d is usually set to a large value (e.g., 100), so the scaling factor could reduce the extremely small gradients effect. 然后这里还有一个masking 操作也不是太懂：A masking operation (which masks the diagonal of the affinity matrix) is applied before the softmax, to avoid high matching scores between identical vectors of query and key.</p>
 <blockquote>
 <p>现在将上面的两个没弄懂的地方解释一下。</p>
 <p><strong>首先是Scaled Dot-Product Attention：</strong></p>
 <p>仔细在网上查了资料（具体看论文Attention Is All You Need中间的一个小节：Scaled Dot-Product Attention）</p>
-<p>当d很大时，点积的规模会变得很大，当采用了一个softmax函数后，就会获得一个极小的梯度。为了消除这种影响，应当用<span class="math inline">\(\sqrt d\)</span>来减小点积的规模。</p>
+<p>当d很大时，点积的规模会变得很大，当采用了一个softmax函数后，就会获得一个极小的梯度。为了消除这种影响，应当用$\sqrt d$来减小点积的规模。</p>
 <p>我解释完后再看看原句，是不是好理解了？</p>
 <p><strong>然后是Masking Operation：</strong></p>
 <p>这个在网上没有找到很好的解释，我反复读了原句，说一下我的理解吧。</p>
-<p>我们的这个矩阵主要是不同的query和不同的key的相似度的一个衡量，如果是两个query和key一模一样那么相似度肯定最高啊，其实也就是对角线上的元素实际上会有一个非常大的值。我举个例子(可能不太恰当)，比如有三个人（ABC），我们来看谁和谁长的比较像，那么相似度矩阵如下： <span class="math display">\[
+<p>我们的这个矩阵主要是不同的query和不同的key的相似度的一个衡量，如果是两个query和key一模一样那么相似度肯定最高啊，其实也就是对角线上的元素实际上会有一个非常大的值。我举个例子(可能不太恰当)，比如有三个人（ABC），我们来看谁和谁长的比较像，那么相似度矩阵如下：</p>
+<script type="math/tex; mode=display">
 \begin{bmatrix}
-S(A,A)&amp;S(A,B)&amp;S(A,C)\\
-S(B,A)&amp;S(B,B)&amp;S(B,C)\\
-S(C,A)&amp;S(C,B)&amp;S(C,C)
-\end{bmatrix}
-\]</span> 那么我们就知道了对角线上的元素最大，我们得出结论A和A很像，B和B很像，C和C很像。这样的结论还是没有解决三个人里面哪两个长的比较像的问题。</p>
+S(A,A)&S(A,B)&S(A,C)\\
+S(B,A)&S(B,B)&S(B,C)\\
+S(C,A)&S(C,B)&S(C,C)
+\end{bmatrix}</script><p>那么我们就知道了对角线上的元素最大，我们得出结论A和A很像，B和B很像，C和C很像。这样的结论还是没有解决三个人里面哪两个长的比较像的问题。</p>
 <p>所以我们要处理掉对角线上的值，不考虑它们，那么一般的做法是将其置0，当然在我们这个小例子里面是可以的，但是在self attention中不是这样做的，因为最后还要经过一个softmax函数，所以它的做法是让对角线上的元素加上一个很大的负数，这样在经过softmax后，概率就非常接近0了。</p>
 <p>我解释完后再看看原句，是不是好理解了？</p>
 <p>注意以上的两个操作都需要在softmax之前</p>
-<p><img src="/images/image-20200404175948475.png" /></p>
+<p><img src="/images/image-20200404175948475.png" alt=""></p>
 </blockquote>
-<p>然后保持value等于<span class="math inline">\(X^u_t\)</span>不变（没有像其他文章一样做线性变换）。最后将关联矩阵和value相乘得到最终的加权输出，也就是self-attention模型的输出。 <span class="math display">\[
-a^u_t=s^u_tX^u_t
-\]</span> 最终的这个输出<span class="math inline">\(a^u_t\in\mathcal R^{L\times d}\)</span>可以看作是用户短期意向表示。</p>
+<p>然后保持value等于$X^u_t$不变（没有像其他文章一样做线性变换）。最后将关联矩阵和value相乘得到最终的加权输出，也就是self-attention模型的输出。</p>
+<script type="math/tex; mode=display">
+a^u_t=s^u_tX^u_t</script><p>最终的这个输出$a^u_t\in\mathcal R^{L\times d}$可以看作是用户短期意向表示。</p>
 <p>整个过程如下图</p>
-<p><img src="/images/image-20200405134736419.png" /></p>
-<p>最后我们需要得到一个d维向量而不是一个矩阵，于是把L个self-attention表示取平均（当然取sum, max, min也可以） <span class="math display">\[
-m^u_t=\frac{1}{L}\sum^L_{l=1}a^u_{tl}
-\]</span> 然而上面的注意力模型没有考虑时间信息，根据Transformer模型，用位置嵌入方法。时间嵌入（TE）由两个正弦信号组成 <span class="math display">\[
-TE(t,2i)=sin\left(\frac{t}{10000^{\frac{2i}{d}}}\right)
-\]</span></p>
-<p><span class="math display">\[
-TE(t,2i+1)=cos\left(\frac{t}{10000^{\frac{2i}{d}}}\right)
-\]</span></p>
-<p>其中t是时间戳，i是维度。</p>
-<h5 id="建模用户长期偏好">建模用户长期偏好</h5>
-<p>给每个用户和每个物品分配一个隐因子：<span class="math inline">\(U\in\mathcal R^{M\times d}\)</span>和<span class="math inline">\(V\in\mathcal R^{N\times d}\)</span>。在隐语义模型中我们用点积来建模用户物品交互。而最近的研究表明点积违反了度量函数的重要不等性，并且会导致次优解。为了避免这种问题，采用了欧式距离来测量物品i和用户u之间的亲密度。 <span class="math display">\[
-\|U_u-V_i\|^2_2
-\]</span></p>
-<h5 id="目标函数和损失函数">目标函数和损失函数</h5>
-<p>给定了在时间t时的短期意向和长期偏好后，我们要做的就是预测用户在时间t+1时将会交互的物品（用<span class="math inline">\(\mathcal H^u_{t+1}\)</span>表示）。用下面这个式子进行打分，分最高的将会推荐给用户。 <span class="math display">\[
-y^u_{t+1}=\omega\|U_u-V_{\mathcal H^u_{t+1}}\|^2_2+(1-\omega)\|m^u_t-X^u_{t+1}\|^2_2
-\]</span> 其中第一项是建模的长期偏好，是用户u和下一个物品<span class="math inline">\(\mathcal H^u_{t+1}\)</span>之间的欧式距离衡量的；第二项是建模的用户u和下一个物品之间的短期偏好。注意到这里的<span class="math inline">\(V_{\mathcal H^u_{t+1}}\)</span>和<span class="math inline">\(X^u_{t+1}\)</span>都是下一个物品的嵌入向量。</p>
+<p><img src="/images/image-20200405134736419.png" alt=""></p>
+<p>最后我们需要得到一个d维向量而不是一个矩阵，于是把L个self-attention表示取平均（当然取sum, max, min也可以）</p>
+<script type="math/tex; mode=display">
+m^u_t=\frac{1}{L}\sum^L_{l=1}a^u_{tl}</script><p>然而上面的注意力模型没有考虑时间信息，根据Transformer模型，用位置嵌入方法。时间嵌入（TE）由两个正弦信号组成</p>
+<script type="math/tex; mode=display">
+TE(t,2i)=sin\left(\frac{t}{10000^{\frac{2i}{d}}}\right)</script><script type="math/tex; mode=display">
+TE(t,2i+1)=cos\left(\frac{t}{10000^{\frac{2i}{d}}}\right)</script><p>其中t是时间戳，i是维度。</p>
+<h5 id="建模用户长期偏好"><a href="#建模用户长期偏好" class="headerlink" title="建模用户长期偏好"></a>建模用户长期偏好</h5><p>给每个用户和每个物品分配一个隐因子：$U\in\mathcal R^{M\times d}$和$V\in\mathcal R^{N\times d}$。在隐语义模型中我们用点积来建模用户物品交互。而最近的研究表明点积违反了度量函数的重要不等性，并且会导致次优解。为了避免这种问题，采用了欧式距离来测量物品i和用户u之间的亲密度。</p>
+<script type="math/tex; mode=display">
+\|U_u-V_i\|^2_2</script><h5 id="目标函数和损失函数"><a href="#目标函数和损失函数" class="headerlink" title="目标函数和损失函数"></a>目标函数和损失函数</h5><p>给定了在时间t时的短期意向和长期偏好后，我们要做的就是预测用户在时间t+1时将会交互的物品（用$\mathcal H^u_{t+1}$表示）。用下面这个式子进行打分，分最高的将会推荐给用户。</p>
+<script type="math/tex; mode=display">
+y^u_{t+1}=\omega\|U_u-V_{\mathcal H^u_{t+1}}\|^2_2+(1-\omega)\|m^u_t-X^u_{t+1}\|^2_2</script><p>其中第一项是建模的长期偏好，是用户u和下一个物品$\mathcal H^u_{t+1}$之间的欧式距离衡量的；第二项是建模的用户u和下一个物品之间的短期偏好。注意到这里的$V_{\mathcal H^u_{t+1}}$和$X^u_{t+1}$都是下一个物品的嵌入向量。</p>
 <blockquote>
-<p>文章这里说的我觉得有点疑问。1. <span class="math inline">\(V_{\mathcal H^u_{t+1}}\)</span> 按照上文的说法应该是物品<span class="math inline">\(\mathcal H^u_{t+1}\)</span>的一个隐因子啊，为什么又直接是物品<span class="math inline">\(\mathcal H^u_{t+1}\)</span>的嵌入向量了？ 2. <span class="math inline">\(m^u_t\)</span>应该是个d维向量，而<span class="math inline">\(X^u_{t+1}\)</span>按照上文的符号应该是一个<span class="math inline">\(L\times d\)</span>维矩阵啊，为什么这里<span class="math inline">\(X^u_{t+1}\)</span>又是下一个物品的嵌入向量呢？这上下文的符号混着用吗？3. 文章说<span class="math inline">\(V_{\mathcal H^u_{t+1}}\)</span>和<span class="math inline">\(X^u_{t+1}\)</span>都是下一个物品的嵌入向量，但是它们是不同的参数，我就不懂了，这里怎么就不同了？</p>
+<p>文章这里说的我觉得有点疑问。1. $V_{\mathcal H^u_{t+1}}$ 按照上文的说法应该是物品$\mathcal H^u_{t+1}$的一个隐因子啊，为什么又直接是物品$\mathcal H^u_{t+1}$的嵌入向量了？ 2. $m^u_t$应该是个d维向量，而$X^u_{t+1}$按照上文的符号应该是一个$L\times d$维矩阵啊，为什么这里$X^u_{t+1}$又是下一个物品的嵌入向量呢？这上下文的符号混着用吗？3. 文章说$V_{\mathcal H^u_{t+1}}$和$X^u_{t+1}$都是下一个物品的嵌入向量，但是它们是不同的参数，我就不懂了，这里怎么就不同了？</p>
 </blockquote>
-<p>其次为了预测接下来几个物品而不是接下来一个物品。使用了基于边缘的铰链损失（hinge loss） <span class="math display">\[
-\mathcal L(\Theta)=\sum_{(u,i)\in\mathcal T^+}\sum_{(u,j)\in\mathcal T^-}[y^u_i+\gamma-y^u_j]_++\lambda\|\Theta\|^2_2
-\]</span> 其中<span class="math inline">\(\mathcal T^+\)</span>代表的是用户接下来可能交互的T个物品，而<span class="math inline">\(\mathcal T^-\)</span>代表的是T个用户不会交互的物品，就是负样本（通过负采样获得）。其中<span class="math inline">\(\Theta=\{X,V,U,W_Q,W_K\}\)</span>代表模型参数。<span class="math inline">\(\gamma\)</span>代表分离正负样本的边缘。</p>
-<p>由于采用的是欧式距离，那么对于稀疏的数据集，交替的采用norm clipping strategy来约束<span class="math inline">\(X,Y,U\)</span>在一个欧式单元球内。 <span class="math display">\[
-\|X_*\|_2\le1,\|V_*\|_2\le1,\|U_*\|_2\le1
-\]</span> 这种方法对稀疏的数据集很有用，能够减轻维度问题的危害，并且保护数据点不会扩散的太远。</p>
+<p>其次为了预测接下来几个物品而不是接下来一个物品。使用了基于边缘的铰链损失（hinge loss）</p>
+<script type="math/tex; mode=display">
+\mathcal L(\Theta)=\sum_{(u,i)\in\mathcal T^+}\sum_{(u,j)\in\mathcal T^-}[y^u_i+\gamma-y^u_j]_++\lambda\|\Theta\|^2_2</script><p>其中$\mathcal T^+$代表的是用户接下来可能交互的T个物品，而$\mathcal T^-$代表的是T个用户不会交互的物品，就是负样本（通过负采样获得）。其中$\Theta=\{X,V,U,W_Q,W_K\}$代表模型参数。$\gamma$代表分离正负样本的边缘。</p>
+<p>由于采用的是欧式距离，那么对于稀疏的数据集，交替的采用norm clipping strategy来约束$X,Y,U$在一个欧式单元球内。</p>
+<script type="math/tex; mode=display">
+\|X_*\|_2\le1,\|V_*\|_2\le1,\|U_*\|_2\le1</script><p>这种方法对稀疏的数据集很有用，能够减轻维度问题的危害，并且保护数据点不会扩散的太远。</p>
 <p>序列推荐的self-attentive度量学习方法整体过程如下图</p>
-<p><img src="/images/image-20200405135040130.png" /></p>
-<h5 id="实验">实验</h5>
-<p>评价指标：</p>
-<ol type="1">
+<p><img src="/images/image-20200405135040130.png" alt=""></p>
+<h5 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h5><p>评价指标：</p>
+<ol>
 <li><p>HR(Hit Ratio)表示推荐准确不准确</p>
-<p>截止值为50的命中率定义如下 <span class="math display">\[
-HR@50=\frac{1}{M}\sum_{u\in\mathcal U}\mathbf 1(R_{u,g_u\le 50})
-\]</span> 其中<span class="math inline">\(g_u\)</span>是用户在最近交互的物品。而<span class="math inline">\(R_{u,g_u}\)</span>是由模型生成的排名。如果<span class="math inline">\(g_u\)</span>排名在50以内，那么就返回1，否则返回0。</p></li>
+<p>截止值为50的命中率定义如下</p>
+<script type="math/tex; mode=display">
+HR@50=\frac{1}{M}\sum_{u\in\mathcal U}\mathbf 1(R_{u,g_u\le 50})</script><p>其中$g_u$是用户在最近交互的物品。而$R_{u,g_u}$是由模型生成的排名。如果$g_u$排名在50以内，那么就返回1，否则返回0。</p>
+</li>
 <li><p>MRR(Mean Reciprocal Rank)表示模型排序排得好不好</p>
-<p>定义如下 <span class="math display">\[
-MRR=\frac{1}{M}\sum_{u\in U}\frac{1}{R_{u,g_u}}
-\]</span></p></li>
+<p>定义如下</p>
+<script type="math/tex; mode=display">
+MRR=\frac{1}{M}\sum_{u\in U}\frac{1}{R_{u,g_u}}</script></li>
 </ol>
 
     </div>
@@ -418,7 +404,7 @@ MRR=\frac{1}{M}\sum_{u\in U}\frac{1}{R_{u,g_u}}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于自注意的next-item-推荐------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于自注意的Next Item 推荐------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#next-item-recommendation-with-self-attention"><span class="nav-number">2.</span> <span class="nav-text">Next Item Recommendation with Self-Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文重点attrec"><span class="nav-number">3.</span> <span class="nav-text">本文重点：ATTREC</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#序列推荐问题"><span class="nav-number">3.1.</span> <span class="nav-text">序列推荐问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用self-attention-建模短期意向"><span class="nav-number">3.2.</span> <span class="nav-text">用self-attention 建模短期意向</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建模用户长期偏好"><span class="nav-number">3.3.</span> <span class="nav-text">建模用户长期偏好</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#目标函数和损失函数"><span class="nav-number">3.4.</span> <span class="nav-text">目标函数和损失函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实验"><span class="nav-number">3.5.</span> <span class="nav-text">实验</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于自注意的Next-Item-推荐———论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于自注意的Next Item 推荐———论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Next-Item-Recommendation-with-Self-Attention"><span class="nav-number">2.</span> <span class="nav-text">Next Item Recommendation with Self-Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文重点：ATTREC"><span class="nav-number">3.</span> <span class="nav-text">本文重点：ATTREC</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#序列推荐问题"><span class="nav-number">3.1.</span> <span class="nav-text">序列推荐问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用self-attention-建模短期意向"><span class="nav-number">3.2.</span> <span class="nav-text">用self-attention 建模短期意向</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建模用户长期偏好"><span class="nav-number">3.3.</span> <span class="nav-text">建模用户长期偏好</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#目标函数和损失函数"><span class="nav-number">3.4.</span> <span class="nav-text">目标函数和损失函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实验"><span class="nav-number">3.5.</span> <span class="nav-text">实验</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
