@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记 CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection 动机 Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具">
+  <meta name="description" content="投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection动机Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具有启发性，这可能会">
 <meta property="og:type" content="article">
 <meta property="og:title" content="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/04/06/CORN------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记 CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection 动机 Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具">
+<meta property="og:description" content="投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection动机Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具有启发性，这可能会">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200407160815837.png">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200408113511729.png">
@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">12</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">13</span></a>
 
   </li>
   </ul>
@@ -216,14 +216,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>390</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -235,54 +235,43 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记">投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记</h4>
-<h4 id="corncorrelation-driven-nonparametric-learning-approach-for-portfolio-selection">CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection</h4>
-<h5 id="动机">动机</h5>
-<p>Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具有启发性，这可能会导致次优解。</p>
+        <h4 id="投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记"><a href="#投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记" class="headerlink" title="投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记"></a>投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记</h4><h4 id="CORN：Correlation-Driven-Nonparametric-Learning-Approach-for-Portfolio-Selection"><a href="#CORN：Correlation-Driven-Nonparametric-Learning-Approach-for-Portfolio-Selection" class="headerlink" title="CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection"></a>CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection</h4><h5 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h5><p>Anticor是发现两只股票之间的统计关系，而非参数学习策略是尝试发现相似的表现或者市场窗口。Anticor忽略了整个市场的价格变动，而且它学习到的投资组合策略具有启发性，这可能会导致次优解。</p>
 <p>除此之外，现有的非参数学习方法通常用欧几里得距离来衡量相似性，但是欧式距离没有利用市场窗口运动的方向信息，因此虽然它能检测到相似的表现，但是可能其中包含有一些无用的甚至有害的价比，而排除了有益的价比。<a id="more"></a></p>
-<hr />
-<h4 id="corn">CORN</h4>
-<p>首先声明一个相关相似集合（correlation-similar set），它包含与最近的市场窗口统计相关的之前市场窗口中的历史价比。 <span class="math display">\[
-C_t(w,\rho)=\left\{w&lt;i&lt;t-1\Bigg\arrowvert\frac{\text{cov}(\mathbf X^{i-1}_{i-w},\mathbf X^{t-1}_{t-w})}{\text{std}(\mathbf X^{i-1}_{i-w})\text{std}(\mathbf X^{t-1}_{t-w})}\ge\rho\right\}
-\]</span> 那么这里度量两个窗口相似性是用的person相关系数。其中<span class="math inline">\(w\)</span>是窗口大小，<span class="math inline">\(-1\le\rho\le1\)</span>是相关系数阈值，<span class="math inline">\(\text{cov}(A,B)\)</span>是窗口A和窗口B的协方差，<span class="math inline">\(\text{std}(A)\)</span>是市场窗口的标准差。</p>
+<hr>
+<h4 id="CORN"><a href="#CORN" class="headerlink" title="CORN"></a>CORN</h4><p>首先声明一个相关相似集合（correlation-similar set），它包含与最近的市场窗口统计相关的之前市场窗口中的历史价比。</p>
+<script type="math/tex; mode=display">
+C_t(w,\rho)=\left\{w<i<t-1\Bigg\arrowvert\frac{\text{cov}(\mathbf X^{i-1}_{i-w},\mathbf X^{t-1}_{t-w})}{\text{std}(\mathbf X^{i-1}_{i-w})\text{std}(\mathbf X^{t-1}_{t-w})}\ge\rho\right\}</script><p>那么这里度量两个窗口相似性是用的person相关系数。其中$w$是窗口大小，$-1\le\rho\le1$是相关系数阈值，$\text{cov}(A,B)$是窗口A和窗口B的协方差，$\text{std}(A)$是市场窗口的标准差。</p>
 <p>如果分母为0,也就是有一个市场是零波动性，那么就设置相关系数为0。</p>
-<h5 id="算法">算法</h5>
-<p>第一步：定义一个系统能够定位那些相似的历史价比，并且根据相似历史价比能够找到最优的投资组合。</p>
+<h5 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h5><p>第一步：定义一个系统能够定位那些相似的历史价比，并且根据相似历史价比能够找到最优的投资组合。</p>
 <p>第二步：有效的将所有的系统找到的投资组合组合起来形成最终的投资组合。</p>
-<p>一步一步来看，首先我们定义一些系统，每个系统的索引为<span class="math inline">\((w,\rho)\)</span>，<span class="math inline">\(\{\mathcal E(w,\rho):w\ge1,-1\le\rho\le1\}\)</span>，那么不同的系统会有不同的窗口大小<span class="math inline">\(w\)</span>和相关系数阈值<span class="math inline">\(\rho\)</span>。注意我们定义<span class="math inline">\(\mathcal E(w,\rho)=\mathbf b(w,\rho)\)</span>。</p>
-<p>然后我们用最大化累计财富的方式学习最优的投资组合 <span class="math display">\[
-\mathbf b_t(w,\rho)=\mathop{\text{argmax}}\limits_{\mathbf b\in\bigtriangleup_m}\prod_{i\in C_t(w,\rho)}(\mathbf b\cdot\mathbf x_i)
-\]</span> 如果相关性为0，即<span class="math inline">\(C_t(w,\rho)=0\)</span>那么我们就直接采用一个统一的投资组合<span class="math inline">\((\frac{1}{m},\dots,\frac{1}{m})\)</span></p>
+<p>一步一步来看，首先我们定义一些系统，每个系统的索引为$(w,\rho)$，$\{\mathcal E(w,\rho):w\ge1,-1\le\rho\le1\}$，那么不同的系统会有不同的窗口大小$w$和相关系数阈值$\rho$。注意我们定义$\mathcal E(w,\rho)=\mathbf b(w,\rho)$。</p>
+<p>然后我们用最大化累计财富的方式学习最优的投资组合</p>
+<script type="math/tex; mode=display">
+\mathbf b_t(w,\rho)=\mathop{\text{argmax}}\limits_{\mathbf b\in\bigtriangleup_m}\prod_{i\in C_t(w,\rho)}(\mathbf b\cdot\mathbf x_i)</script><p>如果相关性为0，即$C_t(w,\rho)=0$那么我们就直接采用一个统一的投资组合$(\frac{1}{m},\dots,\frac{1}{m})$</p>
 <p>基本的流程如下</p>
-<p><img src="/images/image-20200407160815837.png" /></p>
-<p>接下来，我们考虑把一系列系统的输出根据它们的历史表现<span class="math inline">\(s_{t-1}(w,\rho)\)</span>和概率分布<span class="math inline">\(q(w,\rho)\)</span>组合起来。那么第t交易日的最终的投资组合如下 <span class="math display">\[
-\mathbf b_t=\frac{\sum_{w,\rho}q(w,\rho)s_{t-1}(w,\rho)\mathbf b_t(w,\rho)}{\sum_{w,\rho}q(w,\rho)s_{t-1}(w,\rho)}
-\]</span> 其中<span class="math inline">\(\mathbf b_t(w,\rho)\)</span>代表每个系统<span class="math inline">\(\mathcal E(w,\rho)\)</span>的输出，而<span class="math inline">\(s_{t-1}(w,\rho)\)</span>代表的是历史表现（用累积财富来衡量）。</p>
+<p><img src="/images/image-20200407160815837.png" alt=""></p>
+<p>接下来，我们考虑把一系列系统的输出根据它们的历史表现$s_{t-1}(w,\rho)$和概率分布$q(w,\rho)$组合起来。那么第t交易日的最终的投资组合如下</p>
+<script type="math/tex; mode=display">
+\mathbf b_t=\frac{\sum_{w,\rho}q(w,\rho)s_{t-1}(w,\rho)\mathbf b_t(w,\rho)}{\sum_{w,\rho}q(w,\rho)s_{t-1}(w,\rho)}</script><p>其中$\mathbf b_t(w,\rho)$代表每个系统$\mathcal E(w,\rho)$的输出，而$s_{t-1}(w,\rho)$代表的是历史表现（用累积财富来衡量）。</p>
 <p>如果一个系统的历史表现越好，那么相应的在组合时给它分配的权重就越高。</p>
-<p>最后我们的累计财富迭代公式为 <span class="math display">\[
-\mathbf S_t=\mathbf S_{t-1}\times(\mathbf b_t\cdot\mathbf x_t)
-\]</span></p>
-<p><span class="math display">\[
-\mathbf S_0=1
-\]</span></p>
-<p>那么同样的 <span class="math display">\[
-s_t(w,\rho)=s_{t-1}(w,\rho)\times(\mathbf b_t(w,\rho)\cdot\mathbf x_t)
-\]</span></p>
-<p><span class="math display">\[
-s_0=1
-\]</span></p>
-<p>那么可以知道通过CORN策略得到的累计财富就是各个系统基于概率分布的回报加权和 <span class="math display">\[
-\mathbf S_T=\sum_{w,\rho}q(w,\rho)s_T(w,\rho)
-\]</span></p>
-<h5 id="组合方式">组合方式</h5>
-<p>有两种：1. Uniform组合（CORN-U）；2. top-K组合（CORN-K）</p>
-<ol type="1">
-<li><p>CORN-U是简单的把<span class="math inline">\(q(w,\rho)\)</span>考虑成统一分布<span class="math inline">\(q(w,\rho)=\frac{1}{W}\)</span>，其中<span class="math inline">\(W\)</span>是最大的窗口数量，在这种方法中，给所有的系统分配一样的权重，如果我们能够获得更多的系统分布的信息的话，也可以调整这些权重。</p>
+<p>最后我们的累计财富迭代公式为</p>
+<script type="math/tex; mode=display">
+\mathbf S_t=\mathbf S_{t-1}\times(\mathbf b_t\cdot\mathbf x_t)</script><script type="math/tex; mode=display">
+\mathbf S_0=1</script><p>那么同样的</p>
+<script type="math/tex; mode=display">
+s_t(w,\rho)=s_{t-1}(w,\rho)\times(\mathbf b_t(w,\rho)\cdot\mathbf x_t)</script><script type="math/tex; mode=display">
+s_0=1</script><p>那么可以知道通过CORN策略得到的累计财富就是各个系统基于概率分布的回报加权和</p>
+<script type="math/tex; mode=display">
+\mathbf S_T=\sum_{w,\rho}q(w,\rho)s_T(w,\rho)</script><h5 id="组合方式"><a href="#组合方式" class="headerlink" title="组合方式"></a>组合方式</h5><p>有两种：1. Uniform组合（CORN-U）；2. top-K组合（CORN-K）</p>
+<ol>
+<li><p>CORN-U是简单的把$q(w,\rho)$考虑成统一分布$q(w,\rho)=\frac{1}{W}$，其中$W$是最大的窗口数量，在这种方法中，给所有的系统分配一样的权重，如果我们能够获得更多的系统分布的信息的话，也可以调整这些权重。</p>
 <p>其算法过程如下</p>
-<p><img src="/images/image-20200408113511729.png" /></p></li>
-<li><p>第二种是为了克服第一种可能把表现不好的系统包括进来的缺点。CORN-K是组合top-K个最好的系统，然后统一组合，统一分布为<span class="math inline">\(q(w,\rho)=\frac{1}{K}\)</span>，那么top-K以外的系统就给它们分配权重为0就行了。对于每个<span class="math inline">\(W\)</span>，我们分配<span class="math inline">\(P\)</span>个相关系统，按照经验，第i个系统的<span class="math inline">\(\rho\)</span>值应该设为<span class="math inline">\(\frac{i-1}{P}\)</span></p>
+<p><img src="/images/image-20200408113511729.png" alt=""></p>
+</li>
+<li><p>第二种是为了克服第一种可能把表现不好的系统包括进来的缺点。CORN-K是组合top-K个最好的系统，然后统一组合，统一分布为$q(w,\rho)=\frac{1}{K}$，那么top-K以外的系统就给它们分配权重为0就行了。对于每个$W$，我们分配$P$个相关系统，按照经验，第i个系统的$\rho$值应该设为$\frac{i-1}{P}$</p>
 <p>其算法过程如下</p>
-<p><img src="/images/image-20200408113728405.png" /></p></li>
+<p><img src="/images/image-20200408113728405.png" alt=""></p>
+</li>
 </ol>
 
     </div>
@@ -307,8 +296,8 @@ s_0=1
       <i class="fa fa-chevron-left"></i> 基于自注意的Next Item推荐------论文阅读笔记
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/04/14/PS------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="Portfolio Selection------论文阅读笔记">
-      Portfolio Selection------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/04/12/Anticor------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="Anticor------论文阅读笔记">
+      Anticor------论文阅读笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -369,7 +358,7 @@ s_0=1
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">投资组合选择问题的相关驱动非参数学习方法------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corncorrelation-driven-nonparametric-learning-approach-for-portfolio-selection"><span class="nav-number">2.</span> <span class="nav-text">CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动机"><span class="nav-number">2.1.</span> <span class="nav-text">动机</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corn"><span class="nav-number">3.</span> <span class="nav-text">CORN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#算法"><span class="nav-number">3.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#组合方式"><span class="nav-number">3.2.</span> <span class="nav-text">组合方式</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">投资组合选择问题的相关驱动非参数学习方法———论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CORN：Correlation-Driven-Nonparametric-Learning-Approach-for-Portfolio-Selection"><span class="nav-number">2.</span> <span class="nav-text">CORN：Correlation-Driven Nonparametric Learning Approach for Portfolio Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动机"><span class="nav-number">2.1.</span> <span class="nav-text">动机</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CORN"><span class="nav-number">3.</span> <span class="nav-text">CORN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#算法"><span class="nav-number">3.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#组合方式"><span class="nav-number">3.2.</span> <span class="nav-text">组合方式</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -385,7 +374,7 @@ s_0=1
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
