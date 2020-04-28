@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="基于置信加权均值回归策略的在线投资组合选择------论文阅读笔记 Confidence Weighted Mean Reversion Strategy for Online Portfolio Selection 出发点 所有现存的策略都只利用到了投资组合向量的一阶信息，而投资组合分布的变化则利用了一阶和二阶信息，即均值和方差。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CWMR------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/03/30/CWMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="基于置信加权均值回归策略的在线投资组合选择------论文阅读笔记 Confidence Weighted Mean Reversion Strategy for Online Portfolio Selection 出发点 所有现存的策略都只利用到了投资组合向量的一阶信息，而投资组合分布的变化则利用了一阶和二阶信息，即均值和方差。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428154623.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428172928.png">
+<meta property="article:published_time" content="2020-03-30T02:43:00.000Z">
+<meta property="article:modified_time" content="2020-04-28T09:30:48.995Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428154623.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/03/30/CWMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>CWMR------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">15</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/30/CWMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CWMR------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-30 10:43:00" itemprop="dateCreated datePublished" datetime="2020-03-30T10:43:00+08:00">2020-03-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-28 17:30:48" itemprop="dateModified" datetime="2020-04-28T17:30:48+08:00">2020-04-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="基于置信加权均值回归策略的在线投资组合选择------论文阅读笔记">基于置信加权均值回归策略的在线投资组合选择------论文阅读笔记</h4>
+<h4 id="confidence-weighted-mean-reversion-strategy-for-online-portfolio-selection">Confidence Weighted Mean Reversion Strategy for Online Portfolio Selection</h4>
+<h5 id="出发点">出发点</h5>
+<p>所有现存的策略都只利用到了投资组合向量的一阶信息，而投资组合分布的变化则利用了一阶和二阶信息，即均值和方差。<a id="more"></a></p>
+<h5 id="在线投资组合选择策略">在线投资组合选择策略</h5>
+<p>给定一个目标策略集合<span class="math inline">\(\mathcal Q = \{Q^1,Q^2,\dots\}\)</span>,其中每一个原始代表一种在线策略，然后我们定义策略<span class="math inline">\(P\)</span>达到的最坏的例子的对数收益率（worst-case logarithmic wealth ratio）</p>
+<p><span class="math display">\[
+\mathbf W_n(P,\mathcal Q)=\mathop{\text{sup}}_{\mathbf x^n}\mathop{\text{sup}}_{\mathbf Q\in\mathcal Q}\text{ln}\frac{\mathbf S_n(Q,\mathbf x^n)}{\mathbf S_n(P,\mathbf x^n)}
+\]</span> 上述式子中可以选择任意策略作为目标策略。</p>
+<p>因为最优BRP策略是独立同分布的市场中的最优策略，所以它通常被选作目标策略。</p>
+<p>而上面选用CRP作为目标策略的情况下，worst-case logarithmic wealth ratio就变成了regret。从字面上理解就是当我们进行投资组合选择时，我们选择的策略如果不是最优策略，那我们就后悔啊，为啥不选择最优策略呢？而regret就是衡量当前策略与最优策略之间的差距。</p>
+<p><span class="math display">\[
+\text{regret}(P)=W_n(P,\mathcal B)=\mathop{\text{sup}}_{\mathbf x^n}\mathop{\text{sup}}_{B\in\triangle_m}\text{ln}\frac{\mathbf S_n(B,\mathbf x^n)}{\mathbf S_n(P,\mathbf x^n)}
+\]</span> 其中<span class="math inline">\(\mathbf S_n(B, \mathbf x^n)\)</span>代表的是CRP策略B达到的累积财富，而<span class="math inline">\(\text{sup}_{B\in \bigtriangleup_m}\mathbf S_n(B, \mathbf x^n)\)</span>就是一个位于单纯型域中的CRP策略即BCRP策略达到的财富。</p>
+<p>那么我们如何定义一个策略是universal的，用如下的公式</p>
+<p><span class="math display">\[
+\mathop{\text{lim}}_{n\rightarrow\infty}\frac{1}{n}W_n(P,\mathcal B)\le0
+\]</span></p>
+<h5 id="均值回归策略">均值回归策略</h5>
+<p>下面利用真实市场的数据来分析在真实市场中均值回归确实存在。</p>
+<ol type="1">
+<li><span class="math inline">\(A_t\)</span> 一组表现差的股票 <span class="math inline">\(x_{t,i}&lt;\delta\)</span></li>
+<li><span class="math inline">\(B_t\)</span> 一组均值回归股票 <span class="math inline">\(x_{t,i} &lt; \delta , x_{t+1,i} &gt; 1\)</span></li>
+<li><span class="math inline">\(C_t\)</span> 一组非均值回归股票 <span class="math inline">\(x_{t,i} &lt; \delta, x_{t+1,i} &lt; 1\)</span></li>
+<li><span class="math inline">\(D_t\)</span> 一组剩余的股票 <span class="math inline">\(x_{t,i} &lt; \delta, x_{t+1,i}=1\)</span></li>
+</ol>
+<p>接下来用如下公式表示一个集合<span class="math inline">\(U\)</span>的百分比，其中<span class="math inline">\(U\)</span>可以是A, B, C, D <span class="math display">\[
+P_t(U)=\frac{|U_t|}{|A_t|}
+\]</span> 在集合中进行统一投资获得的收益用如下公式表示 <span class="math display">\[
+G_t(U)=\frac{\sum_{i\in U_t}x_{ti}}{|U_t|}
+\]</span> 对于整个交易周期n，我们可以计算上述两个公式的平均值 <span class="math display">\[
+\bar P(u)=\frac{1}{n-1}\sum^{n-1}_{t=1}P_t(U)
+\]</span> <span class="math display">\[
+\bar G(U)=\frac{1}{n-1}\sum^{n-1}_{t=1}G_t(u)
+\]</span></p>
+<p>那么均值回归股票集合的百分比和收益分别就是<span class="math inline">\(\bar P(B),\bar G(B)\)</span>。</p>
+<p>为了证明购买表现不好的股票确实能够获利，我们需要计算对表现不好的股票进行统一投资的收益情况<span class="math inline">\(\bar G(A)\)</span>，和对整个市场进行统一投资的收益情况<span class="math inline">\(\bar G(Market)\)</span>。然后我们需要对不同的交易频度（high frequency, daily, weekly）进行评估，为了更公平的在不同交易频繁度间进行比较，用<span class="math inline">\(\bar G_{day}(A)\)</span>表示日回报。</p>
+<p>然后我们看到在八个数据集中的结果</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428154623.png" /></p>
+<p>其中DJA和NDX是high frequency data；NYSE(O), NYSE(N), TSE和MSCI是daily frequency data；W-NYSE(O)和W-NYSE(N)是weekly frequency data。</p>
+<p>从表中，首先看到具有均值回归特征的股票确实广泛存在<span class="math inline">\((\bar P(B) &gt; \bar P(C))\)</span>，并且对表现差的股票进行统一投资获得的收益比对市场进行统一投资获得的收益要高<span class="math inline">\((\bar G(A)&gt;\bar G(Market))\)</span>。其次我们还能看到<span class="math inline">\(\bar G_{day}(A)\)</span>在NYSE(O)上的值比W-NYSE(O)上的值要大，在NYSE(N)上的值比W-NYSE(N)上的值要大，所以利用均值回归特性在daily data 上比weekly data上能获得更多收益，并且在high frequency data 上还要更好。</p>
+<hr />
+<h4 id="本文重点cwmr">本文重点：CWMR</h4>
+<p>我们首先假设<span class="math inline">\(\mathbf b\)</span>是遵循对角高斯分布（高维）的：<span class="math inline">\(\mathbf b \sim \mathcal N(\mu,\Sigma)\)</span>。其中<span class="math inline">\(\mu \in \mathbb R^m\)</span>是均值，<span class="math inline">\(\Sigma\in\mathbb R^{m\times m}\)</span>是对角协方差矩阵，其中对角元素非零，非对角元素全为零。并且<span class="math inline">\(\mu\)</span>的第i个元素实际上就是<span class="math inline">\(\mathbf b\)</span>中的第i个元素，是一个比例，对角协方差矩阵中的第i个对角元素代表第i个比例的置信度。</p>
+<p>在第t周期的开始，我们根据分布计算<span class="math inline">\(\mathbf b\)</span>，然后当<span class="math inline">\(\mathbf x_t\)</span>知道后，我们就知道了财富增长因子<span class="math inline">\(D=\mathbf b^{\top}\mathbf x_t\)</span>，然后把这个财富增长因子看作是服从单变量高斯分布的随机变量 <span class="math display">\[
+D \sim \mathcal N(\mu^{\top}\mathbf x_t,\mathbf x^{\top}_t\Sigma\mathbf x_t)
+\]</span> 然后我们定义投资组合<span class="math inline">\(\mathbf b\)</span>盈利的可能性</p>
+<p><span class="math display">\[
+\mathbf{Pr}_{\mathbf b\sim\mathcal N(\mu,\Sigma)}[\mathbf D\le\epsilon]=\mathbf{Pr}_{\mathbf b\sim\mathcal N(\mu,\Sigma)}[\mathbf b^{\top}\mathbf x_t\le\epsilon]
+\]</span> 让我来解释一下上面这个式子</p>
+<blockquote>
+<p>其实就是说该投资组合在当前周期，也就是t周期时增长因子是小于一个阈值的<span class="math inline">\((\mathbf b^{\top}\mathbf x_t \le \epsilon)\)</span>，这时候我们想象得到当前的投资组合<span class="math inline">\(\mathbf b\)</span>肯定是大部分资金投资于表现差的股票，少部分资金投资于表现好的股票，所以导致了该投资组合在当前周期的回报达不到我们的期望，但是根据均值回归思想，如果我们在<span class="math inline">\(t+1\)</span>周期继续使用该投资组合，那么就相当于我们在<span class="math inline">\(t+1\)</span>周期买入了大量表现差的股票，少量表现好的股票，而在<span class="math inline">\(t+1\)</span>周期股票价格再一回归，表现差的股票开始表现好，表现好的股票开始表现差，那么我们就能在<span class="math inline">\(t+1\)</span>周期获得较好的收益。</p>
+</blockquote>
+<p>然后算法调整分布以确保投资组合<span class="math inline">\(\mathbf b\)</span>的均值回归收益的可能性高于一个置信水平参数<span class="math inline">\(\theta\in[0,1]\)</span> <span class="math display">\[
+\text{Pr}\left[\mathbf b^{\top}\mathbf x_t \le \epsilon\right]\ge \theta
+\]</span> 如果投资组合回报<span class="math inline">\(\mathbf b^{\top}\mathbf x_t\)</span>有很高的概率小于一个阈值，那么下次回报就有很高的概率更高，因为价比<span class="math inline">\(\mathbf x_{t+1}\)</span>遵循均值回归。</p>
+<p>我们的算法思想就是尽量计算出一个分布接近当前分布也就是真实分布<span class="math inline">\(\mathcal N(\mu_t,\Sigma_t)\)</span>。这其实是KL散度的思想。</p>
+<blockquote>
+<p>KL散度也叫相对熵，用来衡量两个概率分布之间的差异，比如一个是真实分布<span class="math inline">\(p(x)\)</span>，一个是计算近似分布<span class="math inline">\(q(x)\)</span>，其相对熵计算公式如下： <span class="math display">\[
+\text{KL}(p||q)=-\int p(x)\text{ln}q(x)dx-\left(-\int p(x)\text{ln}p(x)d(x)\right)
+\]</span> 注意到<span class="math inline">\(\text{KL}(p||q)\not \equiv \text{KL}(q||p)\)</span>，并且<span class="math inline">\(\text{KL}(p||q)\ge0\)</span>，当且仅当<span class="math inline">\(p(x)=q(x)\)</span>时取等号。</p>
+<p>KL散度的前半部分<span class="math inline">\(-\int p(x)\text{ln}q(x)dx\)</span>就是交叉熵，而后半部分由于<span class="math inline">\(p(x)\)</span>是真实分布，是固定的，所有后面半部分是一个常数。</p>
+</blockquote>
+<p>下面给出CWMR的优化问题</p>
+<p><span class="math display">\[
+(\mu_{t+1},\Sigma_{t+1})=\text{argmin}D_{KL}(\mathcal N(\mu,\Sigma)\|\mathcal N(\mu_t,\Sigma_t))\quad s.t.\quad \mathbf{Pr}[\mathbf b^{\top}\mathbf x_t\le\epsilon]\ge\theta\quad \mu\in\triangle_m
+\]</span> 解释一下上面的式子，如果当前的<span class="math inline">\(\mu_t\)</span>是均值回归可获利的，那么就相当于满足第一个约束：有很高的概率财富增长因子小于我们预定义的阈值。那么CWMR就会保持原来的分布，然后如果不满足约束的话，CWMR就会计算出一个新的可能获利的分布，并且使新的分布和当前分布差异最小化，即KL散度最小。</p>
+<p>这里的KL散度是用如下公式计算的</p>
+<p><span class="math display">\[
+D_{KL}(\mathcal N(\mu,\Sigma)\|\mathcal N(\mu_t,\Sigma_t))=\frac{1}{2}\left(\text{log}\left(\frac{det\Sigma_t}{det\Sigma}\right)+\text{Tr}(\Sigma^{-1}_t\Sigma)+(\mu_t-\mu)^{\top}\Sigma^{-1}_t(\mu_t-\mu)-d\right)
+\]</span> 而目标优化问题后面的约束</p>
+<p>我们稍微变换一下</p>
+<p><span class="math display">\[
+\mathbf{Pr}[D\le\epsilon]=\mathbf{Pr}\left[\frac{D-\mu_D}{\sigma_D}\le\frac{\epsilon-\mu_D}{\sigma_D}\right]
+\]</span> 其中<span class="math inline">\(\mu_D=\mu^{\top}\mathbf x_t\)</span>，<span class="math inline">\(\sigma^2_D=\mathbf x_t^{\top}\Sigma\mathbf x_t\)</span>。</p>
+<p>之所以这样变换是因为<span class="math inline">\(\frac{D-\mu_D}{\sigma_D}\)</span>是一个正态分布的随机变量，那么后面这个概率就等价于高斯分布的累积分布函数<span class="math inline">\(\Phi(\frac{\epsilon-\mu_D}{\sigma_D})\)</span>。所以 <span class="math display">\[
+\text{Pr}\left[\mathbf b^{\top}\mathbf x_t \le \epsilon\right]\ge \theta\Longrightarrow\Phi(\frac{\epsilon-\mu_D}{\sigma_D})\ge\theta
+\]</span> 所以就有 <span class="math display">\[
+\frac{\epsilon-\mu_D}{\sigma_D}\ge\Phi^{-1}(\theta)\\\epsilon-\mu^{\top}\mathbf x_t\ge\phi\sqrt{\mathbf x^{\top}\Sigma\mathbf x_t}
+\]</span> 其中<span class="math inline">\(\phi = \Phi^{-1}(\theta)\)</span>。</p>
+<p>现在我们得到了改写后的CWMR优化问题</p>
+<p><span class="math display">\[
+(\mu_{t+1},\Sigma_{t+1})=\text{argmin}\frac{1}{2}\left(\text{log}\left(\frac{det\Sigma_t}{det\Sigma}\right)+\text{Tr}(\Sigma^{-1}_t\Sigma)+(\mu_t-\mu)^{\top}\Sigma^{-1}_t(\mu_t-\mu)\right)
+\]</span></p>
+<p><span class="math display">\[
+such\ that\quad \epsilon-\mu^{\top}\mathbf x_t\ge\phi\sqrt{\mathbf x^{\top}_t\Sigma\mathbf x_t}\quad\mu^{\top}\mathbf 1=1,\mu\ge0
+\]</span></p>
+<p>对于上述的优化问题，第一个约束不是凸的，因此我们有两种方式来解决</p>
+<ol type="1">
+<li><p><strong>CWMR-Var</strong></p>
+<p>直接去掉平方根</p>
+<p><span class="math display">\[
+(\mu_{t+1},\Sigma_{t+1})=\text{argmin}\frac{1}{2}\left(\text{log}\left(\frac{det\Sigma_t}{det\Sigma}\right)+\text{Tr}(\Sigma^{-1}_t\Sigma)+(\mu_t-\mu)^{\top}\Sigma^{-1}_t(\mu_t-\mu)\right)
+\]</span></p>
+<p><span class="math display">\[
+such\ that\quad \epsilon-\mu^{\top}\mathbf x_t\ge\phi\mathbf x^{\top}_t\Sigma\mathbf x_t\quad\mu^{\top}\mathbf 1=1,\mu\ge0
+\]</span></p></li>
+<li><p><strong>CWMR-Stdev</strong></p>
+<p>令<span class="math inline">\(\Sigma = \Upsilon^2,\Upsilon=Q\text{diag}(\lambda_1^{1/2},\dots,\lambda_m^{1/2})Q^{\top}\)</span>其中<span class="math inline">\(Q\)</span>是正交矩阵，$_1,_m <span class="math inline">\(是\)</span>$的特征值。</p>
+<p><span class="math display">\[
+(\mu_{t+1},\Sigma_{t+1})=\text{argmin}\frac{1}{2}\left(\text{log}\left(\frac{det\Sigma_t}{det\Sigma}\right)+\text{Tr}(\Sigma^{-1}_t\Sigma)+(\mu_t-\mu)^{\top}\Sigma^{-1}_t(\mu_t-\mu)\right)
+\]</span></p>
+<p><span class="math display">\[
+such\ that\quad \epsilon-\mu^{\top}\mathbf x_t\ge\phi\|\Upsilon\mathbf x_t\|,\quad \Upsilon \ is\ PSD\quad\mu^{\top}\mathbf 1=1,\mu\ge0
+\]</span></p></li>
+</ol>
+<h5 id="目标函数求解">目标函数求解</h5>
+<ol type="1">
+<li><p><strong>CWMR-Var</strong></p>
+<p>该优化问题的解如下</p>
+<p><span class="math display">\[
+\mu_{t+1}=\mu_t-\lambda_{t+1}\Sigma_t(\mathbf x_t-\bar x_t\mathbf 1),\quad \Sigma^{-1}_{t+1}=\Sigma^{-1}_t+2\lambda_{t+1}\phi\mathbf x_t\mathbf x_t^{\top}
+\]</span> 其中<span class="math inline">\(\lambda_{t+1}\)</span>是拉格朗日乘数，<span class="math inline">\(\bar x_t=\frac{\mathbf 1^{\top}\Sigma_t\mathbf x_t}{\mathbf 1^{\top}\Sigma_t\mathbf 1}\)</span>是<span class="math inline">\(\mathbf x_t\)</span>的置信加权平均。</p>
+<p><strong>Proof：</strong></p>
+<p>该问题的拉格朗日函数如下</p>
+<p><span class="math display">\[
+\begin{aligned}\mathcal L&amp;=\frac{1}{2}\left(\text{log}\left(\frac{det\Sigma_t}{det\Sigma}\right)+\text{Tr}(\Sigma^{-1}_t\Sigma)+(\mu_t-\mu)^{\top}\Sigma^{-1}_t(\mu_t-\mu)\right)\\&amp;+\lambda(\phi\mathbf x^{\top}_{t}\Sigma\mathbf x_t+\mu^{\top}\mathbf x_t-\epsilon)+\eta(\mu^{\top}\mathbf 1-1)
+\end{aligned}
+\]</span> 让后用该拉格朗日函数对参数<span class="math inline">\(\mu\)</span>求梯度，并令其为0，得到<span class="math inline">\(\mu\)</span>，并把它作为下一周期的高斯分布均值</p>
+<p><span class="math display">\[
+0=\frac{\partial{\mathcal L}}{\partial\mu}=\Sigma^{-1}_{t}(\mu-\mu_t)+\lambda\mathbf x_t+\eta\mathbf 1\quad\Longrightarrow\quad\mu_{t+1}=\mu_t-\Sigma_t(\lambda\mathbf x_t+\eta\mathbf 1)
+\]</span> 然后两边同时乘<span class="math inline">\(\mathbf 1^{\top}\)</span>得到</p>
+<p><span class="math display">\[
+1=1-\mathbf 1^{\top}\Sigma_t(\lambda\mathbf x_t+\eta\mathbf 1)\quad \Longrightarrow\quad\eta=-\lambda\bar x_t
+\]</span> 其中<span class="math inline">\(\bar x_t=\frac{\mathbf 1^{\top}\Sigma_t\mathbf x_t}{\mathbf 1^{\top}\Sigma_t\mathbf 1}\)</span>代表第t个价比的置信加权平均</p>
+<p>然后我们把上面的<span class="math inline">\(\eta\)</span>代入到<span class="math inline">\(\mu_{t+1}=\mu_t-\Sigma_t(\lambda\mathbf x_t+\eta\mathbf 1)\)</span>得到</p>
+<p><span class="math display">\[
+\mu_{t+1}=\mu_t-\lambda\Sigma_t(\mathbf x_t-\bar x_t\mathbf 1)
+\]</span> 然后我们再对参数<span class="math inline">\(\Sigma\)</span>求梯度并令其为0得到<span class="math inline">\(\Sigma\)</span>，并把它作为下个周期的高斯分布协方差矩阵</p>
+<p><span class="math display">\[
+0=\frac{\partial{\mathcal L}}{\partial\Sigma}=-\frac{1}{2}\Sigma^{-1}+\frac{1}{2}\Sigma^{-1}_{t}+\lambda\phi\mathbf x_t\mathbf x_t^{\top}\quad\Longrightarrow\quad\Sigma^{-1}_{t+1}=\Sigma^{-1}_t+2\lambda\phi\mathbf x_t\mathbf x_t^{\top}
+\]</span> 上面还只是求出了协方差矩阵的逆，然后我们还需要将其逆一下，得到原本的协方差矩阵，我们用Woodbury恒等式来计算</p>
+<blockquote>
+<p>伍德伯里（Woodbury）矩阵恒等式 <span class="math display">\[
+(A + UCV)^{-1}=A^{-1}-A^{-1}U(C^{-1}+VA^{-1}U)^{-1}VA^{-1}
+\]</span></p>
+</blockquote>
+<p>注意到此时 <span class="math display">\[
+A=\Sigma^{-1}_t,U=2\lambda\phi\mathbf x_t,C=\mathbf 1,V=\mathbf x^{\top}_{t}
+\]</span> 得到</p>
+<p><span class="math display">\[
+\Sigma_{t+1}=\left(\Sigma^{-1}_{t}+2\lambda\phi\mathbf x_t\mathbf x_t^{\top}\right)^{-1}=\Sigma_t-\Sigma_t\mathbf x_t\frac{2\lambda\phi}{1+2\lambda\phi\mathbf x_t^{\top}\Sigma_t\mathbf x_t }\mathbf x_t^{\top}\Sigma_t
+\]</span> 最后我们用KKT条件解决拉格朗日乘子<span class="math inline">\(\lambda_{t+1}\)</span>，有关KKT条件可以参考网站<a href="https://zhuanlan.zhihu.com/p/38163970" target="_blank" rel="noopener">KKT条件</a>。</p>
+<p>因为目标函数中的约束<span class="math inline">\(\epsilon - \mu^{\top}\mathbf x_t\ge\phi\mathbf x^{\top}_t\Sigma\mathbf x_t\)</span>，把<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\Sigma\)</span>代入并取等号得</p>
+<p><span class="math display">\[
+\epsilon-(\mu_t-\lambda\Sigma_t(\mathbf x_t-\bar x_t\mathbf 1))\cdot\mathbf x_t=\phi\left(\mathbf x^{\top}_t\left(\Sigma_t-\Sigma_t\mathbf x_t\frac{2\lambda\phi}{1+2\lambda\phi\mathbf x_t^{\top}\Sigma_t\mathbf x_t }\mathbf x_t^{\top}\Sigma_t\right)\mathbf x_t\right)
+\]</span> 为了让式子变得更简单，更利于计算，我们定义 <span class="math display">\[
+M_t=\mu^{\top}\mathbf x_t\\
+V_t=\mathbf x^{\top}_t\Sigma_t\mathbf x_t\\
+W_t=\mathbf x^{\top}_t\Sigma_t\mathbf 1
+\]</span> 然后简化上面的式子</p>
+<p><span class="math display">\[
+\lambda^2(2\phi V^2_t-2\phi\bar x_t V_t W_t)+\lambda(2\phi\epsilon V_t-2\phi V_t W_t+ V_t-\bar x_t W_t)+(\epsilon- M_t-\phi V_t)=0
+\]</span> 显然上面有点像关于<span class="math inline">\(\lambda\)</span>的一个二次方程，为了便于我们求根，把前面的参数用简单的符号表示 <span class="math display">\[
+a=2\phi V_t^2-2\phi\bar x_tV_tW_t\\
+b=2\phi\epsilon V_t-2\phi V_tM_t+V_t-\bar x_tW_t\\
+c=\epsilon-M_t-\phi V_t
+\]</span> 但是我们不知道这个方程到底是有2个实根还是1个实根还是0个实根。</p>
+<p>如果有两个实根 <span class="math display">\[
+\gamma_{t1}=\frac{-b + \sqrt{b^2-4ac}}{2a}\\
+\gamma_{t2}=\frac{-b - \sqrt{b^2-4ac}}{2a}
+\]</span> 如果只有一个实根 <span class="math display">\[
+\gamma_{t3}=-\frac{c}{b}
+\]</span></p>
+<blockquote>
+<p>其实这里我觉得应该是<span class="math inline">\(\gamma_{t3}=-\frac{b}{2a}\)</span>，或者是<span class="math inline">\(\gamma_{t3}= -\frac{2c}{b}\)</span>。</p>
+</blockquote>
+<p>最后把拉格朗日乘数<span class="math inline">\(\lambda\)</span>投影到<span class="math inline">\([0,+\infty)\)</span>，</p>
+<p><span class="math display">\[
+\lambda=\text{max}\{\gamma_{t1},\gamma_{t2},0\},\quad or \quad\lambda=\text{max}\{\gamma_{t3},0\},\quad or\quad \lambda = 0
+\]</span> 上述三个式子分别代表具有2个实根，1个实根，和0个实根的情况</p>
+<p>最后在实际计算中，因为我们只采用了协方差矩阵的对角元素，所以最后更新采用如下式子</p>
+<p><span class="math display">\[
+\Sigma^{-1}_{t+1}=\Sigma^{-1}_{t}+2\lambda\phi\text{diag}^2(\mathbf x_t)
+\]</span></p></li>
+<li><p><strong>CWMR-Stdev</strong></p>
+<p>该优化问题的解如下</p>
+<p><span class="math display">\[
+\mu_{t+1}=\mu_t-\lambda_{t+1}\Sigma_t(\mathbf x_t-\bar x_t\mathbf 1),\quad\Sigma^{-1}_{t+1}=\Sigma^{-1}_t+\lambda_{t+1}\phi\frac{\mathbf x_t\mathbf x_t^{\top}}{\sqrt{U_t}}
+\]</span> 其中<span class="math inline">\(\lambda_{t+1}\)</span>代表拉格朗日乘数，<span class="math inline">\(\bar x_t=\frac{\mathbf 1^{\top}\Sigma_t\mathbf x_t}{\mathbf 1^{\top}\Sigma_t\mathbf 1}\)</span>代表<span class="math inline">\(\mathbf x_t\)</span>的置信加权平均，<span class="math inline">\(V_t=\mathbf x_t^{\top}\Sigma\mathbf x_t\)</span>代表第<span class="math inline">\(t\)</span>周期的收益方差，<span class="math inline">\(\sqrt U_t=\frac{-\lambda_{t+1}\phi V_t+\sqrt{\lambda_{t+1}^2\phi ^2V_t^2+4V_t}}{2}\)</span>代表第<span class="math inline">\(t+1\)</span>周期的收益方差。</p></li>
+</ol>
+<p><strong>Proof：</strong></p>
+<p>和上面的证法其实是差不多的，其拉格朗日函数形式如下：</p>
+<p><span class="math display">\[
+   \begin{aligned}\mathcal L&amp;=\frac{1}{2}\left(\text{log}\left(\frac{det\Upsilon^2_t}{det\Upsilon^2}\right)+\text{Tr}(\Upsilon^{-2}_t\Upsilon^2)+(\mu_t-\mu)^{\top}\Upsilon^{-2}_t(\mu_t-\mu)\right)\\&amp;+\lambda(\phi\|\Upsilon\mathbf x_t\|+\mu^{\top}\mathbf x_t-\epsilon)+\eta(\mu^{\top}\mathbf 1-1)
+\end{aligned}
+   \]</span> 然后对参数<span class="math inline">\(\mu\)</span>求偏导，并令其为0，得到<span class="math inline">\(\mu_{t+1}\)</span></p>
+<p><span class="math display">\[
+   0=\frac{\partial{\mathcal L}}{\partial\mu}=\Upsilon^{-2}_{t}(\mu-\mu_t)+\lambda\mathbf x_t+\eta\mathbf 1\quad\Longrightarrow\quad\mu_{t+1}=\mu_t-\Upsilon^2_t(\lambda\mathbf x_t+\eta\mathbf 1)
+\]</span> 两边同时乘<span class="math inline">\(\mathbf 1^{\top}\)</span>得到</p>
+<p><span class="math display">\[
+1=1-\mathbf 1^{\top}\Upsilon^2_t(\lambda\mathbf x_t+\eta\mathbf 1)\quad \Longrightarrow\quad\eta=-\lambda\bar x_t
+   \]</span> 其中<span class="math inline">\(\bar x_t=\frac{\mathbf 1^{\top}\Sigma_t\mathbf x_t}{\mathbf 1^{\top}\Sigma_t\mathbf 1}\)</span>，然后将<span class="math inline">\(\eta\)</span>代入到<span class="math inline">\(\mu_{t+1}\)</span>中得到</p>
+<p><span class="math display">\[
+   \mu_{t+1}=\mu_t-\lambda\Upsilon^2_t(\mathbf x_t-\bar x_t\mathbf 1)
+\]</span> 然后对参数<span class="math inline">\(\Upsilon\)</span>求偏导并令其为0</p>
+<p><span class="math display">\[
+0=\frac{\partial{\mathcal L}}{\partial\Upsilon}=-\Upsilon^{-1}+\frac{1}{2}\Upsilon^{-2}_{t}\Upsilon+\frac{1}{2}\Upsilon\Upsilon^{-2}_t+\lambda\phi\frac{\mathbf x_t\mathbf x_t^{\top}\Upsilon}{2\sqrt{\mathbf x^{\top}_{t}\Upsilon^2\mathbf x_t}}+\lambda\phi\frac{\Upsilon\mathbf x_t\mathbf x_t^{\top}}{2\sqrt{\mathbf x_t^{\top}\Upsilon^2\mathbf x_t}}
+   \]</span> 然后从上面的等式解得</p>
+<p><span class="math display">\[
+   \Upsilon^{-2}_{t+1}=\Upsilon^{-2}_t+\lambda\phi\frac{\mathbf x_t\mathbf x_t^{\top}}{\sqrt{\mathbf x_t^{\top}\Upsilon^2_{t+1}\mathbf x_t}}
+\]</span> 因为<span class="math inline">\(\Sigma=\Upsilon^2\)</span>，所以上面得到的<span class="math inline">\(\mu_{t+1}\)</span>和<span class="math inline">\(\Upsilon^{-2}_{t+1}\)</span>更新等式用协方差矩阵表示如下</p>
+<p><span class="math display">\[
+   \mu_{t+1}=\mu_t-\lambda\Sigma_t(\mathbf x_t-\bar x_t\mathbf 1),\quad\Sigma^{-1}_{t+1}=\Sigma^{-1}_t+\lambda\phi\frac{\mathbf x_t\mathbf x_t^{\top}}{\sqrt{\mathbf x_t^{\top}\Sigma_{t+1}\mathbf x_t}}
+   \]</span> 上面还只是求出了协方差矩阵的逆，然后我们还需要将其逆一下，得到原本的协方差矩阵，我们用Woodbury恒等式来计算</p>
+<p><span class="math display">\[
+   \Sigma_{t+1}=\Sigma_t-\Sigma_t\mathbf x_t\left(\frac{\lambda\phi}{\sqrt{\mathbf x_t^{\top}\Sigma_{t+1}\mathbf x_t}+\lambda\phi\mathbf x_t^{\top}\Sigma_t\mathbf x_t}\right)\mathbf x_t^{\top}\Sigma_t
+   \]</span> 将上面的式子左右两边同时左乘<span class="math inline">\(\mathbf x_t^{\top}\)</span>，右乘<span class="math inline">\(\mathbf x_t\)</span>，并且定义 <span class="math display">\[
+   M_t=\mu^{\top}\mathbf x_t\\
+V_t=\mathbf x^{\top}_t\Sigma_t\mathbf x_t\\
+   W_t=\mathbf x^{\top}_t\Sigma_t\mathbf 1\\U_t=\mathbf x_t^{\top}\Sigma_{t+1}\mathbf x_t
+\]</span> 得到 <span class="math display">\[
+   U_t=V_t-V_t\left(\frac{\lambda\phi}{\sqrt{U_t}+\lambda\phi V_t}\right)V_t
+   \]</span> 解得</p>
+<p><span class="math display">\[
+\sqrt{U_t}=\frac{-\lambda\phi V_t+\sqrt{\lambda^2\phi^2V_t^2+4V_t}}{2}
+   \]</span> 最后我们用KKT条件解决拉格朗日乘子<span class="math inline">\(\lambda_{t+1}\)</span>，有关KKT条件可以参考网站<a href="https://zhuanlan.zhihu.com/p/38163970" target="_blank" rel="noopener">KKT条件</a>。</p>
+<p>因为目标函数中的约束<span class="math inline">\(\epsilon-\mu^{\top}\mathbf x_t\ge\phi\|\Upsilon\mathbf x_t\|\)</span>，又 <span class="math display">\[
+   \sqrt U_t=\sqrt {\mathbf x_t^{\top}\Sigma_{t+1}\mathbf x_t}=\sqrt{\mathbf x_t^{\top}\Upsilon^2\mathbf x_t}=\|\Upsilon\mathbf x_t\|
+   \]</span> 所以将<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\sqrt{U_t}\)</span>代入并整理式子得到一个关于<span class="math inline">\(\lambda\)</span>的一元二次方程</p>
+<p><span class="math display">\[
+   \lambda^2\left(\left(V_t-\bar x_tW_t+\frac{\phi^2V_t}{2}\right)^2-\frac{\phi^4V_t^2}{4}\right)+2\lambda(\epsilon-M_t)\left(V_t-\bar x_tW_t+\frac{\phi^2V_t}{2}\right)+(\epsilon-M_t)^2-\phi^2V_t=0
+   \]</span> 为了便于求根，我们把参数用简单符号表示 <span class="math display">\[
+   a= \left(V_t-\bar x_tW_t+\frac{\phi^2V_t}{2}\right)^2-\frac{\phi^4V_t^2}{4}\\
+b=2(\epsilon-M_t)\left(V_t-\bar x_tW_t+\frac{\phi^2V_t}{2}\right)\\
+   c=(\epsilon-M_t)^2-\phi^2V_t
+\]</span> 同样的，如果有两个实根 <span class="math display">\[
+   \gamma_{t1}=\frac{-b + \sqrt{b^2-4ac}}{2a}\\
+\gamma_{t2}=\frac{-b - \sqrt{b^2-4ac}}{2a}
+   \]</span> 如果有一个实根 <span class="math display">\[
+\gamma_{t3}=-\frac{c}{b}
+   \]</span></p>
+<blockquote>
+<p>还是一样的问题，这里我觉得应该是<span class="math inline">\(\gamma_{t3}=-\frac{b}{2a}\)</span>，或者是<span class="math inline">\(\gamma_{t3}= -\frac{2c}{b}\)</span>。</p>
+</blockquote>
+<p>最后把拉格朗日乘数<span class="math inline">\(\lambda\)</span>投影到<span class="math inline">\([0,+\infty)\)</span>，</p>
+<p><span class="math display">\[
+   \lambda=\text{max}\{\gamma_{t1},\gamma_{t2},0\},\quad or \quad\lambda=\text{max}\{\gamma_{t3},0\},\quad or\quad \lambda = 0
+   \]</span> 上述三个式子分别代表具有2个实根，1个实根，和0个实根的情况</p>
+<p>最后我们更新对角协方差矩阵方式如下</p>
+<p><span class="math display">\[
+   \Sigma^{-1}_{t+1}=\Sigma^{-1}_t+\lambda\frac{\phi}{\sqrt{U_t}}\text{diag}^2(\mathbf x_t)
+   \]</span> 其中<span class="math inline">\(\text{diag}(\mathbf x_t)\)</span>代表主对角线上的元素为<span class="math inline">\(\mathbf x_t\)</span>的对角矩阵。</p>
+<h5 id="cwmr算法">CWMR算法</h5>
+<p>那么最终的算法流程如下</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200428172928.png" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" rel="tag"># 量化投资</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="基于2D卷积神经网络的序列化推荐------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 基于2D卷积神经网络的序列化推荐------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/04/%E5%9F%BA%E4%BA%8E%E8%87%AA%E6%B3%A8%E6%84%8F%E7%9A%84Next%20Item%20%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="基于自注意的Next Item推荐------论文阅读笔记">
+      基于自注意的Next Item推荐------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于置信加权均值回归策略的在线投资组合选择------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于置信加权均值回归策略的在线投资组合选择------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#confidence-weighted-mean-reversion-strategy-for-online-portfolio-selection"><span class="nav-number">2.</span> <span class="nav-text">Confidence Weighted Mean Reversion Strategy for Online Portfolio Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#出发点"><span class="nav-number">2.1.</span> <span class="nav-text">出发点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在线投资组合选择策略"><span class="nav-number">2.2.</span> <span class="nav-text">在线投资组合选择策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#均值回归策略"><span class="nav-number">2.3.</span> <span class="nav-text">均值回归策略</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文重点cwmr"><span class="nav-number">3.</span> <span class="nav-text">本文重点：CWMR</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#目标函数求解"><span class="nav-number">3.1.</span> <span class="nav-text">目标函数求解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cwmr算法"><span class="nav-number">3.2.</span> <span class="nav-text">CWMR算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>
