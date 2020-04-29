@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="RMR（new）------论文阅读笔记 Robust median reversion strategy for online portfolio selection 在线投资组合两个主要的数学模型  均值方差模型（mean-variance model） 权衡投资组合的期望回报（mean）和风险（标准差），这一模型适合于单周期投资组合选择问题。 资金增长理论（Kelly inves">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RMR（new）------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/02/14/RMR%EF%BC%88new%EF%BC%89------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="RMR（new）------论文阅读笔记 Robust median reversion strategy for online portfolio selection 在线投资组合两个主要的数学模型  均值方差模型（mean-variance model） 权衡投资组合的期望回报（mean）和风险（标准差），这一模型适合于单周期投资组合选择问题。 资金增长理论（Kelly inves">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143643.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143657.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143711.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143726.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143748.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429144142.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429144158.png">
+<meta property="article:published_time" content="2020-02-14T05:23:00.000Z">
+<meta property="article:modified_time" content="2020-04-29T06:45:12.115Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143643.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/02/14/RMR%EF%BC%88new%EF%BC%89------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>RMR（new）------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">20</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/02/14/RMR%EF%BC%88new%EF%BC%89------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RMR（new）------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-14 13:23:00" itemprop="dateCreated datePublished" datetime="2020-02-14T13:23:00+08:00">2020-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-29 14:45:12" itemprop="dateModified" datetime="2020-04-29T14:45:12+08:00">2020-04-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="rmrnew------论文阅读笔记">RMR（new）------论文阅读笔记</h4>
+<h4 id="robust-median-reversion-strategy-for-online-portfolio-selection">Robust median reversion strategy for online portfolio selection</h4>
+<h5 id="在线投资组合两个主要的数学模型">在线投资组合两个主要的数学模型</h5>
+<ol type="1">
+<li><p>均值方差模型（mean-variance model）</p>
+<p>权衡投资组合的期望回报（mean）和风险（标准差），这一模型适合于单周期投资组合选择问题。</p></li>
+<li><p>资金增长理论（Kelly investment）</p>
+<p>最大化投资组合的期望对数回报，这一模型适合于多周期投资组合选择问题。</p></li>
+</ol>
+<p>最先进的一些技术假设当前表现好的股票在下一个交易日会继续表现良好。然而，实际证明通常这种趋势并不是普遍现象，特别在短期时间内更是违背了上述假设。那么基于此观察，我们提出一种策略就是买入表现不佳的股票，并卖出表现好的股票，这就是著名的”<strong>均值回归原则</strong>“<a id="more"></a></p>
+<h5 id="存在的问题">存在的问题</h5>
+<ol type="1">
+<li>由于一些数据集有噪声和离群值，而均值回归策略并未完全解决这些问题，所以基于均值回归策略的一些方法会表现不好。</li>
+<li>单周期的假设也导致估计误差，从而使其表现不那么令人满意。</li>
+</ol>
+<h5 id="提出的新方法rmr">提出的新方法：RMR</h5>
+<p>RMR是基于多周期的在线投资组合选择策略，意思是鲁棒性的中值回归（Robust Median Reversion）其基本思想就是利用具有鲁棒性的L<sub>1</sub>中值估计，明确的估计下次价比并且比传统的简单均值估计效果要更好。</p>
+<p>优点：1.对不同的参数设置具有鲁棒性；2.并且能够承受高额的交易成本；3.并且对于股票数量和交易周期具有线性复杂度，所以适合大规模应用。</p>
+<h5 id="问题设置大多数论文都一样就不解释了">问题设置（大多数论文都一样就不解释了）</h5>
+<p><strong>假设：</strong>1. 不允许自筹资金和保证金交易或者空头交易，也就是说投资组合的每一项都是非负的而且加起来要等于1。2.假设没有交易费和税费。3.假设一个人可以以任意给定的交易周期的最后收盘价买卖任意数量的股票。4.假设投资组合策略对市场行为没有影响。</p>
+<p>注意以上的这些假设当然是不重要的，许多现存的工作都有对其进行解释。</p>
+<p><strong>目标：</strong>选择一个投资组合<span class="math inline">\(\mathbf b_1^n\)</span>使得累计财富<span class="math inline">\(S_n\)</span>最大。</p>
+<p><strong>在线(online):</strong>这里解释一下在线投资组合选择问题中的在线是什么意思，BAH和CRP对应的都有一个Best-stock和BCRP，其实Best-sock和BCRP都是事后看来的策略，就是说用不同的投资组合<span class="math inline">\(\mathbf b\)</span>来进行投资，最后我们看选用什么样的<span class="math inline">\(\mathbf b\)</span>是最好的。而在线投资组合的问题，是在线计算最优策略的，而不是这种事后诸葛亮的做法。</p>
+<h5 id="相关技术分类">相关技术分类</h5>
+<ol type="1">
+<li><p>利用拥有统一概率的历史价比来估计下一价比：SCRP和ONS</p>
+<p><strong>SCRP(successive Constantly Rebalanced Portfolios)：</strong>SCRP和BCRP能达到比较接近的财富增长，但是在投资组合上SCRP却有更好的性能（不太懂），因为它明确的考虑了可能出现的非平稳市场的行为。</p>
+<p><strong>ONS(Online Newton Step)：</strong>ONS主要是近似的使用历史价比，主要目的是最大化期望对数累积财富并且最小化预期投资组合的变化。</p></li>
+<li><p>通过一组相似的历史价比来预测下次价比：B<sup>K</sup>、B<sup>NN</sup>和CORN。这些策略通常包含两个步骤：pattern matching step（选择相似价比）和portfolio optimization step（构建最优投资组合）。</p>
+<p><strong>B<sup>K</sup>(Nonparametric Kernel based moving window)：</strong>用欧几里得距离比较模式的相似度，然后以获得的价比像BCRP一样构造最优投资组合。</p>
+<p><strong>B<sup>NN</sup>(Nonparametric Nearest Neighbor)：</strong>通过最近邻方法获得一系列价比。</p>
+<p><strong>CORN(Correlation-driven Nonparametric learning)：</strong>通过相关性测量相似度。</p></li>
+<li><p>通过单值预测来预测下次价比：EG、PAMR、CWMR和OLMAR。</p>
+<p><strong>EG(Exponential Gradient)：</strong>把已知的最后一次价比作为下一次价比。</p>
+<p><strong>PAMR(Passive Aggressive Mean Reversion)：</strong>把已知的最后一次价比的倒数作为下一次价比。</p>
+<p><strong>CWMR(Confidence Weighted Mean Reversion)：</strong>和PAMR一样，也是把已知的最后一次价比作为下一次价比。这两个方法实质上是均值回归原则的体现。</p>
+<p><strong>OLAMAR(Online Moving Average Reversion)：</strong>用一个移动窗口内价格的平均值来预测下次价比并且利用了多周期均值回归。</p></li>
+<li><p>一些算法不关注于估计，无论是显式的还是隐式的：UP、Anticor。</p>
+<p><strong>UP(Universal Portfolios)：</strong>所有CRP的历史表现的加权平均值。</p>
+<p><strong>Anticor(Anti-Correlation)：</strong>采用正互相关和负自相关来调整投资组合。</p></li>
+<li><p>还有一些算法关注交易费：OLU(Online lazy updatas)、OLU-GS(Oline lazy updats with group sparsity)、SCRP(Semi-Constant rebalanced portfolio)、SUP(Semi-Universal portfolios)</p></li>
+</ol>
+<h5 id="kelly-portfolio">Kelly portfolio</h5>
+<p>首先预测下一价比<span class="math inline">\(\hat {\mathbf x}_{t+1}\)</span>，有k个可能的值<span class="math inline">\(\hat {\mathbf x}_{t+1}^1,\dots,\hat {\mathbf x}_{t+1}^k\)</span>并且相应的概率为<span class="math inline">\(p_1,\dots,p_k\)</span>。其更新方式为：</p>
+<p><span class="math display">\[
+\mathbf b_{t+1}=\mathop{\text{argmax}}_{\mathbf b\in\triangle_d}\sum^k_{i=1}p_i\text{log}(\mathbf b^{T}\hat{\mathbf x}^i_{t+1})
+\]</span></p>
+<h5 id="pamr和cwmr单周期均值回归假设">PAMR和CWMR（单周期均值回归假设）</h5>
+<p>假设<span class="math inline">\(\hat {\mathbf x}_{t+1}^1=\frac{1}{x_t}，p_1=100\%\)</span>。相当于只做单值预测，也就是只预测一个值，这个值的概率为百分之百。这个预测价比就是上一次价比的倒数。其实就是<span class="math inline">\(\hat {\mathbf p}_{t+1}=\mathbf p_{t-1}\)</span>。推导过程如下：</p>
+<p><span class="math display">\[
+\hat{\mathbf x}_{t+1}=\frac{1}{\mathbf x}_t\Rightarrow\frac{\hat{\mathbf p}_{t+1}}{\mathbf p_t}=\frac{\mathbf p_{t-1}}{\mathbf p_t}\Rightarrow\hat{\mathbf p}_{t+1}=\mathbf p_{t-1}
+\]</span></p>
+<h5 id="olmar多周期均值回归假设">OLMAR（多周期均值回归假设）</h5>
+<p>预测价格的公式如下： <span class="math display">\[
+\hat {\mathbf p}_{t+1}=MA_t(w)=\frac{1}{w}\sum_{i=t-w+1}^{i=t}\mathbf p_i
+\]</span> 其中<span class="math inline">\(MA_t(w)\)</span>代表size为w的窗口内价格的平均值。</p>
+<hr />
+<h4 id="本文的核心方法">本文的核心方法</h4>
+<h5 id="rmr">RMR</h5>
+<p>价格预测公式 <span class="math display">\[
+\hat {\mathbf p}_{t+1}=L_1med_{t+1}(w)=\boldsymbol {\mu}
+\]</span> 其中w是窗口的大小，<span class="math inline">\(L_1med_{t+1}(w)\)</span>是指窗口内价格的L<sub>1</sub>-median估计值。</p>
+<p>那么价比预测公式就是 <span class="math display">\[
+\hat{\mathbf x}_{t+1}(w)=\frac{L_1med_{t+1}(w)}{\mathbf p_t}=\frac{\boldsymbol{\mu}}{\mathbf p_t}
+\]</span> <strong>L<sub>1</sub>-median：</strong>如果是二维的情况，那就相当于中位数，但是这个是空间中值，是多维的情况，在投资组合这个场景下L<sub>1</sub>-median就是空间中那个与k个给定价格数据点欧式距离和最小的那个空间点。注意：L<sub>1</sub>-median在统计上的breakdown point是0.5，即只有当超过50%的数据受到污染时，L<sub>1</sub>-median的估计才不准确。estimator的breakdown point越高，鲁棒性就越强。而均值（mean）的breakdown point是0，说明均值估计对噪声数据和异常值非常敏感。</p>
+<h5 id="两种l1-median-estimator这是本文提出的两种预测价格的方法">两种L<sub>1</sub>-median estimator（这是本文提出的两种预测价格的方法）</h5>
+<ol type="1">
+<li><p><strong>MAADM(Minimum-Average Absolute Deviation Median)</strong></p>
+<p>那么预测价格<span class="math inline">\(\boldsymbol {\mu}\)</span>的形式化表达如下：</p></li>
+</ol>
+<p><span class="math display">\[
+\boldsymbol{\mu}=\mathop{\text{argmin}}_{\boldsymbol{\mu}}\sum^{k-1}_{i=0}\|\mathbf p_{t-i}-\boldsymbol{\mu}\|
+\]</span></p>
+<ol start="2" type="1">
+<li><p><strong>HLFBM(Huber Loss Function-Based Median)</strong></p>
+<p>那么预测价格<span class="math inline">\(\boldsymbol {\mu}\)</span>的形式化表达如下：</p>
+<p><span class="math display">\[
+\boldsymbol{\mu}=\mathop{\text{argmin}}_{\boldsymbol{\mu}}\sum^{k-1}_{i=0}\rho(\|\mathbf p_{t-i}-\boldsymbol{\mu}\|)
+\]</span> 其中<span class="math inline">\(\rho()\)</span>是一个Huber loss function:</p>
+<p><span class="math display">\[
+\rho(\gamma)=\begin{cases}\gamma^2/2&amp;|\gamma|\le c\\c(|\gamma|-c/2)&amp;|\gamma|&gt;c\end{cases}
+\]</span></p></li>
+</ol>
+<h5 id="基本目标">基本目标</h5>
+<p>最大化累积财富<span class="math inline">\(\mathbf b \cdot \hat{\mathbf x}_{t+1}\)</span>,然后通过正则化项保留上次的投资组合信息，其实说白了就是使新的投资组合而旧的投资组合相差不要太远（我猜应该是因为大的资产变动会增加交易费）。那么对应的优化问题就是：</p>
+<p><span class="math display">\[
+\mathbf b_{t+1}=\mathop{\text{argmin}}_{\mathbf b\in\triangle_d}\frac{1}{2}\|\mathbf b-\mathbf b_t\|^2\quad s.t.\quad \mathbf b^{T}\hat{\mathbf x}_{t+1}\ge\epsilon
+\]</span> 解释一下上面的式子就是：在累计财富要达到我们预期<span class="math inline">\(\epsilon\)</span>的条件下最小化新的最优投资组合与上一次的投资组合的差异。</p>
+<p>如果期望回报高于阈值，新的投资组合就等于之前的投资组合；如果期望回报低于我们的期望，那么就要主动寻求一个新的投资组合使得期望回报高于阈值，而新的投资组合和之前的相差不大。</p>
+<h5 id="三个待优化问题及其求解方法">三个待优化问题及其求解方法</h5>
+<ol type="1">
+<li><p>第一个就是如何利用L<sub>1</sub>-Median-MAADM预测价格</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143643.png" /></p>
+<p>这是一个迭代过程，我们要设置收敛准则，也就是迭代终止条件：当条件<span class="math inline">\(\lVert \mu_{t-1}-\mu_t\rVert_1\le\tau \lVert \mu_t\rVert_1\)</span>成立时，终止迭代。其中的<span class="math inline">\(\tau\)</span>代表耐受水平（不太懂）。</p>
+<p>算法过程如下：</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143657.png" /></p></li>
+<li><p>第二个就是如何利用L<sub>1</sub>-Median-HLFBM预测价格</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143711.png" /></p>
+<p>同样的，这也是一个迭代过程，迭代终止条件是：<span class="math inline">\(\bigtriangledown f(\mu_i)\le \tau\)</span>。注意这个<span class="math inline">\(\tau\)</span>代表收敛精度。</p>
+<p>算法过程如下：</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143726.png" /></p></li>
+<li><p>第三个就是通过预测的价格如何获得投资组合</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429143748.png" /></p>
+<p><span class="math display">\[
+\mathbf b_{t+1}=\mathbf b_t-\alpha_{t+1}(\hat{\mathbf x}_{t+1}-\bar{x}_{t+1}\cdot\mathbf 1)
+\]</span> 其中<span class="math inline">\(\bar x_{t+1}=\frac{1}{d}(\mathbf 1\cdot \hat{\mathbf x}_{t+1})\)</span>代表预测价比的平均值，<span class="math inline">\(\alpha_{t+1}\)</span>是拉格朗日乘数，其计算方式如下：</p></li>
+</ol>
+<p><span class="math display">\[
+   \alpha_{t+1}=\text{min}\left\{0,\frac{\hat{\mathbf x}^{T}_{t+1}\mathbf b_t-\epsilon}{\|\hat{\mathbf x}_{t+1}-\bar{x}_{t+1}\cdot\mathbf 1\|^2}\right\}
+\]</span> 注意上述求解是未考虑非负限制的，，所以可能结果的<span class="math inline">\(\mathbf b\)</span>会超过单纯形域，所以最后要把投资组合投影到单纯形域上。</p>
+<p>下面的算法是利用预测价比来计算下一次投资的投资组合：</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429144142.png" /></p>
+<p>下面的算法则是主函数，在整个周期中利用不断更新产生的投资组合计算累计财富：</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429144158.png" /></p>
+<h5 id="性能测试指标">性能测试指标</h5>
+<ol type="1">
+<li><p>累计财富（Portfolio cumulative wealth）</p>
+<p>初始财富<span class="math inline">\(\mathbf S_0=1\)</span>，累计财富用<span class="math inline">\(\mathbf S_n\)</span>表示。</p></li>
+<li><p>年化收益率（Annnualized Percentage Yield APY） <span class="math display">\[
+APY=\sqrt[y]{S_n}-1
+\]</span> 其中y是n个交易日对应的年份数。</p></li>
+<li><p>胜率（Winning Ratio WT）</p>
+<p>代表提出的策略打败BAH策略的案例的百分比。</p></li>
+<li><p>年化标准差（annualized standard deviation）</p>
+<p>主要是用来衡量波动风险</p></li>
+<li><p>年化夏普比率（annualized Sharpe Ratio SR）</p>
+<p>主要是用来衡量风险调整回报，计算公式如下： <span class="math display">\[
+SR=\frac{APY-R_f}{\sigma_p}
+\]</span> 其中<span class="math inline">\(R_f\)</span>是指无风险回报（risk-free return），<span class="math inline">\(\sigma_p\)</span>是指日回报的年化标准差。</p></li>
+<li><p>卡玛比率（Calmar Ratio CR）</p>
+<p>用来测量投资组合回撤风险的相对回报，计算公式如下： <span class="math display">\[
+CR=\frac{APY}{MDD}
+\]</span> 其中MDD是最大回撤（Maximun DrawDown），是测量不同策略下行风险的一种指标</p></li>
+<li><p>周转率（Turnover）</p>
+<p>用来衡量投资组合的稳定性，简单来说，就是测量在某一年里买入和卖出的投资组合资产的比例。当然一个数据集是涉及多年的，总的周转率等于所有周期的周转率的均值。所以计算公式如下： <span class="math display">\[
+\sum_{t=2}^T\frac{\lVert b_t-\hat b_{t-1}\rVert}{2(T-1)}
+\]</span> 其中<span class="math inline">\(\lVert b_t-\hat b_{t-1}\rVert/2\)</span>代表一个周期的周转率。</p></li>
+</ol>
+<p>有可能简单的运气也能得到和所提出策略一样的回报，所以我们要判断提出的策略产生的收益是由运气产生的概率。（这里用到<span class="math inline">\(\tau\)</span>检验，<span class="math inline">\(\rho\)</span>值等，讲的不是太好，没弄懂）</p>
+<h5 id="不可忽略的问题交易费">不可忽略的问题：交易费</h5>
+<p>比例交易成本模型（proportional transaction cost）</p>
+<p>再平衡投资组合时会再买卖操作中产生交易成本，相应的交易费率是<span class="math inline">\(\gamma \in (0,1)\)</span>，那么在交易日t刚开始时，投资经理就会再平衡投资组合，即从之前的<span class="math inline">\(\hat {\mathbf b}_{t-1}\)</span>调整为<span class="math inline">\(\mathbf b_t\)</span>，那么产生的交易费就是： <span class="math display">\[
+\frac{\gamma}{2}\times \sum_i|b_{(t,i)}-\hat b_{(t-1,i)}| 
+\]</span> 其中初始投资组合设置为<span class="math inline">\((0,\dots,0)\)</span>。</p>
+<p>因此n周期后获得的累计财富可以如下表示：</p>
+<p><span class="math display">\[
+S_n=S_0\prod^n_{t=1}[(\mathbf b^{T}_t\mathbf x_t)\times(1-\frac{\gamma}{2}\times\sum_i|b_{(t,i)}-\hat{b}_{(t-1,i)}|)]
+\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" rel="tag"># 量化投资</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/10/%E5%9F%BA%E4%BA%8EItem%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="基于Item的协同过滤推荐算法------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 基于Item的协同过滤推荐算法------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/21/PPT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="最高价格追踪（PPT）------论文阅读笔记">
+      最高价格追踪（PPT）------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#rmrnew------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">RMR（new）------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#robust-median-reversion-strategy-for-online-portfolio-selection"><span class="nav-number">2.</span> <span class="nav-text">Robust median reversion strategy for online portfolio selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在线投资组合两个主要的数学模型"><span class="nav-number">2.1.</span> <span class="nav-text">在线投资组合两个主要的数学模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#存在的问题"><span class="nav-number">2.2.</span> <span class="nav-text">存在的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提出的新方法rmr"><span class="nav-number">2.3.</span> <span class="nav-text">提出的新方法：RMR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#问题设置大多数论文都一样就不解释了"><span class="nav-number">2.4.</span> <span class="nav-text">问题设置（大多数论文都一样就不解释了）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关技术分类"><span class="nav-number">2.5.</span> <span class="nav-text">相关技术分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#kelly-portfolio"><span class="nav-number">2.6.</span> <span class="nav-text">Kelly portfolio</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pamr和cwmr单周期均值回归假设"><span class="nav-number">2.7.</span> <span class="nav-text">PAMR和CWMR（单周期均值回归假设）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#olmar多周期均值回归假设"><span class="nav-number">2.8.</span> <span class="nav-text">OLMAR（多周期均值回归假设）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文的核心方法"><span class="nav-number">3.</span> <span class="nav-text">本文的核心方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#rmr"><span class="nav-number">3.1.</span> <span class="nav-text">RMR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#两种l1-median-estimator这是本文提出的两种预测价格的方法"><span class="nav-number">3.2.</span> <span class="nav-text">两种L1-median estimator（这是本文提出的两种预测价格的方法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基本目标"><span class="nav-number">3.3.</span> <span class="nav-text">基本目标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三个待优化问题及其求解方法"><span class="nav-number">3.4.</span> <span class="nav-text">三个待优化问题及其求解方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#性能测试指标"><span class="nav-number">3.5.</span> <span class="nav-text">性能测试指标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不可忽略的问题交易费"><span class="nav-number">3.6.</span> <span class="nav-text">不可忽略的问题：交易费</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

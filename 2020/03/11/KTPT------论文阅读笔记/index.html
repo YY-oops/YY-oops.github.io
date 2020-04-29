@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="KTPT------论文阅读笔记 A kernel-based trend pattern tracking system for portfolio optimization  本文出发点：鉴于很少机器学习系统将价格跟随和价格回复模式结合起来进行未来价格预测，于是提出本文的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KTPT------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/03/11/KTPT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="KTPT------论文阅读笔记 A kernel-based trend pattern tracking system for portfolio optimization  本文出发点：鉴于很少机器学习系统将价格跟随和价格回复模式结合起来进行未来价格预测，于是提出本文的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429154810.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429163950.png">
+<meta property="article:published_time" content="2020-03-11T05:42:00.000Z">
+<meta property="article:modified_time" content="2020-04-29T09:29:34.014Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429154810.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/03/11/KTPT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>KTPT------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">20</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/11/KTPT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          KTPT------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-11 13:42:00" itemprop="dateCreated datePublished" datetime="2020-03-11T13:42:00+08:00">2020-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-29 17:29:34" itemprop="dateModified" datetime="2020-04-29T17:29:34+08:00">2020-04-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="ktpt------论文阅读笔记">KTPT------论文阅读笔记</h4>
+<h4 id="a-kernel-based-trend-pattern-tracking-system-for-portfolio-optimization">A kernel-based trend pattern tracking system for portfolio optimization</h4>
+<hr />
+<p>本文出发点：鉴于很少机器学习系统将价格跟随和价格回复模式结合起来进行未来价格预测，于是提出本文的方法。<a id="more"></a></p>
+<h4 id="三状态价格预测方案">三状态价格预测方案</h4>
+<p>初始状态是一个粗略的预测；中间状态是用整个历史价格向量去逼近初始状态；最终状态是用价格跟随和价格回复因子来完善预测。</p>
+<h5 id="初始状态">初始状态</h5>
+<p>假设当前时刻是第t周期末，我们的任务就是去预测下一周期的价格<span class="math inline">\(\hat {\mathbf p}_{t+1}\)</span>，在第t-1周期末时，我们已经预测了第t周期的价格<span class="math inline">\(\hat{\mathbf p}_t\)</span>。</p>
+<p>通常我们在这个场景中，获利的唯一方式就是资产价格上涨，所以我们就只关心一个资产未来可能出现的最高价格。我们的策略就是取一个时间窗口，窗口大小为<span class="math inline">\(w\)</span>，然后取该窗口中的最高价格作为未来的预测价格：</p>
+<p><span class="math display">\[
+\tilde{\mathbf p}^{(i)}_{t+1}=\mathop{\max}_{0\le k\le w-1}\mathbf p^{(i)}_{t-k},\quad i=1,2,\dots,d
+\]</span> 初始状态的价格预测设计如下：</p>
+<p><span class="math display">\[
+\mathbf y_{t+1}=v\tilde{\mathbf p}_{t+1}+(1-v)\hat{\mathbf p}_t
+\]</span> 其中v是混合参数，该初始状态把未来预测价格<span class="math inline">\(\tilde {\mathbf p}_{t+1}\)</span>和历史惯性<span class="math inline">\(\hat{\mathbf p}_t\)</span>都考虑在内，形成一个粗略的未来价格预测。</p>
+<h5 id="中间状态">中间状态</h5>
+<p>把窗口期内<span class="math inline">\([t-w+1,t]\)</span>的各个资产的价格组织成为一个大的价格矩阵：</p>
+<p><span class="math display">\[
+\mathbf p_t=[\mathbf p_{t-w+1},\mathbf p_{t-w+2},\dots,\mathbf p_t]\in\mathbb R^{d\times w}_+
+\]</span> 然后我们用一个向量<span class="math inline">\(\mathbf z_t\in\mathbb R^w\)</span>来建模<span class="math inline">\(\mathbf y_{t+1}\)</span>：</p>
+<p><span class="math display">\[
+\mathbf y_{t+1}=\mathbf P_t\mathbf z_t+\epsilon,\quad\epsilon^{(i)}\sim N(0,\delta^2)\text{ and uncorrelated with }\mathbf P_t
+\]</span> 根据弹性网原则，我们有：</p>
+<p><span class="math display">\[
+\hat{\mathbf z}_t=\text{argmin}_{\mathbf z}\|\mathbf y_{t+1}-\mathbf P_t\mathbf z\|^2+2\vartheta\gamma\|\mathbf z\|_1+(1-\vartheta)\gamma\|\mathbf z\|^2
+\]</span> 其中<span class="math inline">\(\|\cdot\|_1\)</span>代表<span class="math inline">\(\ell^1\)</span>范式，<span class="math inline">\(\vartheta\in [0,1]\)</span>代表一个混合参数，能够调整<span class="math inline">\(\ell^1\)</span>和<span class="math inline">\(\ell^2\)</span>正则化的比例，<span class="math inline">\(\lambda\)</span>控制着正则化的强度。</p>
+<blockquote>
+<p>这里补充一点弹性网的知识：</p>
+<p>通常弹性网是岭回归和Lasso回归的一个综合。岭回归中使用的正则项是<span class="math inline">\(L_2\)</span>正则项，而Lasso回归中使用的正则项是<span class="math inline">\(L_1\)</span>正则项，弹性网则混合利用了<span class="math inline">\(L_1\)</span>正则项，<span class="math inline">\(L_2\)</span>正则项，其中有一个混合参数，用于调整两个正则项的比例。</p>
+</blockquote>
+<p>观察上面的式子，很容易看到当<span class="math inline">\(\vartheta=1\)</span>时就变成了Lasso回归，当<span class="math inline">\(\vartheta=0\)</span>就变成了岭回归。</p>
+<p>这个地方文章将<span class="math inline">\(\vartheta\)</span>设置为0.99，目的是想主要利用<span class="math inline">\(\ell^1\)</span>正则化项并且同时保证目标是严格凸的，利用<span class="math inline">\(\ell^1\)</span>在提取关键金融状态的有效性来预测未来的金融状态。</p>
+<p>然后让<span class="math inline">\(\lambda\)</span>从<span class="math inline">\(\lambda_{max}\)</span>到0取值，就会产生拥有不同稀疏性的正则化路径，然后选择最中间的一条作为<span class="math inline">\(\hat{\mathbf z_t}\)</span>的值。</p>
+<p>一旦<span class="math inline">\(\hat{\mathbf z}_t\)</span>确定，那么初始状态就可以改进为如下的中间状态：</p>
+<p><span class="math display">\[
+\hat{\mathbf y}_{t+1}=\mathbf P_t\hat{\mathbf z}_t
+\]</span> 接下来要解决的是<span class="math inline">\(\hat{\mathbf y}_{t+1}\)</span>预测误差（PE）的问题，该问题主要是判断预测<span class="math inline">\(\hat{\mathbf y}_{t+1}\)</span>的准确度；还有<span class="math inline">\(\hat{\mathbf z_t}\)</span>的条件协方差，该问题主要是判断估计<span class="math inline">\(\hat{\mathbf z}_t\)</span>的波动性和风险。</p>
+<p>PE由如下公式计算： <span class="math display">\[
+\begin{aligned}
+E\left(\|\mathbf y_{t+1}-\hat{\mathbf y}_{t+1}\|^{2}\right)&amp;=E\left(\|\mathbf P_t(\mathbf z_t-\mathbf{\hat z_t} )+\boldsymbol \epsilon\|^2\right)\\
+&amp;=(\mathbf z_t-\mathbf{\hat z_t})^{\top}E\left(\mathbf P_t^{\top}\mathbf P_t\right)(\mathbf z_t-\mathbf{\hat z_t})+2E(\boldsymbol \epsilon^{\top}\mathbf P_t)(\mathbf z_t-\mathbf{\hat z_t})+E(\boldsymbol \epsilon^{\top}\boldsymbol \epsilon)
+\end {aligned}
+\]</span> 其中因为<span class="math inline">\(\boldsymbol \epsilon\)</span>和<span class="math inline">\(\mathbf P_t\)</span>无关，所以 <span class="math display">\[
+\begin{aligned}
+E(\boldsymbol \epsilon^{\top}\mathbf P_t)&amp;=E(\boldsymbol \epsilon)^{\top}E(\mathbf P_t)\\
+&amp;=\mathbf 0_{(d)}^{\top}E(\mathbf P_t)
+\\&amp;=\mathbf 0_{(w)}
+\end{aligned}
+\]</span> 所以 <span class="math display">\[
+E(\|\mathbf y_{t+1}-\hat{\mathbf y}_{t+1}\|^{2})=(\mathbf z_t-\mathbf{\hat z_t})^{\top}E\left(\mathbf P_t^{\top}\mathbf P_t\right)(\mathbf z_t-\mathbf{\hat z_t})+d\delta^2
+\]</span> 由于我们设置的<span class="math inline">\(\vartheta=0.99\)</span>所以上面的弹性网原则实际上是可以近似等价于Lasso原则的，所以：</p>
+<p><span class="math display">\[
+\hat{\mathbf z}_t=\text{argmin}_{\mathbf z}\|\mathbf y_{t+1}-\mathbf P_t\mathbf z\|^2+2\vartheta\gamma\|\mathbf z\|_1+(1-\vartheta)\gamma\|\mathbf z\|^2
+\]</span> 近似成</p>
+<p><span class="math display">\[
+\hat{\mathbf z}_t=\text{argmin}_{\mathbf z}\|\mathbf y_{t+1}-\mathbf P_t\mathbf z\|^2+2\gamma\|\mathbf z\|_1
+\]</span> 因为 <span class="math display">\[
+\begin{aligned}\gamma\|\mathbf z\|_1&amp;=\gamma\sum^w_{k=1}|\mathbf z^{(k)}|\\&amp;=\gamma\sum^w_{k=1}\frac{|\mathbf z^{(k)}|^2}{|\mathbf z^{(k)}|}
+\end{aligned}
+\]</span> 于是定义对角正则化矩阵如下：</p>
+<p><span class="math display">\[
+\mathbf D_{kk}(\gamma,\mathbf z)=\begin{cases}\frac{2\gamma}{|\mathbf z^{(k)}|}&amp;\text{if}\ \mathbf z^{(k)}\not = 0\\0&amp;\text{if}\ \mathbf z^{(k)}= 0\end{cases}\quad\forall 1\le k\le w
+\]</span></p>
+<p><span class="math display">\[
+\mathbf D_{kl}(\gamma,\mathbf z)=0,\quad \forall k\not=l
+\]</span></p>
+<p>所以 <span class="math display">\[
+\begin{aligned}
+\hat{\mathbf z}_t&amp;=\text{argmin}_z\|\mathbf y_{t+1}-\mathbf P_t\mathbf z\|^2+2\gamma\|\mathbf z\|_1\\
+&amp;=\text{argmin}_z\|\mathbf y_{t+1}-\mathbf P_t\mathbf z\|^2+2\gamma\sum^w_{k=1}\frac{|\mathbf z^{(k)}|^2}{|\mathbf z^{(k)}|}\\
+&amp;=\text{argmin}_z\|\mathbf y_{t+1}-\mathbf P_t\mathbf z\|^2+\mathbf D(\gamma,\mathbf z)\sum^w_{k=1}|\mathbf z^{(k)}|^2\\
+&amp;=\text{argmin}_z\|\mathbf y_{t+1}-\mathbf P_t\mathbf z\|^2+\mathbf z^{\top}\mathbf D(\gamma,\mathbf z)\mathbf z\\
+&amp;=\text{argmin}_z\mathbf y_{t+1}^{\top}\mathbf y_{t+1}+(\mathbf P_t \mathbf z)^{\top}(\mathbf P_t \mathbf z)-2\mathbf z^{\top}\mathbf P^{\top}_{t}\mathbf y_{t+1}+\mathbf z^{\top}\mathbf D(\gamma,\mathbf z)\mathbf z\\
+&amp;=\text{argmin}_z\mathbf y_{t+1}^{\top}\mathbf y_{t+1}+\mathbf z^{\top}\mathbf P_t^{\top}\mathbf P_t \mathbf z-2\mathbf z^{\top}\mathbf P^{\top}_{t}\mathbf y_{t+1}+\mathbf z^{\top}\mathbf D(\gamma,\mathbf z)\mathbf z\\
+&amp;\Leftrightarrow\text{argmin}_z\mathbf z^{\top}\left(\mathbf P_t^{\top}\mathbf P_t +D(\gamma,\mathbf z)\right)\mathbf z-2\mathbf z^{\top}\mathbf P^{\top}_{t}\mathbf y_{t+1}
+\end{aligned}
+\]</span> 因为很难导出<span class="math inline">\(\hat {\mathbf z}_t\)</span>的封闭形式，所以我们用一个逼近的方式： <span class="math display">\[
+\mathbf D(\gamma,\mathbf z)=\mathbf D(\gamma,\hat{\mathbf z}_t)\overset{\bigtriangleup}{=}\hat{\mathbf D}
+\]</span> 所以</p>
+<p><span class="math display">\[
+\tilde{\mathbf z}_t=\text{argmin}_{\mathbf z}\mathbf z^{\top}(\mathbf P_t^{\top}\mathbf P_t+\hat{\mathbf D})\mathbf z-2\mathbf z^{\top}\mathbf P^{\top}_t\mathbf y_{t+1}
+\]</span> 因此，先用循环坐标下降法（coordinate decent algorithm）（这个不懂，后面再上网查查）来获得<span class="math inline">\(\hat {\mathbf z}_t\)</span>，然后用岭回归方法计算<span class="math inline">\(\tilde {\mathbf z}_t\)</span>：</p>
+<p><span class="math display">\[
+\tilde{\mathbf z}_t=(\mathbf P_t^{\top}\mathbf P_t+\hat{\mathbf D})^{-1}\mathbf P^{\top}_t\mathbf y_{t+1}
+\]</span> <span class="math inline">\(\tilde {\mathbf z}_t\)</span>具有一个简单的形式能够用来估计<span class="math inline">\(\hat {\mathbf z}_t\)</span>的波动性，在条件<span class="math inline">\(\mathbf P_t\)</span>的条件下<span class="math inline">\(\tilde {\mathbf z}_t\)</span>的协方差矩阵为：</p>
+<p><span class="math display">\[
+\begin{aligned}\text{cov}(\tilde{\mathbf z}_t|\mathbf P_t)&amp;=\text{cov}\left((\mathbf P_t^{\top}\mathbf P_t+\hat{\mathbf D})^{-1}\mathbf P^{\top}_t\mathbf y_{t+1}|\mathbf P_t\right)\\&amp;=(\mathbf P_t^{\top}\mathbf P_t+\hat{\mathbf D})^{-1}\mathbf P^{\top}_t\text{cov}(\mathbf y_{t+1}|\mathbf P_t)\mathbf P_t(\mathbf P_t^{\top}\mathbf P_t+\hat{\mathbf D})^{-1}\\&amp;=(\mathbf P_t^{\top}\mathbf P_t+\hat{\mathbf D})^{-1}\mathbf P^{\top}_t\mathbf P_t(\mathbf P_t^{\top}\mathbf P_t+\hat{\mathbf D})^{-1}\delta^2\end{aligned}
+\]</span></p>
+<h5 id="最终状态">最终状态</h5>
+<p>为了提取趋势回复因子，用一个双倍的时间窗口里的资产价格组成一个更大的价格矩阵：</p>
+<p><span class="math display">\[
+\tilde{\mathbf P}_t=[\mathbf p_{t-2w+2},\mathbf p_{t-2w+3},\dots,\mathbf p_t]\in\mathbb R^{d\times(2w-1)}_+
+\]</span> 然后定义在<span class="math inline">\((t+1)\)</span>周期的趋势回复因子如下：</p>
+<p><span class="math display">\[
+\lambda_{t+1}=\frac{1}{(2w-1)d}\mathbf 1^{\top}_{(d)}\text{sign}p((\tilde{\mathbf P}_t-\tilde{\mathbf P}_{t-1})\otimes(\tilde{\mathbf P}_{t-2}-\tilde{\mathbf P}_{t-1}))\mathbf 1_{2w-1}
+\]</span> 其中<span class="math inline">\(\text{signp}(\cdot)\)</span>是一个正号运算符，表示把所有的正数映射为1，所有的非正数映射为0。它的功能就是计算观测窗口内有多少趋势回复点，因此<span class="math inline">\(\lambda_{t+1}\)</span>就是趋势回复点在观测窗口内的比例。</p>
+<p>然后我们引入趋势回复因子来修正价格预测，定义一个向量<span class="math inline">\(\mathbf v\)</span>的截断函数（truncation function）<span class="math inline">\(\iota(\mathbf v)\)</span>如下：</p>
+<p><span class="math display">\[
+\iota(\mathbf v)=\tilde{\mathbf v},\quad \tilde{\mathbf v}^{(i)}=\begin{cases}\mathbf v^{(i)}&amp;\text{if}\ \mathbf v^{(i)}\le1\\1&amp;\text{if}\ \mathbf v^{(i)}&gt;1\end{cases}\quad\forall i
+\]</span> 这个函数把所有大于1的元素都变成1。</p>
+<p>最终状态定义如下：</p>
+<p><span class="math display">\[
+\hat{\mathbf p}_{t+1}=\iota\left(\frac{\lambda_{t+1}\mathbf 1}{2\mathbf x_t}\right)\otimes\tilde{\mathbf p}_{t+1}+\left(\mathbf 1-\iota\left(\frac{\lambda_{t+1}\mathbf 1}{2\mathbf x_t}\right)\right)\otimes\hat{\mathbf y}_{t+1}
+\]</span> 其中<span class="math inline">\(\frac{\mathbf 1}{\mathbf x_t}=\frac{\mathbf p_{t-1}}{\mathbf p_t}\)</span>代表不同资产的短期回复强度，其实就是说如果一个资产的价格从第t-1周期上升到t周期的价格，那么假设它在t+1周期又会跌落到第t-1周期的价格，这代表着一个短期价格回复趋势；<span class="math inline">\(\lambda_{t+1}\)</span>代表长期平均回复强度，上面我们计算了它是代表在观测窗口中趋势回复点的比例。</p>
+<p>因此<span class="math inline">\(\iota(\frac{\lambda_{t+1}\mathbf 1}{2\mathbf x_t})\)</span>就代表复合回复强度，<span class="math inline">\((\mathbf 1 - \iota(\frac{\lambda_{t+1}\mathbf 1}{2\mathbf x_t}))\)</span>就是趋势跟随强度。</p>
+<p>很容易看出最终状态<span class="math inline">\(\hat{\mathbf p}_{t+1}\)</span>就在<span class="math inline">\(\tilde{\mathbf p}_{t+1}\)</span>和<span class="math inline">\(\hat{\mathbf y}_{t+1}\)</span>所限定的一个闭合区域内：</p>
+<p><span class="math display">\[
+\hat{\mathbf p}_{t+1}\in\bigoplus^d_{i=1}\left[\text{min}\left\{\tilde{\mathbf p}^{(i)}_{t+1},\hat{\mathbf y}_{t+1}^{(i)}\right\},\text{max}\{\tilde{\mathbf p}^{(i)}_{t+1},\hat{\mathbf y}_{t+1}^{(i)}\}\right]\varsubsetneqq\mathbb R^d
+\]</span> 因为<span class="math inline">\(\tilde{\mathbf p}_{t+1}\)</span>是实际的历史价格，<span class="math inline">\(\hat{\mathbf y}_{t+1}\)</span>是对<span class="math inline">\(\mathbf y_{t+1}\)</span>鲁棒的估计，所以最终状态<span class="math inline">\(\hat{\mathbf p}_{t+1}\)</span>就是一个可靠的价格预测。</p>
+<p>三状态价格预测方案的整体过程如下图：</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429154810.png" /></p>
+<p>其中涉及到的几个公式如下： <span class="math display">\[
+\mathbf y_{t+1}=v\tilde{\mathbf p}_{t+1}+(1-v)\hat{\mathbf p}_t\quad(12)
+\]</span></p>
+<p><span class="math display">\[
+\lambda_{t+1}=\frac{1}{(2w-1)d}\mathbf 1^{\top}_{(d)}\text{sign}p((\tilde{\mathbf P}_t-\tilde{\mathbf P}_{t-1})\otimes(\tilde{\mathbf P}_{t-2}-\tilde{\mathbf P}_{t-1}))\mathbf 1_{2w-1}\quad(27)
+\]</span></p>
+<p><span class="math display">\[
+\hat{\mathbf p}_{t+1}=\iota\left(\frac{\lambda_{t+1}\mathbf 1}{2\mathbf x_t}\right)\otimes\tilde{\mathbf p}_{t+1}+\left(\mathbf 1-\iota\left(\frac{\lambda_{t+1}\mathbf 1}{2\mathbf x_t}\right)\right)\otimes\hat{\mathbf y}_{t+1}\quad(29)
+\]</span></p>
+<h5 id="一个基于核的追踪系统">一个基于核的追踪系统</h5>
+<p>基本的想法是：对于具有较大价比的资产我们增加投资，对于具有较小价比的资产我们减少其投资。</p>
+<p>提出的核函数定义如下：</p>
+<p><span class="math display">\[
+\mathbf K_{ii}(\mathbf u,\mathbf v)=e^{-|\mathbf u^{(i)}-\mathbf v^{(i)}|^{\frac{1}{q}}},\quad \forall i
+\]</span></p>
+<p><span class="math display">\[
+\mathbf K_{ij}(\mathbf u,\mathbf v)=0,\quad\forall i\not =j
+\]</span></p>
+<p>其中<span class="math inline">\(\mathbf K_{ii}(\mathbf u,\mathbf v)\in \mathbb R^{d\times d}\  \mathbf u,\mathbf v\in\mathbb R^d\)</span></p>
+<p>在理解这个核函数之前有必要了解一下这个函数：</p>
+<p><span class="math display">\[
+f(u)=e^{-|u|^{\frac{1}{q}}}
+\]</span> 其图像为（这个图原作者应该是画错了，有兴趣的自己用网络工具画一下）</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429163950.png" /></p>
+<p>所以核<span class="math inline">\(\mathbf K(\mathbf u,\mathbf v)\)</span>可以看作是向量<span class="math inline">\(\mathbf u\)</span>和向量<span class="math inline">\(\mathbf v\)</span>之间的相似度矩阵。</p>
+<p>首先我们先标准化<span class="math inline">\(\hat {\mathbf b}_t\)</span>（当前投资组合）和<span class="math inline">\(\hat{\mathbf x}_{t+1}\)</span>（预测价比）：</p>
+<p><span class="math display">\[
+\tilde{\mathbf b}_t=\hat{\mathbf b}_t-\bar{b}_t\mathbf 1=\hat{\mathbf b}_t-\frac{1}{d}\mathbf 1^{\top}\hat{\mathbf b}_t\mathbf 1
+\]</span></p>
+<p><span class="math display">\[
+\tilde{\mathbf x}_{t+1}=\hat{\mathbf x}_{t+1}-\bar{x}_{t+1}\mathbf 1=\hat{\mathbf x}_{t+1}-\frac{1}{d}\mathbf 1^{\top}\hat{\mathbf x}_{t+1}\mathbf 1
+\]</span></p>
+<p>然后基于核的增长因子定义为： <span class="math display">\[
+\mathbf b^{\top}\hat{\mathbf K}^{-1}_{t}\tilde{\mathbf x}_{t+1},\quad\hat{\mathbf K}_t\overset{\triangle}{=}\mathbf K(\tilde{\mathbf b}_t,\tilde{\mathbf x}_{t+1})
+\]</span> 也就是说，<span class="math inline">\(\hat{\mathbf K}_t\)</span>用来度量了当前投资组合与未来价比之间的相似度。</p>
+<p>那么提出的投资组合优化目标就是：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmax}}_{\mathbf b\in\triangle_d}\mathbf b^{\top}\hat{\mathbf K}^{-1}_{t}\tilde{\mathbf x}_{t+1}\quad \text{s.t.}\quad(\mathbf b-\hat{\mathbf b}_t)^{\top}\hat{\mathbf K}^{-2}_t(\mathbf b-\hat{\mathbf b}_t)\le\delta^2_t
+\]</span> 其中<span class="math inline">\(\delta_t&gt;0\)</span>是一个自适应的步长。那么这个约束其实就是<span class="math inline">\(\mathbf b\)</span>和<span class="math inline">\(\hat{\mathbf b}_t\)</span>之间的马哈拉诺比斯距离，那么<span class="math inline">\(\mathbf b\)</span>的可行解集就是以<span class="math inline">\(\hat{\mathbf b}_t\)</span>为球心的椭球体。</p>
+<h5 id="求解算法">求解算法</h5>
+<p>目标函数：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmax}}_{\mathbf b\in\triangle_d}\mathbf b^{\top}\hat{\mathbf K}^{-1}_{t}\tilde{\mathbf x}_{t+1}\quad \text{s.t.}\quad(\mathbf b-\hat{\mathbf b}_t)^{\top}\hat{\mathbf K}^{-2}_t(\mathbf b-\hat{\mathbf b}_t)\le\delta^2_t
+\]</span> 还是一样，采用梯度投影法，先不管单纯形限制，等我们求解出来最后再投影到单纯形域。</p>
+<hr />
+<p>既然是梯度投影法，于是我按照其一般步骤对其进行了求解：</p>
+<p>按照一般的套路我们先对未知参数求梯度： <span class="math display">\[
+\frac{\partial \hat{\mathbf b}_{t+1}}{\partial \mathbf b}=\hat{\mathbf K}^{-1}_{t}\tilde {\mathbf x}_{t+1}
+\]</span> 梯度上升步： <span class="math display">\[
+\mathbf b_{t+1}= \hat{\mathbf b}_t + \lambda\hat{\mathbf K}^{-1}_{t}\tilde {\mathbf x}_{t+1}
+\]</span> 将上式代入约束： <span class="math display">\[
+(\lambda\hat{\mathbf K}^{-1}_{t}\tilde {\mathbf x}_{t+1})^{\top}\hat{\mathbf K}^{-2}_{t}(\lambda\hat{\mathbf K}^{-1}_{t}\tilde {\mathbf x}_{t+1})\le\delta^2_t
+\]</span> 求得： <span class="math display">\[
+\lambda^2 \le \frac{\delta_t^2}{\|\tilde{\mathbf x}_{t+1}\|^2}
+\]</span> 我们最大化更新步长得到： <span class="math display">\[
+\lambda = \frac{\delta_t}{\|\tilde{\mathbf x}_{t+1}\|}
+\]</span> 所以当<span class="math inline">\(\|\tilde{\mathbf x}_{t+1}\|\not = 0\)</span>时，优化目标的解为： <span class="math display">\[
+\mathbf b_{t+1}= \hat{\mathbf b}_t + \frac{\delta_t}{\|\tilde{\mathbf x}_{t+1}\|}\hat{\mathbf K}^{-1}_{t}\tilde {\mathbf x}_{t+1}
+\]</span></p>
+<hr />
+<p>文章没有给出解的过程，直接给出了答案，但是跟我解的有一点点不一样（我观察了一下虽然<span class="math inline">\(\hat{\mathbf K}_t\)</span>是对角矩阵，而且对角线上的元素均不为0，说明可逆，但是我发现<span class="math inline">\(\hat{\mathbf K}_t\not=\hat{\mathbf K}_t^{-1}\)</span>所以肯定是哪个地方出现了问题）文章给出的解如下：</p>
+<p>当<span class="math inline">\(\|\tilde{\mathbf x}_{t+1}\|\not = 0\)</span>时，优化目标的解为： <span class="math display">\[
+\mathbf b_{t+1}= \hat{\mathbf b}_t + \frac{\delta_t}{\|\tilde{\mathbf x}_{t+1}\|}\hat{\mathbf K}_{t}\tilde {\mathbf x}_{t+1}
+\]</span> 现在证明该解是能满足使目标达到最大的解（反证法）：</p>
+<p>假设存在一个解<span class="math inline">\(\mathbf b_0\not=\mathbf b_{t+1}\)</span>，有<span class="math inline">\(\mathbf b_0^{\top}\hat{\mathbf K}^{-1}_t\tilde{\mathbf x}_{t+1}&gt;\mathbf b^{\top}_{t+1}\hat{\mathbf K}_t^{-1}\tilde{\mathbf x}_{t+1}\)</span></p>
+<p>那么</p>
+<p><span class="math display">\[
+(\mathbf b_0-\hat{\mathbf b}_t)^{\top}\hat{\mathbf K}^{-1}_t\tilde{\mathbf x}_{t+1}&gt;(\mathbf b_{t+1}-\hat{\mathbf b}_t)^{\top}\hat{\mathbf K}_t^{-1}\tilde{\mathbf x}_{t+1}=\delta_t\|\tilde{\mathbf x}_{t+1}\|
+\]</span> 然后通过柯西-施瓦兹不等式得到</p>
+<p><span class="math display">\[
+\begin{aligned}\left\|\hat{\mathbf K}^{-1}_t(\mathbf b_0-\hat{\mathbf b}_t)\right\|\|\tilde{\mathbf x}_{t+1}\|&amp;\ge\left|(\mathbf b_0-\hat{\mathbf b}_t)^{\top}\hat{\mathbf K}^{-1}_{t}\tilde{\mathbf x}_{t+1}\right|\\&amp;\ge(\mathbf b_0-\hat{\mathbf b}_t)^{\top}\hat{\mathbf K}^{-1}_{t}\tilde{\mathbf x}_{t+1}&gt;\delta_t\|\tilde{\mathbf x}_{t+1}\|\end{aligned}
+\]</span> 即有</p>
+<p><span class="math display">\[
+\left\|\hat{\mathbf K}^{-1}_t(\mathbf b_0-\hat{\mathbf b}_t)\right\|&gt;\delta_t
+\]</span> 显然这和目标函数中的约束<span class="math inline">\((\mathbf b - \hat{\mathbf b_t})^{\top}\hat{\mathbf K}^{-2}_{t}(\mathbf b - \hat{\mathbf b_t})\le\delta^2_t\)</span>是矛盾的</p>
+<p>所以<span class="math inline">\(\mathbf b_{t+1}\)</span>是优化目标函数的解。</p>
+<p>当然上面我们得到的解是<span class="math inline">\(\|\tilde{\mathbf x}_{t+1}\|\not = 0\)</span>条件下的，当<span class="math inline">\(\|\tilde{\mathbf x}_{t+1}\| = 0\)</span>时，只需要投资组合不改变即可<span class="math inline">\(\mathbf b _{t+1}=\hat{\mathbf b}_t\)</span></p>
+<p>然后在这篇文章中我们让<span class="math inline">\(\delta_t= \eta\|\tilde {\mathbf x}_{t+1}\|\)</span>，其中<span class="math inline">\(\eta\)</span>是一个固定步长，所以</p>
+<p><span class="math display">\[
+\mathbf b_{t+1}=\hat{\mathbf b}_t+\eta\hat{\mathbf K}_t\tilde{\mathbf x}_{t+1}
+\]</span> 最后把<span class="math inline">\(\mathbf b _{t+1}\)</span>投影到单纯性域：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmin}}_{\mathbf b\in\triangle_d}\|\mathbf b-\mathbf b_{t+1}\|^2
+\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" rel="tag"># 量化投资</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/09/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="基于深度矩阵分解模型的推荐系统------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 基于深度矩阵分解模型的推荐系统------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="2019RecSys最佳论文------论文阅读笔记">
+      2019RecSys最佳论文------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ktpt------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">KTPT------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#a-kernel-based-trend-pattern-tracking-system-for-portfolio-optimization"><span class="nav-number">2.</span> <span class="nav-text">A kernel-based trend pattern tracking system for portfolio optimization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三状态价格预测方案"><span class="nav-number">3.</span> <span class="nav-text">三状态价格预测方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#初始状态"><span class="nav-number">3.1.</span> <span class="nav-text">初始状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中间状态"><span class="nav-number">3.2.</span> <span class="nav-text">中间状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#最终状态"><span class="nav-number">3.3.</span> <span class="nav-text">最终状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个基于核的追踪系统"><span class="nav-number">3.4.</span> <span class="nav-text">一个基于核的追踪系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#求解算法"><span class="nav-number">3.5.</span> <span class="nav-text">求解算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

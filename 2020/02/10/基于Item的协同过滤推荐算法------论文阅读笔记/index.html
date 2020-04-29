@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="基于Item的协同过滤推荐算法———论文阅读笔记Item-Based Collaborative Filtering Recommendation Algorithms方法: 把目标用户评过分的$item$收集起来作为一个集合 计算这些$item$与目标$item\ i$之间的相似度 选择k个最相似的item $\{i_1, i_2,\cdots , i_k\}$，他们对应的相似度$\{s_{i1">
+  <meta name="description" content="基于Item的协同过滤推荐算法------论文阅读笔记 Item-Based Collaborative Filtering Recommendation Algorithms 方法:  把目标用户评过分的\(item\)收集起来作为一个集合 计算这些\(item\)与目标\(item\ i\)之间的相似度 选择k个最相似的item \(\{i_1, i_2,\cdots , i_k\">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于Item的协同过滤推荐算法------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/02/10/%E5%9F%BA%E4%BA%8EItem%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="基于Item的协同过滤推荐算法———论文阅读笔记Item-Based Collaborative Filtering Recommendation Algorithms方法: 把目标用户评过分的$item$收集起来作为一个集合 计算这些$item$与目标$item\ i$之间的相似度 选择k个最相似的item $\{i_1, i_2,\cdots , i_k\}$，他们对应的相似度$\{s_{i1">
+<meta property="og:description" content="基于Item的协同过滤推荐算法------论文阅读笔记 Item-Based Collaborative Filtering Recommendation Algorithms 方法:  把目标用户评过分的\(item\)收集起来作为一个集合 计算这些\(item\)与目标\(item\ i\)之间的相似度 选择k个最相似的item \(\{i_1, i_2,\cdots , i_k\">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200209114434693.png">
 <meta property="og:image" content="http://yy-oops.github.io/images/image-20200209134315731.png">
@@ -135,7 +135,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">15</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">20</span></a>
 
   </li>
   </ul>
@@ -215,7 +215,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -234,80 +234,79 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="基于Item的协同过滤推荐算法———论文阅读笔记"><a href="#基于Item的协同过滤推荐算法———论文阅读笔记" class="headerlink" title="基于Item的协同过滤推荐算法———论文阅读笔记"></a>基于Item的协同过滤推荐算法———论文阅读笔记</h4><h4 id="Item-Based-Collaborative-Filtering-Recommendation-Algorithms"><a href="#Item-Based-Collaborative-Filtering-Recommendation-Algorithms" class="headerlink" title="Item-Based Collaborative Filtering Recommendation Algorithms"></a>Item-Based Collaborative Filtering Recommendation Algorithms</h4><h5 id="方法"><a href="#方法" class="headerlink" title="方法:"></a>方法:</h5><ol>
-<li>把目标用户评过分的$item$收集起来作为一个集合</li>
-<li>计算这些$item$与目标$item\ i$之间的相似度</li>
-<li>选择k个最相似的item $\{i_1, i_2,\cdots , i_k\}$，他们对应的相似度$\{s_{i1}，s_{i2}, \cdots, s_{ik}\}$</li>
-<li>计算目标用户在这些相似$item$上的评分进行加权平均<a id="more"></a></li>
+        <h4 id="基于item的协同过滤推荐算法------论文阅读笔记">基于Item的协同过滤推荐算法------论文阅读笔记</h4>
+<h4 id="item-based-collaborative-filtering-recommendation-algorithms">Item-Based Collaborative Filtering Recommendation Algorithms</h4>
+<h5 id="方法">方法:</h5>
+<ol type="1">
+<li>把目标用户评过分的<span class="math inline">\(item\)</span>收集起来作为一个集合</li>
+<li>计算这些<span class="math inline">\(item\)</span>与目标<span class="math inline">\(item\ i\)</span>之间的相似度</li>
+<li>选择k个最相似的item <span class="math inline">\(\{i_1, i_2,\cdots , i_k\}\)</span>，他们对应的相似度<span class="math inline">\(\{s_{i1}，s_{i2}, \cdots, s_{ik}\}\)</span></li>
+<li>计算目标用户在这些相似<span class="math inline">\(item\)</span>上的评分进行加权平均<a id="more"></a></li>
 </ol>
-<h5 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h5><ul>
+<h5 id="步骤">步骤：</h5>
+<ul>
 <li><p><strong>相似度计算</strong></p>
-<p>$item\ i$ 和$item\ j$之间的相似度$s_{i,j}$</p>
-<p><img src="/images/image-20200209114434693.png" alt=""></p>
-<p>其中行代表$users$，列代表$items$</p>
+<p><span class="math inline">\(item\ i\)</span> 和<span class="math inline">\(item\ j\)</span>之间的相似度<span class="math inline">\(s_{i,j}\)</span></p>
+<p><img src="/images/image-20200209114434693.png" /></p>
+<p>其中行代表<span class="math inline">\(users\)</span>，列代表<span class="math inline">\(items\)</span></p>
 <p>计算相似度的方法有很多，本文只展示三种：余弦相似度（cosine-based similarity），相关性相似度（correlation-based similarity），调整后的余弦相似度（adjusted-cosine similarity）</p>
-<ol>
+<ol type="1">
 <li><p>余弦相似度</p>
-<p>在本文中，把两个item当作是m维用户空间中的两个向量。他们之间的相似度就是计算两个向量之间的夹角，在上图的$m\times n$的矩阵中，产品i和产品j的相似度$sim(i,j)$的计算公式为</p>
-<script type="math/tex; mode=display">
-sim(i,j)=\text{cos}(\overset{\rightarrow}{i},\overset{\rightarrow}{j})=\frac{\overset{\rightarrow}{i}\cdot\overset{\rightarrow}{j}}{\|\overset{\rightarrow}{i}\|_2\times\|\overset{\rightarrow}{j}\|_2}</script><p>其中·代表两个向量的点积，就是向量对应位置的项相乘后相加。</p>
-</li>
+<p>在本文中，把两个item当作是m维用户空间中的两个向量。他们之间的相似度就是计算两个向量之间的夹角，在上图的<span class="math inline">\(m\times n\)</span>的矩阵中，产品i和产品j的相似度<span class="math inline">\(sim(i,j)\)</span>的计算公式为</p>
+<p><span class="math display">\[
+sim(i,j)=\text{cos}(\overset{\rightarrow}{i},\overset{\rightarrow}{j})=\frac{\overset{\rightarrow}{i}\cdot\overset{\rightarrow}{j}}{\|\overset{\rightarrow}{i}\|_2\times\|\overset{\rightarrow}{j}\|_2}
+\]</span> 其中·代表两个向量的点积，就是向量对应位置的项相乘后相加。</p></li>
 <li><p>相关性相似度（这里特别介绍的是pearson-r correlation）</p>
-<p>两个产品i和j之间的相关性相似度$corr_{i,j}$，其中i和j必须都被用户评过分，把对i和j都评过分的用户收集起来作为一个集合$U$,那么相关性相似度计算公式是</p>
-<script type="math/tex; mode=display">
-sim(i,j)=\frac{\sum_{u\in U}(R_{u,i}-\bar R_i)(R_{u,j}-\bar R_j)}{\sqrt{\sum_{u \in U}(R_{u,i}-\bar R_i)^2}\sqrt{\sum_{u \in U}(R_{u,j}-\bar R_j)^2}}</script><p>其中$R_{u,i}$代表用户u在产品i上的评分，$\bar{R}_i$代表第i个产品的平均评分。</p>
-</li>
+<p>两个产品i和j之间的相关性相似度<span class="math inline">\(corr_{i,j}\)</span>，其中i和j必须都被用户评过分，把对i和j都评过分的用户收集起来作为一个集合<span class="math inline">\(U\)</span>,那么相关性相似度计算公式是</p>
+<p><span class="math display">\[
+sim(i,j)=\frac{\sum_{u\in U}(R_{u,i}-\bar R_i)(R_{u,j}-\bar R_j)}{\sqrt{\sum_{u \in U}(R_{u,i}-\bar R_i)^2}\sqrt{\sum_{u \in U}(R_{u,j}-\bar R_j)^2}}
+\]</span> 其中<span class="math inline">\(R_{u,i}\)</span>代表用户u在产品i上的评分，<span class="math inline">\(\bar{R}_i\)</span>代表第i个产品的平均评分。</p></li>
 <li><p>调整后的余弦相似度</p>
 <p>余弦相似度有一个重要的缺点，用户的评分标准不一样，有的用户评分整体偏高，有的用户评分整体偏低。调整后的余弦相似度通过减去相应的用户评分平均值，用这种方案计算产品i和产品j之间的相似度的计算公式为</p>
-<script type="math/tex; mode=display">
-sim(i,j)=\frac{\sum_{u\in U}(R_{u,i}-\bar R_u)(R_{u,j}-\bar R_u)}{\sqrt{\sum_{u \in U}(R_{u,i}-\bar R_u)^2}\sqrt{\sum_{u \in U}(R_{u,j}-\bar R_u)^2}}</script><p>其中$\bar{R}_u$是第u个用户对所有物品评分的平均值。</p>
-</li>
-</ol>
-</li>
+<p><span class="math display">\[
+sim(i,j)=\frac{\sum_{u\in U}(R_{u,i}-\bar R_u)(R_{u,j}-\bar R_u)}{\sqrt{\sum_{u \in U}(R_{u,i}-\bar R_u)^2}\sqrt{\sum_{u \in U}(R_{u,j}-\bar R_u)^2}}
+\]</span> 其中<span class="math inline">\(\bar{R}_u\)</span>是第u个用户对所有物品评分的平均值。</p></li>
+</ol></li>
 <li><p><strong>预测值计算</strong></p>
-<ol>
+<ol type="1">
 <li><p>加权求和</p>
-<p>加权求和就是用与目标物品相似的item的相似度$s_{i,j}$进行加权然后求和平均，其计算公式为</p>
-<script type="math/tex; mode=display">
-P_{u,i}=\frac{\sum_{\text{all similar items, N}}(s_{i,N}\times R_{u,N})}{\sum_{\text{all similar items, N}}(|s_{i,N}|)}</script></li>
-</ol>
-</li>
+<p>加权求和就是用与目标物品相似的item的相似度<span class="math inline">\(s_{i,j}\)</span>进行加权然后求和平均，其计算公式为</p>
+<p><span class="math display">\[
+ P_{u,i}=\frac{\sum_{\text{all similar items, N}}(s_{i,N}\times R_{u,N})}{\sum_{\text{all similar items, N}}(|s_{i,N}|)}
+\]</span></p></li>
+</ol></li>
 </ul>
-<ol>
+<ol start="2" type="1">
 <li><p>回归</p>
 <p>不像加权求和方法直接采用相似物品的评分，而是利用基于回归模型的评分近似值。实际上，用余弦或者相关性相似度计算出来的相似度可能让我们感觉两个评分向量在欧几里得空间中距离非常远，但是具有非常高的相似度。在这种情况下用原始的相似度物品可能导致非常差的预测效果，所以不用原始的评分值，而是用基于线性回归模型的近似值。</p>
-<p>我们用$R_i$和$R_N$分别代表目标物品i和相似物品N的向量，那么线性回归模型可以表示为</p>
-<script type="math/tex; mode=display">
- \bar {R^{'}_N}=\alpha\bar R_i+\beta+\epsilon</script><p> 其中的回归模型参数$α$和$β$通过模型训练来得到，其中$\epsilon$是回归模型的误差。</p>
-</li>
+<p>我们用<span class="math inline">\(R_i\)</span>和<span class="math inline">\(R_N\)</span>分别代表目标物品i和相似物品N的向量，那么线性回归模型可以表示为</p>
+<p><span class="math display">\[
+ \bar {R^{&#39;}_N}=\alpha\bar R_i+\beta+\epsilon
+\]</span> 其中的回归模型参数<span class="math inline">\(α\)</span>和<span class="math inline">\(β\)</span>通过模型训练来得到，其中<span class="math inline">\(\epsilon\)</span>是回归模型的误差。</p></li>
 </ol>
-<p>相对于基于user的CF算法计算的是user与user之间的相似度，基于item的CF算法计算item与item之间的相似度，而一个电商网站中的商品数量是相对来说是静态的，而用户是经常流动的，所以就可以线下就算好item之间的相似度，用这种方法对于n个item需要$O(n^2)$的空间。</p>
+<p>相对于基于user的CF算法计算的是user与user之间的相似度，基于item的CF算法计算item与item之间的相似度，而一个电商网站中的商品数量是相对来说是静态的，而用户是经常流动的，所以就可以线下就算好item之间的相似度，用这种方法对于n个item需要<span class="math inline">\(O(n^2)\)</span>的空间。</p>
 <p>实际上我们只需要相似项的一小部分来进行预测，在这个方案中，我们对每个项j计算k个最相似的item，其中k远小于n，并且记录这些item的相似度和项目序号，我们把k作为模型的size。</p>
 <p><strong>预测产生算法工作机制：</strong></p>
-<ol>
-<li><p>检索目标项i的k个最相似的item</p>
-</li>
-<li><p>然后看这k个相似项中有多少item是用户u购买过的（浏览过的等）</p>
-</li>
+<ol type="1">
+<li><p>检索目标项i的k个最相似的item</p></li>
+<li><p>然后看这k个相似项中有多少item是用户u购买过的（浏览过的等）</p></li>
 <li><p>然后用基于item的CF算法基于这些购买项计算预测分数</p>
-<p><img src="/images/image-20200209134315731.png" alt=""></p>
-</li>
+<p><img src="/images/image-20200209134315731.png" /></p></li>
 </ol>
 <p>具有5个最近邻的预测产生过程。上图可以看出，目标用户是u，预测的是该用户对第i个item的评估分数。计算出来5个与目标项i相似度最高的item，并按照相似度大小进行排名，然后用加权求和或者回归的方式预测该用户u对产品i的评分。</p>
-<p><strong>稀疏度的计算公式：</strong></p>
-<script type="math/tex; mode=display">
-1-\frac{nonzero\ entries}{total\ entries}</script><p><strong>评价指标：</strong></p>
-<ol>
+<p><strong>稀疏度的计算公式：</strong> <span class="math display">\[
+1-\frac{nonzero\ entries}{total\ entries}
+\]</span> <strong>评价指标：</strong></p>
+<ol type="1">
 <li><p>统计准确性指标评估（Statistical accuracy metrics）</p>
-<p>评估一个系统的准确性一般是比较推荐的数值分数与实际的用户评分，Mean Absolate Error(MAE)平均绝对误差在评分和预测中是广泛采用的一种指标，MAE用来测量推荐与用户真实值之间的偏差，对于每个评分预测对$<p_i,q_i>$前面的$p_i$是预测的分数，后面的$q_i$是真实的分数，MAE是先对相应的N个评分预测对计算他们绝对误差的和，然后求平均。对应的公式就是</p>
-<script type="math/tex; mode=display">
-MAE=\frac{\sum^N_{i=1}|p_i-q_i|}{N}</script><p>MAE越低，推荐引擎预测用户评分就越准确。</p>
-<p>Root Mean Squared Error(RMSE)和Correlation也是统计准确性指标评估中的两种方法</p>
-</li>
+<p>评估一个系统的准确性一般是比较推荐的数值分数与实际的用户评分，Mean Absolate Error(MAE)平均绝对误差在评分和预测中是广泛采用的一种指标，MAE用来测量推荐与用户真实值之间的偏差，对于每个评分预测对<span class="math inline">\(&lt;p_i,q_i&gt;\)</span>前面的<span class="math inline">\(p_i\)</span>是预测的分数，后面的<span class="math inline">\(q_i\)</span>是真实的分数，MAE是先对相应的N个评分预测对计算他们绝对误差的和，然后求平均。对应的公式就是</p>
+<p><span class="math display">\[
+MAE=\frac{\sum^N_{i=1}|p_i-q_i|}{N}
+\]</span> MAE越低，推荐引擎预测用户评分就越准确。</p>
+<p>Root Mean Squared Error(RMSE)和Correlation也是统计准确性指标评估中的两种方法</p></li>
 <li><p>决策支持准确性评估（Decision support accuracy metrics）</p>
 <p>这个类别主要是评估帮助用户在众多产品中选择高质量的产品的有效性，预测过程的结果有两种：good或者bad。</p>
-<p>最常用的决策支持准确性评估方法是reversal rate, weighted errors 和ROC sensitivity</p>
-</li>
+<p>最常用的决策支持准确性评估方法是reversal rate, weighted errors 和ROC sensitivity</p></li>
 </ol>
 
     </div>
@@ -332,8 +331,8 @@ MAE=\frac{\sum^N_{i=1}|p_i-q_i|}{N}</script><p>MAE越低，推荐引擎预测用
       <i class="fa fa-chevron-left"></i> Hello World
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/02/25/%E5%9F%BA%E4%BA%8E%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA%EF%BC%88RBM%EF%BC%89%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="基于受限玻尔兹曼机（RBM）的协同过滤------论文阅读笔记">
-      基于受限玻尔兹曼机（RBM）的协同过滤------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/02/14/RMR%EF%BC%88new%EF%BC%89------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="RMR（new）------论文阅读笔记">
+      RMR（new）------论文阅读笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -394,7 +393,7 @@ MAE=\frac{\sum^N_{i=1}|p_i-q_i|}{N}</script><p>MAE越低，推荐引擎预测用
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于Item的协同过滤推荐算法———论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于Item的协同过滤推荐算法———论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Item-Based-Collaborative-Filtering-Recommendation-Algorithms"><span class="nav-number">2.</span> <span class="nav-text">Item-Based Collaborative Filtering Recommendation Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方法"><span class="nav-number">2.1.</span> <span class="nav-text">方法:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤："><span class="nav-number">2.2.</span> <span class="nav-text">步骤：</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于item的协同过滤推荐算法------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于Item的协同过滤推荐算法------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#item-based-collaborative-filtering-recommendation-algorithms"><span class="nav-number">2.</span> <span class="nav-text">Item-Based Collaborative Filtering Recommendation Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方法"><span class="nav-number">2.1.</span> <span class="nav-text">方法:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤"><span class="nav-number">2.2.</span> <span class="nav-text">步骤：</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -410,7 +409,7 @@ MAE=\frac{\sum^N_{i=1}|p_i-q_i|}{N}</script><p>MAE越低，推荐引擎预测用
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
