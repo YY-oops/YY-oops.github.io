@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="基于图卷积网络的Web推荐系统------论文阅读笔记 Graph Convolutional Neural Networks for Web-Scale Recommender Systems 这篇论文属实经典，没有一句废话，更多细节多多阅读原文。 本文是GCN首次在工业上的成功应用，主要应用场景是Pinterest应用，该应用主要是向用户展示图片，里面大量的图片我们称之为Pins，而用户">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于图卷积网络的Web推荐系统------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E4%B8%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="基于图卷积网络的Web推荐系统------论文阅读笔记 Graph Convolutional Neural Networks for Web-Scale Recommender Systems 这篇论文属实经典，没有一句废话，更多细节多多阅读原文。 本文是GCN首次在工业上的成功应用，主要应用场景是Pinterest应用，该应用主要是向用户展示图片，里面大量的图片我们称之为Pins，而用户">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430154827.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430154927.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430154959.png">
+<meta property="article:published_time" content="2020-03-28T03:55:00.000Z">
+<meta property="article:modified_time" content="2020-04-30T07:51:00.102Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="推荐系统">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430154827.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E4%B8%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>基于图卷积网络的Web推荐系统------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">27</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E4%B8%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于图卷积网络的Web推荐系统------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-28 11:55:00" itemprop="dateCreated datePublished" datetime="2020-03-28T11:55:00+08:00">2020-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-30 15:51:00" itemprop="dateModified" datetime="2020-04-30T15:51:00+08:00">2020-04-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="基于图卷积网络的web推荐系统------论文阅读笔记">基于图卷积网络的Web推荐系统------论文阅读笔记</h4>
+<h4 id="graph-convolutional-neural-networks-for-web-scale-recommender-systems">Graph Convolutional Neural Networks for Web-Scale Recommender Systems</h4>
+<p>这篇论文属实经典，没有一句废话，更多细节多多阅读原文。</p>
+<p>本文是GCN首次在工业上的成功应用，主要应用场景是Pinterest应用，该应用主要是向用户展示图片，里面大量的图片我们称之为Pins，而用户则可以为它们喜欢的图片进行分类。这个过程形象的比喻成将Pins钉在画板boards上。然后我们的目标就是根据用户的历史浏览记录为用户推荐其可能感兴趣的图片。<a id="more"></a></p>
+<h5 id="出发点">出发点</h5>
+<p>现在的基于图数据结构的深度神经网络处理具有数十亿物品和数亿用户的Web推荐任务仍然是很困难的，因为它们往往在训练时对整个图的拉普拉斯矩阵进行操作。</p>
+<h5 id="创新点">创新点</h5>
+<p>本文提出了一种具有高度可扩展性的图卷积网络（GCN）结构，这是一个基于随机漫步的GCN，取名为PinSage。它能够在一个有30亿结点和180亿条边的图上运行，这个图比一般GCN的典型应用中的图大10000倍。</p>
+<blockquote>
+<p>本文提出的算法是在GraphSAGE算法上进行改进的</p>
+</blockquote>
+<p>那么PinSage是如何提高GCN的可扩展性的呢？</p>
+<ol type="1">
+<li><p>On-the-fly convolutions</p>
+<p>传统的GCN是用特征矩阵乘以全图的拉普拉斯的幂来进行图卷积的，而PinSage能进行高效的局部卷积，首先对结点的邻居进行采样，然后利用采样的邻居动态的构造一个计算图（computation graph）。这样的一个动态构造的计算图能够指定如何在一个特殊结点周围进行局部卷积，并且能够减少在训练过程中对整个图进行操作。</p></li>
+<li><p>Producer-consumer minibatch construction</p>
+<p>在训练过程中，数十亿个结点的邻接表和特征矩阵由于信息较大被放置在CPU内存中，然而在卷积过程中，每个GPU进程都需要访问邻域和邻域中结点的特征信息，而从GPU访问CPU内存中的数据效率不高。提出的解决方法提取小批量特征矩阵，训练过程中CPU和GPU交替使用，GPU充当consumer角色，进行模型计算；CPU充当Producer角色，提取特征、重新索引和负采样。</p></li>
+<li><p>Efficient MapReduce inference</p>
+<p>给定一个完全训练的GCN模型，设计了一个高效的MapReduce管道可以将训练好的模型分不到数十亿的结点上去生成嵌入，同时能够最小化重复的计算。</p></li>
+</ol>
+<p>除了提高模型的可扩展性之外，还引入了新的训练技巧和算法创新</p>
+<ol type="1">
+<li><p>Constructing convolutions via random walks</p>
+<p>如果对一个结点的所有邻居进行卷积那么将会产生一个巨大的计算图，所以我们考虑了采样。然而随机抽样不太好，所以我们便采用了一种短程随机漫步来对计算图进行采样。</p></li>
+<li><p>Importance pooling</p>
+<p>图卷积的一个核心部分就是在图的局部邻域中聚合特征信息。所以我们引入了一种基于随机漫步相似性度量的方法在聚合时对结点特征的重要性进行评估。</p></li>
+<li><p>Curriculum training</p>
+<p>设计了一种训练方案，该方案在训练时使用越来越难的例子来训练模型。</p></li>
+</ol>
+<h5 id="问题设置">问题设置</h5>
+<p>Pinterest数据产生的图包括了20亿个Pins，10亿个boards，并且包括了180亿条边。我们用两个不相交的集合组成的二部图来建模Pinterest环境，那其中一个集合<span class="math inline">\(\mathcal I\)</span>包含所有的Pins，其中一个集合<span class="math inline">\(\mathcal C\)</span>包含所有的boards。为了方便，在描述PinSage算法时，我们把整个图用结点集<span class="math inline">\(\mathcal V = \mathcal I \cup\mathcal C\)</span>来表示，并且用更一般的说法“结点”来描述而不明显的区分Pin结点和board结点。</p>
+<h5 id="整体架构一个小例子">整体架构（一个小例子）</h5>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430154827.png" /></p>
+<p>下面我好好解释一下上图，通过解释上图就能很好的弄清楚PinSage算法的流程。</p>
+<p>上面的图分为两个部分：上半部分和下半部分。我们先看上半部分，最左边是一个具有6个结点的图（A,B,C,D,E,F）并且当前的目标结点是A。右边是两层的卷积操作用来计算目标结点A的embedding，我们既然要计算目标结点A，我们先找到结点A的邻居（B,C,D），我们是两层的，所以还需要找到结点A的邻居的邻居（其中B的邻居是A和C，其中C的邻居是A、B、E和F，其中D的邻居是A）。从右往左看，我们通过B的邻居A和C作为输入经过第一层卷积<span class="math inline">\(\text{CONVOLVE}^{(1)}\)</span>计算得到结点B的emdedding：<span class="math inline">\(\mathbf h_B^{(1)}\)</span>，依次类推得到结点C的emdedding：<span class="math inline">\(\mathbf h_C^{(1)}\)</span>和结点D的emdedding：<span class="math inline">\(\mathbf h_D^{(1)}\)</span>。然后我们再以<span class="math inline">\(\mathbf h_B^{(1)},\mathbf h_C^{(1)},\mathbf h_D^{(1)}\)</span>作为第二层卷积<span class="math inline">\(\text{CONVOLVE}^{(2)}\)</span>的输入计算得到最终我们目标结点A的embedding：<span class="math inline">\(\mathbf h_A^{(2)}\)</span>。下半部分就是计算每个结点的emdedding了，注意到虽然网络在每个结点间不同但是它们共享参数，比如<span class="math inline">\(\text{CONVOLVE}^{(1)}\)</span>的参数和<span class="math inline">\(\text{CONVOLVE}^{(2)}\)</span>的参数，而且具有相同阴影样式的矩形也是共享参数的。现在我们再仔细看看卷积操作<span class="math inline">\(\text{CONVOLVE}\)</span>内部：包括一个几个小的带剖面线的矩形和一个大的矩形。那小的带剖面线的矩形代表的是一个稠密连接的多层神经网络（可以了解DenseNet），那个大矩形内部的<span class="math inline">\(\gamma\)</span>代表的是一个池化函数，<span class="math inline">\(\mathbf h_A^{(1)}\)</span>代表结点A的前层表示，<span class="math inline">\(\mathbf h_{\mathcal N(A)}^{(1)}\)</span>代表结点的邻居结点的前层表示。</p>
+<p>接下来我们讲讲细节</p>
+<h5 id="前向传播算法">前向传播算法</h5>
+<p>我们根据结点本身的特征属性和结点周围图的结构，从结点<span class="math inline">\(u\)</span>学习到它的emdedding<span class="math inline">\(z_u\)</span>。</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430154927.png" /></p>
+<p>这个卷积操作的基本思想就是:</p>
+<ol type="1">
+<li>通过一个稠密神经网络（线性变换后进行非线性变换）将<span class="math inline">\(u\)</span>的邻居的表示<span class="math inline">\(\mathbf z_v,\forall v\in\mathcal N(u)\)</span>转移，然后运用一个聚合/池化函数<span class="math inline">\(\gamma\)</span>（比如元素平均值或者加权求和），这个聚合步骤的结果是<span class="math inline">\(u\)</span>的局部邻居<span class="math inline">\(\mathcal N(u)\)</span>的一个向量表示<span class="math inline">\(\mathbf n_u\)</span></li>
+<li>然后聚合邻域向量<span class="math inline">\(\mathbf n_u\)</span>和<span class="math inline">\(u\)</span>的当前表示<span class="math inline">\(\mathbf h_u\)</span>，将这两个向量连接<span class="math inline">\((\text{CONCAT})\)</span>起来，然后再让连接向量通过一个稠密神经网络层（线性变换后非线性变换）。（实践中连接比平均表现更好）</li>
+<li>最后就是进行归一化，这能让训练更加稳定，并且对归一化嵌入进行最近邻搜索时更加有效。</li>
+</ol>
+<p>然后这个输出就是一个<span class="math inline">\(u\)</span>的表示，它既包括了它本身的信息也包括了其局部邻域的信息。</p>
+<h5 id="邻居采样">邻居采样</h5>
+<p>实际上我们知道在一张巨大的图中一个结点<span class="math inline">\(u\)</span>的邻居数量也是很大的，所以本文提出了一种基于随机漫步的采样方法，就是从结点<span class="math inline">\(u\)</span>开始随机漫步，然后计算结点的访问次数（<span class="math inline">\(L_1\)</span>正则化），我们选取访问次数最高的前<span class="math inline">\(T\)</span>个结点作为<span class="math inline">\(u\)</span>的邻居。</p>
+<p>这样做有两个好处：</p>
+<ol type="1">
+<li>我们可以任意选择一个我们想要的邻居节点数目，这样我们就可以控制训练期间算法的内存占用量了。</li>
+<li>我们在聚合邻居的向量表示的时候可以把邻居的重要性考虑在内。比如，我们的<span class="math inline">\(\gamma\)</span>如果采用加权平均，那么这个权值，我们就可以用<span class="math inline">\(L_1\)</span>正则化的访问次数来定义，这种新方法我们称之为importance pooling。</li>
+</ol>
+<h5 id="叠加卷积">叠加卷积</h5>
+<p>每一次我们用卷积就能得到一个结点新的表示，如果我们叠加多层卷积，那么我们就能获得结点<span class="math inline">\(u\)</span>周围局部图结构的更多信息。而我们在叠加多层卷积时，第<span class="math inline">\(k\)</span>层的卷积输入来自于第<span class="math inline">\(k-1\)</span>层的输出，而最开始的表示也就是第0层的输入是结点的特征属性。注意到模型的参数（<span class="math inline">\(\mathbf Q,\mathbf q, \mathbf W,\mathbf w\)</span>）在结点间是共享的，但是在不同层是不同的。</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430154959.png" /></p>
+<p>上图是Minibatch的算法流程。</p>
+<p>我们先看第一阶段：对小批量结点集中的每个结点进行邻居采样。<strong>我拿前面整体架构那个小例子来解释该算法，理解的时候把那个上半部分左边那个小图画在草稿纸上对比着看更佳</strong>。</p>
+<ol type="1">
+<li>将小批量结点集<span class="math inline">\(\mathcal M\)</span>{A,B,C,D,E,F}直接复制给<span class="math inline">\(S^{(K)}\)</span>。那么这个集合<span class="math inline">\(S^{(K)}\)</span>中包含的就是最原始的结点{A,B,C,D,E,F}</li>
+<li>因为卷积迭代深度是<span class="math inline">\(K\)</span>，所以我们要找到目标结点<span class="math inline">\(u\)</span>的<span class="math inline">\(k\)</span>跳结点，我们一层一层来找。上面那个小例子卷积层数是2所以只需要迭代2次，找到目标结点的第1和第2跳结点就够了。</li>
+<li>初始化<span class="math inline">\(S^{K-1}\)</span>，那么<span class="math inline">\(S^{(K-1)}\)</span>获得<span class="math inline">\(S^{(K)}\)</span>中的结点{A,B,C,D,E,F}。</li>
+<li>对于在<span class="math inline">\(S^{(K)}\)</span>中的每个结点<span class="math inline">\(u\)</span>，执行如下操作：把<span class="math inline">\(S^{(K-1)}\)</span>和<span class="math inline">\(S^{k}\)</span>中每个结点的邻居<span class="math inline">\(\mathcal N(u)\)</span>赋给<span class="math inline">\(S^{(K-1)}\)</span>。举个例子：A的邻居是{B,D}，B的邻居是{A,C}，C的邻居是{A,B,E,F}，D的邻居是{A}，E的邻居是{C,F}，F的邻居是{C,E}。那么这个for循环结束后<span class="math inline">\(S^{(K-1)}\)</span>中的结点就被更新为{A,B,C,D,E,F, B,D, A,C, A,B,E,F ,A, C,F, C,E}。也就是<span class="math inline">\(S^{K}\)</span>+<span class="math inline">\(S^{K}\)</span>中每个结点的邻居：<span class="math inline">\(S^{(K)}\cup\mathcal N(A)\cup\mathcal N(B)\cup\mathcal N(C)\cup\mathcal N(D)\cup\mathcal N(E)\cup\mathcal N(F)\)</span>。注意到这个小例子中的邻居是完整的所有邻居，而对于一个很大的图，我们取到的邻居是根据邻居采样函数来取的，并不一定包含一个结点的所有邻居，而是取对其影响最大的T个邻居。</li>
+<li>迭代下去，我们可以想象<span class="math inline">\(S^{K-2}\)</span>就包含<span class="math inline">\(S^{k-1}\)</span>+<span class="math inline">\(S^{k-1}\)</span>中每个结点的邻居，<span class="math inline">\(S^{k-3}\)</span>就包含<span class="math inline">\(S^{k-2}\)</span>+<span class="math inline">\(S^{k-2}\)</span>中每个结点的邻居。</li>
+</ol>
+<p>总结一下，这个阶段就有点像从一个目标结点出发找到它的邻居，然后找到邻居的邻居，然后邻居的邻居的邻居，好了，禁止套娃！！最终形成一层一层的结构，最外面一层是第K跳邻居，往里走是第K-1跳邻居，直到第0跳，就是目标结点本身。</p>
+<p>然后我们再看第二阶段：如何产生嵌入表示。<strong>理解这个阶段的时候把整体架构那个小例子的上半部分右边那个图对比着看</strong>。</p>
+<ol type="1">
+<li>对于<span class="math inline">\(S^{0}\)</span>中的任意一个结点<span class="math inline">\(u\)</span>，我们使用原始结点的特征属性向量作为结点的embedding表示。</li>
+<li>然后我们进行<span class="math inline">\(K\)</span>次卷积，分别得到第1次卷积后的各个结点的emdedding表示<span class="math inline">\(h^{(1)}_u\)</span>，得到第2次卷积后各个节点的embedding表示<span class="math inline">\(h^{(2)}_u\)</span>，依次得到第k次卷积后的emdedding表示<span class="math inline">\(h^{k}_u\)</span>。</li>
+<li>最后将卷积层的输出输入到全连接层得到最终的输出embedding表示<span class="math inline">\(\mathbf z_u,\forall u\in\mathcal M\)</span>。</li>
+</ol>
+<p>总结一下，这个阶段就是从最外面一层出发，第K跳邻居把信息传播到第K-1跳邻居，第K-1跳邻居把自身的信息和第K跳邻居传过来的信息传播到第K-2跳，如此迭代下去，最终得到了目标结点的embedding表示，对<span class="math inline">\(\mathcal M\)</span>中的每个结点都这样做，我们就得到了这个小批量结点集合中每个结点的嵌入表示了，然后再让这些结点经过一个全连接层，就得到了最终的输出了。</p>
+<p>最后还要提一下这其中我们需要学习的参数<span class="math inline">\((\mathbf Q^{(k)},\mathbf q^{(k)}),\mathbf W^{(k)},\mathbf w^{(k)},\forall k \in\{1,\dots,K\})\)</span>和<span class="math inline">\((\mathbf G_1,\mathbf G_2,\mathbf g)\)</span></p>
+<h5 id="损失函数">损失函数</h5>
+<p>假设有一组已经标记的物品对集合<span class="math inline">\(\mathcal L\)</span>，如果<span class="math inline">\((q,i)\in\mathcal L\)</span>，那么我们就认为物品i对于查询项q就是一个很好的推荐候选项。</p>
+<ol type="1">
+<li><p>positive examples</p>
+<p>查询项的和相关项的embedding</p></li>
+<li><p>negative examples</p>
+<p>查询项和不相关项的embedding</p></li>
+</ol>
+<p>对于一组结点embedding<span class="math inline">\((\mathbf z_q,\mathbf z_i):(q,i)\in\mathcal L\)</span>的损失函数如下：</p>
+<p><span class="math display">\[
+J_{\mathcal G}(\mathbf z_q\mathbf z_i)=\mathbb E_{n_k-P_n(q)}\text{max}\{0,\mathbf z_q\cdot\mathbf z_{n_k}-\mathbf z_q\cdot\mathbf z_i+\bigtriangleup\}
+\]</span> 其中<span class="math inline">\(P_n(q)\)</span>代表物品<span class="math inline">\(q\)</span>的负样本分布，<span class="math inline">\(\bigtriangleup\)</span>代表一个预定义的margin超参数。</p>
+<p>后面还有很多精彩内容，后面我再回过头来读的时候再继续写吧。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag"># 推荐系统</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="基于2D卷积神经网络的序列化推荐------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 基于2D卷积神经网络的序列化推荐------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/30/CWMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="CWMR------论文阅读笔记">
+      CWMR------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于图卷积网络的web推荐系统------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">基于图卷积网络的Web推荐系统------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#graph-convolutional-neural-networks-for-web-scale-recommender-systems"><span class="nav-number">2.</span> <span class="nav-text">Graph Convolutional Neural Networks for Web-Scale Recommender Systems</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#出发点"><span class="nav-number">2.1.</span> <span class="nav-text">出发点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创新点"><span class="nav-number">2.2.</span> <span class="nav-text">创新点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#问题设置"><span class="nav-number">2.3.</span> <span class="nav-text">问题设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整体架构一个小例子"><span class="nav-number">2.4.</span> <span class="nav-text">整体架构（一个小例子）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#前向传播算法"><span class="nav-number">2.5.</span> <span class="nav-text">前向传播算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#邻居采样"><span class="nav-number">2.6.</span> <span class="nav-text">邻居采样</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#叠加卷积"><span class="nav-number">2.7.</span> <span class="nav-text">叠加卷积</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#损失函数"><span class="nav-number">2.8.</span> <span class="nav-text">损失函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

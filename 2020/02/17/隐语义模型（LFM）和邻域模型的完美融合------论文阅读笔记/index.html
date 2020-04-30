@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="隐语义模型（LFM）和邻域模型的完美融合------论文阅读笔记 Factorization Meets the Neighborhood：a Multifaceted Collaborative Filtering Model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隐语义模型（LFM）和邻域模型的完美融合-------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/02/17/%E9%9A%90%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%EF%BC%88LFM%EF%BC%89%E5%92%8C%E9%82%BB%E5%9F%9F%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%9E%8D%E5%90%88------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="隐语义模型（LFM）和邻域模型的完美融合------论文阅读笔记 Factorization Meets the Neighborhood：a Multifaceted Collaborative Filtering Model">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430164026.png">
+<meta property="article:published_time" content="2020-02-17T05:03:00.000Z">
+<meta property="article:modified_time" content="2020-04-30T08:41:48.195Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="推荐系统">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430164026.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/02/17/%E9%9A%90%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%EF%BC%88LFM%EF%BC%89%E5%92%8C%E9%82%BB%E5%9F%9F%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%9E%8D%E5%90%88------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>隐语义模型（LFM）和邻域模型的完美融合-------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">27</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/02/17/%E9%9A%90%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%EF%BC%88LFM%EF%BC%89%E5%92%8C%E9%82%BB%E5%9F%9F%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%8C%E7%BE%8E%E8%9E%8D%E5%90%88------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          隐语义模型（LFM）和邻域模型的完美融合-------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-17 13:03:00" itemprop="dateCreated datePublished" datetime="2020-02-17T13:03:00+08:00">2020-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-30 16:41:48" itemprop="dateModified" datetime="2020-04-30T16:41:48+08:00">2020-04-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="隐语义模型lfm和邻域模型的完美融合------论文阅读笔记">隐语义模型（LFM）和邻域模型的完美融合------论文阅读笔记</h4>
+<h4 id="factorization-meets-the-neighborhooda-multifaceted-collaborative-filtering-model">Factorization Meets the Neighborhood：a Multifaceted Collaborative Filtering Model</h4>
+<a id="more"></a>
+<p>用符号<span class="math inline">\(u,v\)</span>表示users</p>
+<p>用符号<span class="math inline">\(i,j\)</span>表示items</p>
+<p>评分<span class="math inline">\(r_{ui}\)</span>表示用户<span class="math inline">\(u\)</span>对产品<span class="math inline">\(i\)</span>的偏好</p>
+<p>预测评分用<span class="math inline">\(\hat r_{ui}\)</span>表示</p>
+<p>评分<span class="math inline">\(r_{ui}\)</span>已知的<span class="math inline">\((u,i)\)</span>对位于集合<span class="math inline">\(\kappa=\{(u,i)|r_{ui}\text{已知}\}\)</span></p>
+<p>正则化系数：<span class="math inline">\(\lambda_1,\lambda_2,\dots\)</span></p>
+<p><span class="math inline">\(\mu\)</span>代表评分总平均值</p>
+<p>对于未知评分<span class="math inline">\(r_{ui}\)</span>的基线估计用<span class="math inline">\(b_{ui}\)</span>表示，公式：<span class="math inline">\(b_{ui}=\mu+b_u+b_i\)</span>。其中<span class="math inline">\(b_u\)</span>和<span class="math inline">\(b_i\)</span>代表用户和产品的观测偏差。</p>
+<p>那么优化目标是：</p>
+<p><span class="math display">\[
+\mathop{\min}_{b_*}\sum_{(u,i)\in\mathcal K}(r_{ui}-\mu-b_u-b_i)^2+\lambda_1(\sum_ub^2_u+\sum_ib^2_i)
+\]</span></p>
+<h5 id="邻域模型">邻域模型</h5>
+<p>本文采用的邻域模型其实就是基于item的协同过滤算法</p>
+<p>本文中采用的相似度度量是pearson系数，但是当数据集比较小时，这样的统计不具有代表性，所以重新定义的相似度如下：</p>
+<p><span class="math display">\[
+s_{ij}\overset{def}{=}\frac{n_{ij}}{n_{ij}+\lambda_2}\rho_{ij}
+\]</span> 变量<span class="math inline">\(n_{ij}\)</span>代表对产品i和j都有评分的用户数量，其中<span class="math inline">\(\lambda_2=100\)</span>。那么我们可以发现，当n很大时相似度就接近于<span class="math inline">\(\rho_{ij}\)</span>，而当n比较小的时候，pearson相似度就会受到惩罚，变小。</p>
+<p>对于未观测到的评分<span class="math inline">\(r_{ui}\)</span>，采用相似度度量，找到与产品i最相似的由u评分的k个item，这k个最近邻用<span class="math inline">\(S^K(i;u)\)</span>表示。那么预测评分采用最近邻按相似度加权平均，公式如下：</p>
+<p><span class="math display">\[
+\hat{r}_{ui}=b_{ui}+\frac{\sum_{j\in S^k(i;u)}s_{ij}(r_{uj}-b_{uj})}{\sum_{j\in S^k(i;u)}s_{ij}}
+\]</span> 本文觉得上面这个模型公式不太好于是提出了新的预测公式如下：</p>
+<p><span class="math display">\[
+\hat{r}_{ui}=b_{ui}+\sum_{j\in S^k(i;u)}\theta^{u}_{ij}(r_{uj}-b_{uj})
+\]</span> 其中<span class="math inline">\(\theta_{ij}^u\)</span>代表插值权重，可以由产品评分之间的内积得到，具体详细描述在Scalable Collaborative Filtering with Jointly Derived Neighborhood Interpolation Weights中讲到。</p>
+<h5 id="隐语义模型">隐语义模型</h5>
+<p>就是基于SVD的矩阵分解技术，其优化目标如下：</p>
+<p><span class="math display">\[
+\mathop{\min}_{p_*,q_*,b_*}\sum_{(u,i)\in\mathcal K}(r_{ui}-\mu-b_u-b_i-p^{T}_uq_i)^2+\lambda_3(\|p_u\|^2+\|q_i\|^2+b^2_u+b^2_i)
+\]</span> Paterek提出了相关的NSVD模型，用户u的表示为： <span class="math display">\[
+(\sum_{j\in R(u)}x_j)/\sqrt{|R(u)|}
+\]</span> 所以<span class="math inline">\(r_{ui}\)</span>用如下公式预测： <span class="math display">\[
+b_{ui}+q_i^T(\sum_{j\in R(u)}x_j)/\sqrt{|R(u)|}
+\]</span> 其中，<span class="math inline">\(R(u)\)</span>是由用户u评过分的产品组成的集合。</p>
+<hr />
+<h4 id="本文的重点研究内容">本文的重点研究内容</h4>
+<h5 id="new-neighborhood-model">New Neighborhood Model</h5>
+<p>该模型采用了一个新的权重，该权重用<span class="math inline">\(w_{ij}\)</span>表示，预测评分公式如下：</p>
+<p><span class="math display">\[
+\hat{r}_{ui}=b_{ui}+\sum_{j\in R(u)}(r_{uj}-b_{uj})w_{ij}
+\]</span> 除了权重改变了之外，注意到还有一个不同的地方就是，不是累加最近邻空间<span class="math inline">\(S^K(i;u)\)</span>里的产品，而是累加由用户u评过分的所有产品<span class="math inline">\(R(u)\)</span>。</p>
+<p><span class="math inline">\(w_{ij}\)</span>是学习得到的，而不是一个基于统计的量</p>
+<p>注意到上面我们提到的权重，它代表的是基线估计的偏移。如果两个产品i和j很相关，当用户u对j的评分高于期望的时候（也即是<span class="math inline">\(r_{uj}-b_{uj}\)</span>值比较大）,那说明我们的基线估计比真实值小了，所以我们通过在基线估计上加上一个值<span class="math inline">\((r_{uj}-b_{uj})w_{ij}\)</span>来估计用户u对i的评分。</p>
+<p>所以加上隐式偏好，用<span class="math inline">\(c_{ij}\)</span>表示，现在的预测评分公式就是：</p>
+<p><span class="math display">\[
+\hat{r}_{ui}=b_{ui}+\sum_{j\in R(u)}(r_{uj}-b_{uj})w_{ij}+\sum_{j\in N(u)}c_{ij}
+\]</span> 就像<span class="math inline">\(w_{ij}\)</span>一样，<span class="math inline">\(c_{ij}\)</span>也是加在基线估计上的偏移量，其中的<span class="math inline">\(N(u)\)</span>是指提供了隐式偏好的item集合。</p>
+<p>为了更清楚的了解<span class="math inline">\(w_{ij}\)</span>。举个例子，如果数据集显示一个用户对指环王3有很高评价的同时给指环王1-2的评分也很高，这将使我们建立一个从指环王1-2到指环王3的一个高的权重w。如果一个用户根本就没有对指环王1-2打分，那么对指环王3的评分就会受到惩罚，因为一些必要的权重就没法加入到总和中。</p>
+<p>分析上面的评分公式，我们知道其实对于那些给过很多评分或者那些给了很多隐式反馈的用户，他们与基准线偏离更大，所以系统会比较倾向于推荐他们冷门的产品，而对于那些只提供了少量输入的用户来说，推荐更加稳重，只推荐基于基准线附近的那些比较大众的推荐。</p>
+<p>那么为了缓和这种极端现象，我们做了一个衰减，调整后的评分公式如下： <span class="math display">\[
+\hat r_{ui}=\mu+b_u+b_i+|R(u)|^{-\frac{1}{2}}\sum_{j\in R(u)}(r_{uj}-b_{uj})w_{ij}+|N(u)|^{-\frac{1}{2}}\sum_{j\in N(u)}c_{ij}
+\]</span> 通过只采用与i最相似的k个item可以减少模型的复杂度。，定义<span class="math inline">\(S^K(i)\)</span>代表与i最相似的k个item。 <span class="math display">\[
+R^K(i;u)\overset{def}{=}R(u)\cap S^K(i)\\N^k(i;u)\overset{def}{=}N(u)\cap S^K(i)
+\]</span> 所以上述的评分公式就变成了如下表示： <span class="math display">\[
+\hat r_{ui}=\mu+b_u+b_i+|R^K(i;u)|^{-\frac{1}{2}}\sum_{j\in R^K(i;u)}(r_{uj}-b_{uj})w_{ij}+|N^K(i;u)|^{-\frac{1}{2}}\sum_{j\in N^K(i;u)}c_{ij}
+\]</span> 上面这个式子就是对邻域模型扩展的最终表示，那么最终的最小化损失函数就是： <span class="math display">\[
+\mathop{\min}\limits_{b*,w*,c*}\sum_{(u,i)\in \kappa}(r_{ui}-\hat r_{ui})^2+\lambda_4(b_u^2+b_i^2+\sum_{j\in R^K(i;u)}w_{ij}^2+\sum_{j\in N^K(i;u)}c_{ij}^2)
+\]</span> 这个式子可以用简单梯度下降的方法快速求解，用<span class="math inline">\(e_{ui}\)</span>代表预测误差<span class="math inline">\(r_{ui}-\hat r_{ui}\)</span>，在空间<span class="math inline">\(\kappa\)</span>中循环遍历所有的已知评分，对于给定的训练集<span class="math inline">\(r_{ui}\)</span>，使参数朝梯度相反的方向移动，那么参数更新公式如下： <span class="math display">\[
+\begin{aligned}b_u&amp;\leftarrow b_u+\gamma \cdot(e_{ui}-\lambda_4\cdot b_u)\\b_i&amp;\leftarrow b_i+\gamma\cdot (e_{ui}-\lambda_4\cdot b_i)\end{aligned}
+\]</span> <span class="math display">\[
+\begin{aligned}\forall j\in R^K(i;u):\ w_{ij}&amp;\leftarrow w_{ij}+\gamma \cdot(|R^K(i;u)|^{-\frac{1}{2}}\cdot e_{ui}\cdot(r_{uj}-b_{uj})-\lambda _4\cdot w_{ij})\\\forall j \in N^K(i;u):\ c_{ij}&amp;\leftarrow c_{ij}+\gamma \cdot (|N^K(i;u)|^{-\frac{1}{2}}\cdot e_{ui}-\lambda_4\cdot c_{ij})\end{aligned}
+\]</span></p>
+<p>其中<span class="math inline">\(\gamma\)</span>是步长，也就是学习率，通过交叉验证获得。</p>
+<h5 id="new-latent-factor-model">New Latent Factor Model</h5>
+<p><strong>非对称奇异值分解（Asymmetric SVD）：</strong>我们知道，隐语义模型的基本公式是： <span class="math display">\[
+\hat{r}_{ui}=b_{ui}+p^{T}_uq_i
+\]</span> 其中<span class="math inline">\(p_u\)</span>是和用户u相关的用户语义向量，<span class="math inline">\(q_i\)</span>是和产品i相关的产品语义向量。</p>
+<p>本文考虑了隐式反馈后的预测模型为： <span class="math display">\[
+\hat r_{ui}=b_{ui}+q_i^T(|R(u)|^{-\frac{1}{2}}\sum_{j\in R(u)}(r_{uj}-b_{uj})x_j+|N(u)|^{-\frac{1}{2}}\sum _{j\in N(u)}y_j)
+\]</span> 通常，我们通过最小化正则平方误差函数来学习到相关参数： <span class="math display">\[
+\mathop{\min}\limits_{q*,x*,y*,b*}\sum_{(u,i)\in \kappa}(r_{ui}-\hat r_{ui})^2+\lambda_5(b_u^2+b_i^2+\lVert q_i\rVert^2+\sum_{j\in R(u)}\lVert x_j \rVert^2+\sum_{j\in N(u)}\lVert y_j \rVert^2)
+\]</span> <strong>SVD++：</strong>实际上对于上述的评分预测公式，我们可以更直接的加入隐式反馈： <span class="math display">\[
+\hat{r}_{ui}=b_{ui}+q^{T}_i\left(p_u+|N(u)|^{-\frac{1}{2}}\sum_{j\in N(u)}y_j\right)
+\]</span> 其中<span class="math inline">\(p_u\)</span>是从给定的显式评分中学习的，而后面的<span class="math inline">\(|N(u)|^{-\frac{1}{2}}\sum _{j\in N(u)}y_j\)</span>是代表隐式反馈。</p>
+<p>他没有上面非对称奇异值分解的一些优点，但是预测精度却有提高。</p>
+<h5 id="an-integrated-model">An Integrated Model</h5>
+<p>由于邻域模型和隐语义模型可以优势互补，所以复合模型考虑了两者的特性，对两者的评分分预测公式进行累加就得到了我们的复合模型评分预测公式（注意这里用的隐语义模型是目前精度最好的SVD++模型）。 <span class="math display">\[
+\hat r_{ui}=b_{ui}+q_i^T(p_u+|N(u)|^{-\frac{1}{2}}\sum _{j\in N(u)}y_j)+|R^K(i;u)|^{-\frac{1}{2}}\sum_{j\in R^K(i;u)}(r_{uj}-b_{uj})w_{ij}+|N^K(i;u)|^{-\frac{1}{2}}\sum_{j\in N^K(i;u)}c_{ij}
+\]</span> 实际上，上述公式可以分为三层。第一层是：<span class="math inline">\(b_{ui}=\mu+b_u+b_i\)</span>，它代表的是用户和产品的一般属性，没有考虑交互。第二层就是：<span class="math inline">\(q_i^T(p_u+|N(u)|^{-\frac{1}{2}}\sum _{j\in N(u)}y_j)\)</span>，代表的是用户描述和产品描述之间的交互。最后的第三层：最近邻层，代表的是难以描述的细粒度调整。</p>
+<p>模型的参数是通过利用梯度下降来最小化正则平方误差函数得到的。</p>
+<p>同样其求解方式如下：</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430164026.png" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag"># 推荐系统</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/15/%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90%EF%BC%9AItem-to-Item%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4-----%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="亚马逊网站推荐：Item-to-Item的协同过滤------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 亚马逊网站推荐：Item-to-Item的协同过滤------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/21/PPT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="最高价格追踪（PPT）------论文阅读笔记">
+      最高价格追踪（PPT）------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#隐语义模型lfm和邻域模型的完美融合------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">隐语义模型（LFM）和邻域模型的完美融合------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#factorization-meets-the-neighborhooda-multifaceted-collaborative-filtering-model"><span class="nav-number">2.</span> <span class="nav-text">Factorization Meets the Neighborhood：a Multifaceted Collaborative Filtering Model</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#邻域模型"><span class="nav-number">2.1.</span> <span class="nav-text">邻域模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#隐语义模型"><span class="nav-number">2.2.</span> <span class="nav-text">隐语义模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文的重点研究内容"><span class="nav-number">3.</span> <span class="nav-text">本文的重点研究内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#new-neighborhood-model"><span class="nav-number">3.1.</span> <span class="nav-text">New Neighborhood Model</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#new-latent-factor-model"><span class="nav-number">3.2.</span> <span class="nav-text">New Latent Factor Model</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#an-integrated-model"><span class="nav-number">3.3.</span> <span class="nav-text">An Integrated Model</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

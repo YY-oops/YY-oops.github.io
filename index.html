@@ -128,7 +128,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">27</span></a>
 
   </li>
   </ul>
@@ -741,6 +741,104 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E4%B8%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/28/%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E4%B8%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">基于图卷积网络的Web推荐系统------论文阅读笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-28 11:55:00" itemprop="dateCreated datePublished" datetime="2020-03-28T11:55:00+08:00">2020-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-30 15:51:00" itemprop="dateModified" datetime="2020-04-30T15:51:00+08:00">2020-04-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="基于图卷积网络的web推荐系统------论文阅读笔记">基于图卷积网络的Web推荐系统------论文阅读笔记</h4>
+<h4 id="graph-convolutional-neural-networks-for-web-scale-recommender-systems">Graph Convolutional Neural Networks for Web-Scale Recommender Systems</h4>
+<p>这篇论文属实经典，没有一句废话，更多细节多多阅读原文。</p>
+<p>本文是GCN首次在工业上的成功应用，主要应用场景是Pinterest应用，该应用主要是向用户展示图片，里面大量的图片我们称之为Pins，而用户则可以为它们喜欢的图片进行分类。这个过程形象的比喻成将Pins钉在画板boards上。然后我们的目标就是根据用户的历史浏览记录为用户推荐其可能感兴趣的图片。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/28/%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E4%B8%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1031,103 +1129,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/20/SSPO------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
-      <meta itemprop="name" content="YY">
-      <meta itemprop="description" content="努力充实自己！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YY's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/20/SSPO------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">SSPO------论文阅读笔记</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-20 18:26:00" itemprop="dateCreated datePublished" datetime="2020-03-20T18:26:00+08:00">2020-03-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-30 15:26:31" itemprop="dateModified" datetime="2020-04-30T15:26:31+08:00">2020-04-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>10k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="sspo------论文阅读笔记">SSPO------论文阅读笔记</h4>
-<h4 id="short-term-sparse-portfolio-optimization-based-on-alternating-direction-method-of-multipliers">Short-term Sparse Portfolio Optimization Based on Alternating Direction Method of Multipliers</h4>
-<p>本文出发点：一些现存的策略虽然已经利用过稀疏性，但是它们要么限制投资组合改变的数量，要么聚焦于长期投资组合优化。它们中很少有人专门为短期投资组合优化建立稀疏投资组合。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/20/SSPO------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1200,7 +1201,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
