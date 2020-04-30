@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="RPRT------论文阅读笔记 Reweighted Price Relative Tracking System for Automatic Portfolio Optimization 本文出发点：1. 不像OLMAR预测价格时使用平均值，这样相当于每个资产的权重都是一样的，但是不同的资产对预测价格应该有不同的影响，所以在预测价格阶段自动的为资产加权并且自动更新是有必要的；2. 在投资组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RPRT------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/03/09/RPRT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="RPRT------论文阅读笔记 Reweighted Price Relative Tracking System for Automatic Portfolio Optimization 本文出发点：1. 不像OLMAR预测价格时使用平均值，这样相当于每个资产的权重都是一样的，但是不同的资产对预测价格应该有不同的影响，所以在预测价格阶段自动的为资产加权并且自动更新是有必要的；2. 在投资组">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-09T03:51:00.000Z">
+<meta property="article:modified_time" content="2020-04-30T05:35:41.073Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/03/09/RPRT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>RPRT------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">22</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/09/RPRT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RPRT------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 11:51:00" itemprop="dateCreated datePublished" datetime="2020-03-09T11:51:00+08:00">2020-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-30 13:35:41" itemprop="dateModified" datetime="2020-04-30T13:35:41+08:00">2020-04-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="rprt------论文阅读笔记">RPRT------论文阅读笔记</h4>
+<h4 id="reweighted-price-relative-tracking-system-for-automatic-portfolio-optimization">Reweighted Price Relative Tracking System for Automatic Portfolio Optimization</h4>
+<p>本文出发点：1. 不像OLMAR预测价格时使用平均值，这样相当于每个资产的权重都是一样的，但是不同的资产对预测价格应该有不同的影响，所以在预测价格阶段自动的为资产加权并且自动更新是有必要的；2. 在投资组合优化阶段，如果资产有表现好的潜力（获得财富高）那就设定与其成比例的优化方向 。<a id="more"></a></p>
+<hr />
+<h4 id="本文研究内容">本文研究内容</h4>
+<p>该文主要是受OLMAR的启发，因为在不同资产上预测价格时采用了统一的权重，所以它不太能有效的适应变动的市场，在实际场景下表现不太好。为了进一步用自适应的方式利用均值回归原则，于是提出了RPRT系统。</p>
+<h5 id="价比预测">价比预测</h5>
+<p>为了不使用统一的权重，RPR(Reweighted Price Relative)方法在价比预测时为不同的资产分配不同的权重。</p>
+<p><span class="math display">\[
+\hat{\boldsymbol \varphi}_{t+1}=\boldsymbol {\gamma}_{t+1}+(\mathbf 1-\boldsymbol {\gamma}_{t+1})\otimes\frac{\hat{\boldsymbol \varphi}_{t}}{\mathbf x_t},t\ge1.\quad\hat{\boldsymbol \varphi}_{t}=\mathbf x_1
+\]</span> 其中</p>
+<ol type="1">
+<li><span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t+1}\)</span>代表新的预测价比；</li>
+<li><span class="math inline">\(\mathbf x_t\)</span>代表实际价比；</li>
+<li><span class="math inline">\(\boldsymbol \gamma_{t+1}\)</span>代表权重向量，注意它不是固定的，它也随着时间更新。</li>
+</ol>
+<hr />
+<p>可以看到上面这个式子实际上跟OLMAR中的EMA预测形式是一样的，不如我来解释一下：</p>
+<p>为了考虑整个价比，而不是一个窗口内的，所以对所有的历史价比进行指数加权，使越久远的价格信息占比越少，提出EMA价格预测，其中<span class="math inline">\(\alpha\)</span>是衰减因子：</p>
+<p><span class="math display">\[
+\begin{aligned}EMA_t(\alpha)&amp;=\alpha\mathbf p_t+(1-\alpha)EMA_{t-1}(\alpha)\\&amp;=\alpha\mathbf p_t+(1-\alpha)\alpha\mathbf p_{t-1}+(1-\alpha)^2\alpha\mathbf p_{t-2}+\cdots+(1-\alpha)^{t-1}\mathbf p_1\end{aligned}
+\]</span> 那么EMA预测价比为：</p>
+<p><span class="math display">\[
+\begin{aligned}\tilde{\mathbf x}_{t+1}(\alpha)&amp;=\frac{EMA_t(\alpha)}{\mathbf p_t}=\frac{\alpha\mathbf p_t+(1-\alpha)EMA_{t-1}(\alpha)}{\mathbf p_t}\\&amp;=\alpha\mathbf 1+(1-\alpha)\frac{EMA_{t-1}(\alpha)}{\mathbf p_{t-1}}\frac{\mathbf p_{t-1}}{\mathbf p_t}\\&amp;=\alpha\mathbf 1+(1-\alpha)\frac{\tilde{\mathbf x}_t}{\mathbf x_t}\end{aligned}
+\]</span> 那这个形式实际上就和我们上面提出的价格预测形式是一样了，只不过EMA中<span class="math inline">\(\alpha\)</span>是不变的，而RPR方法中<span class="math inline">\(\lambda\)</span>是会变的，在不同的价格预测周期会更新为不同的值。</p>
+<hr />
+<p>至于如何确定<span class="math inline">\(\boldsymbol \gamma_{t+1}\)</span>，因为我们既要考虑所有的历史信息又要考虑当前的市场环境（因为不同的资产有不同表现，所以不同资产根据其表现权重应该不同，而每个资产的表现也不是一成不变的，会随着金融环境的改变而改变，所以各个资产的权重也要随着时间更新），所以把预测价比<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t}\)</span>和实际价比组合<span class="math inline">\(\mathbf x_t\)</span>在一起可能是个不错的方法（<strong>因为预测价比<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t}\)</span>代表着历史价格信息，实际价比<span class="math inline">\(\mathbf x_t\)</span>代表着当前市场环境信息</strong>）。</p>
+<p><span class="math display">\[
+\boldsymbol{\gamma}^{(i)}_{t+1}=\frac{\vartheta\mathbf x^{(i)}_t}{\vartheta\mathbf x^{(i)}_t+\hat{\boldsymbol{\varphi}}_t^{(i)}},\quad i=1,2,\dots,d
+\]</span> 其中</p>
+<ol type="1">
+<li><span class="math inline">\(\vartheta&gt;0\)</span>是一个混合参数；</li>
+<li><span class="math inline">\(0&lt;\boldsymbol \gamma_{t+1}^{(i)}&lt;1\)</span></li>
+<li>当<span class="math inline">\(\vartheta\)</span>越大，说明实际价比对预测价格影响越大，反之亦然。</li>
+</ol>
+<hr />
+<p>举例解释一下上面的式子：既然<span class="math inline">\(\gamma_{t+1}\)</span>是想由历史信息和当前环境共同决定，所以我们很自然会想历史信息<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t}\)</span>占多大比例，当前环境<span class="math inline">\(\mathbf x_t\)</span>又要占多大比例。假如一个资产表现很好，那么它的价格增长因子肯定大（相当于<span class="math inline">\(\mathbf x^{(i)}_t\)</span>很大），那么<span class="math inline">\(\boldsymbol \gamma_{t+1}^{(i)}\)</span>就越接近1，那么最后的预测价比<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t+1}^{(i)}\)</span>也就越接近1。否则的话，<span class="math inline">\(\boldsymbol \gamma_{t+1}^{(i)}\)</span>就越接近0，那么<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t+1}^{(i)}\)</span>就越接近<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t}^{(i)}/\mathbf x^{(i)}_t\)</span>，由于分母很小，所以<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t+1}^{(i)}\)</span>就会是一个很大的值。</p>
+<hr />
+<p>从上面这个例子可以看出，当资产表现好时，反而预测保守；当资产表现差时，预测比较激进。这实际上是符合均值回归原则的思想。</p>
+<h5 id="投资组合优化">投资组合优化</h5>
+<p>基本的策略是在可能表现好的资产上投入更多的资金，在可能表现不好的资产上投入相对较少的资金。如果我们再看看均值回归原则：一个当前价格超过平均线的资产在下一个周期价格可能会下降，一个当前价格低于平均线的资产下个周期价格可能会增长。所以换句话说就是在当前表现好（下一周期可能表现差）的资产上投入较少的资金，在当前表现差（下一周期可能表现好）的资产上投入较多资金。看一个简单的tracking system:</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\hat{\mathbf b}_t+\triangle\mathbf b_{t+1},\quad\triangle\mathbf b_{t+1}=\frac{\hat{\boldsymbol\varphi}_{t+1}}{\|\hat {\boldsymbol {\varphi}}_{t+1}\|}
+\]</span> 那么投资组合的更新量<span class="math inline">\(\bigtriangleup\mathbf b_{t+1}\)</span>被设置为与预测价比<span class="math inline">\(\hat {\boldsymbol {\varphi}}_{t+1}\)</span>成比例，因为预测价比暗示了该资产的财富增长潜力，当预测价比较小时，我们尽量在该资产上投入较小的资金，当预测价比较大时，我们加大投入。</p>
+<p>那么一般我们的目标是最大化累计财富，所以优化问题如下：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmax}}_{\mathbf b}\mathbf b^{\top}\hat {\boldsymbol {\varphi}}_{t+1}\quad s.t.\quad\|\mathbf b-\hat{\mathbf b}_t\|^2\le 1
+\]</span> 其实也就是最大化财富增长因子<span class="math inline">\(\mathbf b^{\top}\hat {\boldsymbol {\varphi}}_{t+1}\)</span>。</p>
+<p>实际上本文没有使用这种广为使用的财富增长因子，而是提出了一种更加具有一般性的增长因子：</p>
+<p><span class="math display">\[
+(\mathbf b-\hat{\mathbf b}_t)^{\top}\mathbf D_{t+1}(\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1),\quad \bar{\varphi}_{t+1}=\hat{\boldsymbol{\varphi}}_{t+1}^{\top}\mathbf 1/d
+\]</span> 其中</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbf D_{t+1}\)</span>是一个正定对称矩阵，用来调整不同资产之间的相对影响，以此提高广义增长因子的自适应性，它在每个周期根据市场环境自动的更新；</li>
+<li><span class="math inline">\(\bar {\varphi}_{t+1}\)</span>是所有资产预测价比的平均值；</li>
+<li><span class="math inline">\((\hat {\boldsymbol {\varphi}}_{t+1}-\bar {\varphi}_{t+1}\mathbf 1)\)</span>是各个资产预测价比对于平均值的偏差，可以看作一个标准化预测价比，可以想象这个向量中有些元素是正的，有些元素是负的，这代表这些资产是不是有好的增长能力；</li>
+<li><span class="math inline">\((\mathbf b - \hat{\mathbf b}_t)\)</span>和上面的解释差不多，看作一个标准化的预测投资组合。</li>
+</ol>
+<p>那么对于这个新提出的广义增长因子，我们代替原来的增长因子后，目标优化函数就变成了（后面的约束不知道是怎么变换来的）：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmax}}_{\mathbf b\in\triangle_d}(\mathbf b-\hat{\mathbf b}_t)^{\top}\mathbf D_{t+1}(\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1)
+\]</span></p>
+<p><span class="math display">\[
+s.t.(\mathbf b-\hat{\mathbf b}_t)^{\top}(\mathbf D^{-1}_{t+1})^2(\mathbf b-\hat{\mathbf b}_t)\le\frac{\left[\left(\epsilon-\hat{\mathbf b}_t^{\top}\hat {\boldsymbol {\varphi}}_{t+1}\right)^{+}\right]^2}{\|\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1\|^2}
+\]</span></p>
+<p>其中</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbf D^{-1}_{t+1}\)</span>代表<span class="math inline">\(\mathbf D_{t+1}\)</span>的逆；</li>
+<li><span class="math inline">\((y)^+=\text{max}\{0,y\}\)</span>；</li>
+<li><span class="math inline">\(\epsilon\)</span>可以看作是预期盈利水平，如果实际的盈利水平超过了我们的预期<span class="math inline">\(\mathbf b^{\top}\hat {\boldsymbol {\varphi}}_{t+1}&gt;\epsilon\)</span>，那么<span class="math inline">\(\mathbf b\)</span>和<span class="math inline">\(\hat{\mathbf b}_{t}\)</span>的马氏距离就要小于等于0，这意味着投资组合就不改变；否则的话，如果实际盈利达不到预期，那么之间的这个差距就能控制投资组合<span class="math inline">\(\mathbf b\)</span>的可行解集，换句话说，<span class="math inline">\(\mathbf b\)</span>和<span class="math inline">\(\hat{\mathbf b}_{t}\)</span>的马氏距离就要小于等于一个数，而这个数的大小和期望与实际情况的差距大小有关。我们想象一个高维空间中的椭球体，<span class="math inline">\(\hat{\mathbf b}_{t}\)</span>是球心，那么上面约束中小于等于号右边的分式就相当于球的半径，那么<span class="math inline">\(\mathbf b\)</span>就可以是这个球表面和内部的任意一点，半径变大变小影响着<span class="math inline">\(\mathbf b\)</span>的可行解集的大小。</li>
+</ol>
+<p>对于上面的约束的理解还补充一点知识：</p>
+<blockquote>
+<p>马哈拉诺比斯距离又称马氏距离，是对欧式距离的一种修正，能够处理欧式距离中各个特征维度不同且自相关的问题： <span class="math display">\[
+D_M(x)=\sqrt{(x-\mu)^T\Sigma^{-1}(x-\mu)}
+\]</span> 如果协方差矩阵<span class="math inline">\(\Sigma\)</span>是单位矩阵，那么马氏距离就可以简化为欧式距离</p>
+</blockquote>
+<p>至于<span class="math inline">\(\mathbf D_{t+1}\)</span>，我们希望表现好的资产能够在预测未来价格上起更大的作用，所以<span class="math inline">\(\mathbf D_{t+1}\)</span>中相应的元素值应该设得更大，得益于对OLMAR论文中的启发：表现好的资产的预测价格大，表现不好的资产的预测价格小。</p>
+<blockquote>
+<p>OLMAR论文中提出了两种预测价格的方式：1. 简单移动平均（Simple Moving Average SMA）2. 指数移动平均（Exponential Moving Average EMA）</p>
+<p>SMA的思想是：取一个窗口，窗口大小为w，预测价格就是简单的窗口内的资产价格的算术平均值： <span class="math display">\[
+SMA_t(w)=\frac{1}{w}\sum^t_{i = t-w+1}\mathbf p_i
+\]</span> EMA的思想是：利用所有的历史价格信息，没有取窗口。既然利用所有的历史价格信息，那么很直观的是时间越久远的价格信息对预测未来价格影响应该越小，相应的就是权重越小： <span class="math display">\[
+\begin{aligned}EMA_t(\alpha)&amp;=\alpha\mathbf p_t +(1-\alpha)EMA_{t-1}(\alpha)\\&amp;=\alpha\mathbf p_t+(1-\alpha)\alpha\mathbf p_{t-1}+(1-\alpha)^2\alpha\mathbf p_{t-2}+\dots+(1-\alpha)^{t-1}\mathbf p_{1}\end{aligned}
+\]</span></p>
+</blockquote>
+<p>利用SMA的思想，所以将<span class="math inline">\(\mathbf D_{t+1}\)</span>设置为</p>
+<p><span class="math display">\[
+\mathbf D_{t+1}=\text{diag}(\hat{\mathbf x}_{SMA,t+1})
+\]</span> 其中 <span class="math display">\[
+\hat{\mathbf x}_{SMA,t+1}=\frac{SMA_t{(w)}}{\mathbf p_t}=\frac{\sum^{w-1}_{k=0}\mathbf p_{t-k}}{w\mathbf p_t}=\frac{1}{w}\left(\mathbf 1 +\frac{\mathbf 1}{\mathbf x_t}+\dots+\frac{\mathbf 1}{\bigotimes^{w-2}_{k=0}\mathbf x_{t-k}}\right)
+\]</span> 显然这个设置是符合我们想法的，表现好的资产在最近的窗口内价格的平均值肯定高，所以把他作为<span class="math inline">\(\mathbf D_{t+1}\)</span>的对角元素那么在预测未来价格的时候影响就大。</p>
+<h5 id="优化问题的求解算法">优化问题的求解算法</h5>
+<p>目标函数：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmax}}_{\mathbf b\in\triangle_d}(\mathbf b-\hat{\mathbf b}_t)^{\top}\mathbf D_{t+1}(\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1)
+\]</span></p>
+<p><span class="math display">\[
+s.t.(\mathbf b-\hat{\mathbf b}_t)^{\top}(\mathbf D^{-1}_{t+1})^2(\mathbf b-\hat{\mathbf b}_t)\le\frac{\left[\left(\epsilon-\hat{\mathbf b}_t^{\top}\hat {\boldsymbol {\varphi}}_{t+1}\right)^{+}\right]^2}{\|\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1\|^2}
+\]</span></p>
+<p>主要是使用梯度投影原理来进行高效的计算。梯度投影原理主要包括一个梯度上升或者梯度下降步骤和一个投影步骤组成。所以一般的做法就是先不管单纯形域的限制，等我们求出解后再进行投影就可以了。</p>
+<p>那么先对未知参数<span class="math inline">\(\mathbf b\)</span>求梯度 <span class="math display">\[
+\frac{\partial \hat{\mathbf b}_{t+1}}{\partial\mathbf b}=\mathbf D_{t+1}(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)
+\]</span> 梯度上升步：</p>
+<p><span class="math display">\[
+\mathbf b_{t+1}=\hat{\mathbf b}_t+\lambda_{t+1}\mathbf D_{t+1}(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1),\quad\lambda_{t+1}\ge0
+\]</span> 其中</p>
+<ol type="1">
+<li><span class="math inline">\((\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)\)</span>代表着不同资产的增长能力；</li>
+<li><span class="math inline">\(\mathbf D_{t+1}\)</span>调整不同资产的优化影响；</li>
+<li><span class="math inline">\(\lambda_{t+1}\)</span>代表着步长。</li>
+</ol>
+<p>把这个结果代入约束中 <span class="math display">\[
+\left(\lambda_{t+1}\mathbf D_{t+1}(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)\right)^{\top}(\mathbf D^{-1}_{t+1})^2\left(\lambda_{t+1}\mathbf D_{t+1}(\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1)\right)\le\frac{\left[(\epsilon-\mathbf b^{\top}\hat {\boldsymbol {\varphi}}_{t+1})^+\right]^2}{\|\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1\|^2}
+\]</span> 得到</p>
+<p><span class="math display">\[
+\lambda_{t+1}^2\|\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1\|^4\le\left[\left(\epsilon-\hat{\mathbf b}_t^{\top}\hat {\boldsymbol {\varphi}}_{t+1}\right)^{+}\right]^2
+\]</span></p>
+<p><span class="math display">\[
+\lambda_{t+1}\le\frac{\left(\epsilon-\hat{\mathbf b}_t^{\top}\hat {\boldsymbol {\varphi}}_{t+1}\right)^{+}}{\|\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1\|^2}\ \text{if}\ \|\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1\|^2\not=0
+\]</span></p>
+<p>如果<span class="math inline">\(\|\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1\|^2=0\)</span>那么我们就不更新投资组合，使<span class="math inline">\(\hat\lambda_{t+1}=0\)</span>。</p>
+<p>如果<span class="math inline">\(\|\hat{\boldsymbol\varphi}_{t+1}-\bar\varphi_{t+1}\mathbf 1\|^2\not=0\)</span>那么我们就最大化投资组合更新步长，使</p>
+<p><span class="math display">\[
+\hat{\lambda}_{t+1}=\frac{\left(\epsilon-\hat{\mathbf b}_t^{\top}\hat {\boldsymbol {\varphi}}_{t+1}\right)^{+}}{\|\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1\|^2}\ \text{if}\ \|\hat {\boldsymbol {\varphi}}_{t+1}-\bar{\varphi}_{t+1}\mathbf 1\|^2\not=0
+\]</span> 最后把投资组合<span class="math inline">\(\mathbf b_{t+1}\)</span>投影到单纯形域：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmin}}_{\mathbf b\in\triangle_d}\|\mathbf b-\mathbf b_{t+1}\|^2
+\]</span></p>
+<h5 id="实验">实验</h5>
+<p>主要评价指标：</p>
+<ol type="1">
+<li><p>CW(cumulative wealth)评价投资表现的核心指标</p></li>
+<li><p>MER(mean excess return)测量系统比市场平均水平好多少</p>
+<p><span class="math display">\[
+r_t=\frac{\hat{S}_t}{\hat{S}_{t-1}}-1=\hat{\mathbf{b}}^{\top}_t\cdot\mathbf{x}_t-1
+\]</span></p>
+<p><span class="math display">\[
+MER=\bar{r}_s-\bar{r}_m=\frac{1}{n}\sum^n_{t=1}(r_{s,t}-r_{m,t})
+\]</span></p>
+<p>其中<span class="math inline">\(r_t\)</span>代表第t周期的日回报，<span class="math inline">\(r_{s,t}\)</span>是系统的日回报，<span class="math inline">\(r_{m,t}\)</span>是市场基准的日回报。</p></li>
+<li><p>α Factor投资者希望知道排除市场风险的影响后系统能获得多少固有的超额收益。一个投资组合的期望回报分为两部分：一是市场回报乘上投资组合的相对波动性，二是投资组合的固有或者说内在超额收益，第二部分在金融业内称为α因子</p>
+<p><span class="math display">\[
+E(r_s)= \alpha + \beta E(r_m)
+\]</span></p>
+<p><span class="math display">\[
+\hat{\beta}=\frac{\hat{c}(r_s,r_m)}{\hat{\sigma}^2(r_m)},\quad \hat{\alpha}=\bar{r}_s-\hat{\beta}\bar{r}_m
+\]</span></p>
+<p>其中<span class="math inline">\(E(\cdot)\)</span>代表数学期望，<span class="math inline">\(\hat c(\cdot,\cdot)\)</span>代表样本协方差，<span class="math inline">\(\hat \sigma(\cdot)\)</span>代表n个周期的STD估计。</p></li>
+<li><p>APY(annual percentage yield)系统累计财富增长的速度</p>
+<p><span class="math display">\[
+\text{APY}=\sqrt[y]{\mathbf{S}_n}-1
+\]</span> 其中y是与n个投资期相对应的年数。</p></li>
+<li><p>MDD(maximum drawdown)评估下行风险</p>
+<blockquote>
+<p>下行风险：股价下行风险是指未来股价走势有可能低于分析师或投资者预期的目标价位的风险。</p>
+</blockquote>
+<p>投资者需要考虑他们可能面对的最差情况，MDD用来测量在整个投资中一个APO（Automatic Portfolio Optimization）系统从历史峰值到历史谷底的最大损失</p>
+<p><span class="math display">\[
+MDD=\frac{\mathop{\text{max}}\limits_{\tau\in(0,n)}\left[\mathop{\text{max}}\limits_{t\in(0,\tau)}S_t-S_{\tau}\right]}{\mathop{\text{max}}\limits_{t\in(0,\tau)}S_t}
+\]</span></p></li>
+<li><p>SR(Sharpe ratio)用于评价风险调整回报</p>
+<p><span class="math display">\[
+SR=\frac{APY_s-R_f}{\sqrt{252}\hat{\sigma}(r_s)}
+\]</span> 其中<span class="math inline">\(R_f\)</span>代表具有无风险资产的固定年化收益率，分母代表每个收益的年化STD，<span class="math inline">\(APY_s\)</span>代表系统的<span class="math inline">\(APY\)</span>，因为标准数据集包括的都是风险资产，所以<span class="math inline">\(R_f\)</span>置为0。</p></li>
+<li><p>IR(information ratio)用于评价风险调整回报</p>
+<p><span class="math display">\[
+IR = \frac{APY_s-APY_m}{\sqrt{252}\hat{\sigma}(r_s-r_m)}
+\]</span> 代表和market相比较的年化超额收益。</p></li>
+<li><p>CR(Calmar ratio)用于评价风险调整回报，消除了过高和过低的数据。</p>
+<p><span class="math display">\[
+CR=\frac{APY_s}{MDD_s}
+\]</span></p></li>
+<li><p>TO(turnover)周转率用来测量一个APO系统的稳定性，因为我们每个交易周期都再平衡投资组合，所以TO代表投资组合在整个投资中被买入卖出的平均百分比</p>
+<p><span class="math display">\[
+TO=\sum^n_{t=2}\frac{\|\hat{\mathbf b}_t-\tilde{\mathbf b}_{t-1}\|}{2(n-1)}\quad\tilde{\mathbf b}^{(i)}_{t-1}=\frac{\hat{\mathbf b}_{t-1}^{(i)}*\mathbf x^{(i)}_{t-1}}{\hat{\mathbf b}^{\top}_{t-1}\mathbf x_{t-1}}
+\]</span> 其中<span class="math inline">\(\tilde{\mathbf b}_{t-1}^{(i)}\)</span>代表第t-1周期末的已调整投资组合，<span class="math inline">\(\tilde {\mathbf b}_0\)</span>设为<span class="math inline">\([0,\dots,0]^{\top}\)</span>，<span class="math inline">\((\|\hat{\mathbf b}_t-\tilde{\mathbf b}_{t-1}\|/2)\)</span>代表一个周期的TO。</p></li>
+<li><p>Transaction cost包括佣金和税金，我们调节交易费率<span class="math inline">\(\gamma \in (0,1)\)</span>来观察系统的累计财富以此来判断一个系统是否能够承受一定的交易费。那么考虑了交易费的累计财富为</p>
+<p><span class="math display">\[
+{S}^{\gamma}_{n}={S}_{0}\prod^{n}_{t=1}\left[(\hat{\mathbf{b}}^{\top}_{t}\mathbf{x}_{t}) \times \left(1-\frac{\gamma}{2}\times \sum_{i=1}^d|\hat{\mathbf b}^{(i)}_t-\tilde{\mathbf b}^{(i)}_{t-1}|\right)\right]
+\]</span> 其中<span class="math inline">\((\gamma/2)\sum^d_{i=1}|\hat{\mathbf b}^{(i)}_t-\tilde{\mathbf b}^{(i)}_{t-1}|\)</span>是由于把投资组合<span class="math inline">\(\tilde{\mathbf b}_{t-1}\)</span>调整为新的投资组合<span class="math inline">\(\hat{\mathbf b}_t\)</span>的比例交易费。</p></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" rel="tag"># 量化投资</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/09/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="基于深度矩阵分解模型的推荐系统------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 基于深度矩阵分解模型的推荐系统------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/11/KTPT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="KTPT------论文阅读笔记">
+      KTPT------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#rprt------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">RPRT------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reweighted-price-relative-tracking-system-for-automatic-portfolio-optimization"><span class="nav-number">2.</span> <span class="nav-text">Reweighted Price Relative Tracking System for Automatic Portfolio Optimization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文研究内容"><span class="nav-number">3.</span> <span class="nav-text">本文研究内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#价比预测"><span class="nav-number">3.1.</span> <span class="nav-text">价比预测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#投资组合优化"><span class="nav-number">3.2.</span> <span class="nav-text">投资组合优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优化问题的求解算法"><span class="nav-number">3.3.</span> <span class="nav-text">优化问题的求解算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实验"><span class="nav-number">3.4.</span> <span class="nav-text">实验</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":280,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="SSPO------论文阅读笔记 Short-term Sparse Portfolio Optimization Based on Alternating Direction Method of Multipliers 本文出发点：一些现存的策略虽然已经利用过稀疏性，但是它们要么限制投资组合改变的数量，要么聚焦于长期投资组合优化。它们中很少有人专门为短期投资组合优化建立稀疏投资组合。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSPO------论文阅读笔记">
+<meta property="og:url" content="http://yy-oops.github.io/2020/03/20/SSPO------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="SSPO------论文阅读笔记 Short-term Sparse Portfolio Optimization Based on Alternating Direction Method of Multipliers 本文出发点：一些现存的策略虽然已经利用过稀疏性，但是它们要么限制投资组合改变的数量，要么聚焦于长期投资组合优化。它们中很少有人专门为短期投资组合优化建立稀疏投资组合。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430152042.png">
+<meta property="article:published_time" content="2020-03-20T10:26:00.000Z">
+<meta property="article:modified_time" content="2020-04-30T07:26:31.982Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430152042.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/03/20/SSPO------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>SSPO------论文阅读笔记 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">22</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/20/SSPO------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SSPO------论文阅读笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-20 18:26:00" itemprop="dateCreated datePublished" datetime="2020-03-20T18:26:00+08:00">2020-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-30 15:26:31" itemprop="dateModified" datetime="2020-04-30T15:26:31+08:00">2020-04-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="sspo------论文阅读笔记">SSPO------论文阅读笔记</h4>
+<h4 id="short-term-sparse-portfolio-optimization-based-on-alternating-direction-method-of-multipliers">Short-term Sparse Portfolio Optimization Based on Alternating Direction Method of Multipliers</h4>
+<p>本文出发点：一些现存的策略虽然已经利用过稀疏性，但是它们要么限制投资组合改变的数量，要么聚焦于长期投资组合优化。它们中很少有人专门为短期投资组合优化建立稀疏投资组合。<a id="more"></a></p>
+<p>SSPO的主要思想是：利用一些金融原则的经验，将财富集中在具有良好增长潜力的一少部分资产上，以期在整个投资周期内使累计财富达到最大化。</p>
+<p>下面解释两个概念：</p>
+<ol type="1">
+<li>long-term：指的是一周或者一个月或者一年改变一次投资组合；它重点是关注资产的选择而不是交易的时机；它的目标是最小化二次风险。</li>
+<li>short-term：指的是一天或者更短时间改变一次投资组合；它既关注资产的选择也关注交易的时机；它的目的是最大化每一天的增长因子，最终就是最大化累计财富。</li>
+</ol>
+<p>其中还有一个算法需要解释一下：</p>
+<p>交替方向乘子准则（ADMM）在许多应用中解决<span class="math inline">\(\ell^1\)</span>正则化问题非常有效且可靠，但是当<span class="math inline">\(\ell^1\)</span>正则化问题和自筹资金约束同时存在时ADMM算法实施起来并不容易。ADMM算法是凸优化中的内容，比较复杂。</p>
+<h5 id="相关工作">相关工作</h5>
+<ol type="1">
+<li><p>长期投资组合优化系统</p>
+<p>SSMP(Sparse and Stable Markowiz Portfolio)用如下的正则化模型</p>
+<p><span class="math display">\[
+\mathbf b_{SSMP}=\mathop{\text{argmin}}_{\mathbf b}\|\epsilon\mathbf 1_{(n)}-\mathcal R\mathbf b\|^2+\tau\|\mathbf b\|_1\quad s.t.\quad \mathbf b^{\top}\boldsymbol \mu=\epsilon,\ \mathbf b^{\top}\mathbf 1=1
+\]</span> 其中<span class="math inline">\(\epsilon\)</span>是一个预定义的期望增长率，<span class="math inline">\(\mathbf 1_{(n)}\)</span>是一个n维的单位向量，<span class="math inline">\(\mathcal R\)</span>是一个<span class="math inline">\(n\times d\)</span>维的资产回报矩阵，<span class="math inline">\(\boldsymbol \mu\)</span>是资产预期收益，<span class="math inline">\(\|\cdot\|\)</span>是<span class="math inline">\(\ell^1\)</span>范式，<span class="math inline">\(\tau\)</span>是正则化强度。</p>
+<p><span class="math inline">\(\mathcal R\mathbf b\)</span>包含n个样本的实际投资组合回报，<span class="math inline">\(\mathbf b^{\top}\boldsymbol \mu\)</span>是投资组合回报的期望值，这个公式就是想最小化实际投资组合回报与期望的平方误差（数量金融上称二次风险），有了<span class="math inline">\(\ell^1\)</span>正则化之后，<span class="math inline">\(\mathbf b\)</span>就被强制变得稀疏，空头头寸被限制。</p>
+<p>WENPP(Weighted Elastic Net Penalized)把弹性网惩罚加入，但是移除了自筹资金的限制<span class="math inline">\(\mathbf b^{\top} \mathbf 1= 1\)</span>。</p>
+<p><span class="math display">\[
+\mathbf b_{WENPP}=\mathop{\text{argmin}}_{\mathbf b}\mathbf b^{\top}\hat{\boldsymbol\Sigma}\mathbf b-\mathbf b^{\top}\hat{\boldsymbol\mu}+\sum^d_{i=1}\tau_i|\mathbf b^{(i)}|+\sum^d_{i=1}\iota_i|\mathbf b^{(i)}|^2
+\]</span> 其中<span class="math inline">\(\hat{\boldsymbol\Sigma}\)</span>代表估计协方差，<span class="math inline">\(\hat{\boldsymbol \mu}\)</span>代表资产回报的期望。</p>
+<p>SSMP和WENPP反映出长期投资组合优化的目标是最小化二次风险<span class="math inline">\(\|\epsilon\mathbf 1_{(n)}-\mathcal R\mathbf b\|^2\)</span>或者<span class="math inline">\(\mathbf b^{\top}\hat{\Sigma}\mathbf b\)</span>。</p></li>
+<li><p>懒惰更新系统</p>
+<p>OLU(Online Lazy Update)是用于短期投资组合优化问题的一种稀疏模型，这种稀疏性体现在投资组合的改变上（应该是指只有较少的资产上的投资会改变较大，大部分改变量很小），而不是投资组合本身（应该是指，大多数资产上投资量很小，主要把资产投资于少数具有良好增长潜力的资产上）：</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmin}}_{\mathbf b\in\triangle_d}-\eta\text{log}(\mathbf b^{\top}\mathbf x_t)+\tau\|\mathbf b-\hat{\mathbf b}_t\|_1+\frac{1}{2}\|\mathbf b-\hat{\mathbf b}_t\|^2
+\]</span> 该方法虽然建立了一个ADMM求解方法，但是没有给出增广拉格朗日的鞍点证明。</p>
+<p>DRP(Doubly Regularized Portfolio)也在它的模型中采用了懒惰更新策略： <span class="math display">\[
+\hat{\mathbf b}_t=\mathop{\text{argmin}}_{\mathbf b}\mathbf b^{\top}\hat{\boldsymbol\Sigma}\mathbf b+\tau_1\|\mathbf b\|_1+\tau_2\|\mathbf b-\hat{\mathbf b}_{t-}\|^2\quad s.t.\mathbf b^{\top}\mathbf 1=1
+\]</span> 其中<span class="math inline">\(\hat {\mathbf b}_{t-}\)</span>代表在时间t时刻再平衡之前再标准化的投资组合，<span class="math inline">\(\hat{\Sigma}_t\)</span>代表在时间t时刻的估计协方差。DRP没有给出该模型的解决方案，而是把它交给了商业软件工具箱。</p></li>
+</ol>
+<hr />
+<h4 id="本文研究内容短期稀疏投资组合优化">本文研究内容：短期稀疏投资组合优化</h4>
+<h5 id="模型输入">模型输入</h5>
+<p>主要的想法是关注几个有良好增长潜力的资产，并且使用一种激进策略。</p>
+<p>为了评估资产的增长潜力，所以在最近的窗口（窗口大小为w）中选择每个资产出现的最高价格</p>
+<p><span class="math display">\[
+\mathbf p^{(i)}_{MAX}=\mathop{\max}_{0\le k\le w-1}\mathbf P^{(i)}_{t-k},\quad i=1,2,\dots,d
+\]</span> 接下来计算<span class="math inline">\(\mathbf p_{MAX}\)</span>和当前价比向量<span class="math inline">\(\mathbf p_t\)</span>的相对距离，这代表着每个资产的增长潜力。因此我们定义一个广义对数回报如下：</p>
+<p><span class="math display">\[
+\mathbf R_t=1.1\text{log}\left(\frac{\mathbf p_{MAX}}{\mathbf p_t}\right)+1
+\]</span> 其中<span class="math inline">\(\text{log}\left(\frac{\mathbf p_{MAX}}{\mathbf p_t}\right)\)</span>是对数回报，<span class="math inline">\(\mathbf R_t\)</span>是<span class="math inline">\(\text{log}\left(\frac{\mathbf p_{MAX}}{\mathbf p_t}\right)\)</span>的线性转化，并且向量<span class="math inline">\(\frac{\mathbf p_{MAX}}{\mathbf p_t}\)</span>的每个元素都是大于等于1的，如果<span class="math inline">\(\frac{\mathbf p^{(i)}_{MAX}}{\mathbf p^{(i)}_t}=1\)</span>那么<span class="math inline">\(\mathbf R^{(i)}_t=1\)</span>。我们的SSPO系统的输入就是<span class="math inline">\(\mathbf R_t\)</span>。</p>
+<h5 id="建立模型">建立模型</h5>
+<p>因为我们前面讲了<span class="math inline">\(\mathbf R_t\)</span>，这个东西其实就跟价比<span class="math inline">\(\mathbf x_t\)</span>差不多，所以在这个模型中目的就是最大化广义的财富增长因子<span class="math inline">\(\mathbf b^{\top}\mathbf R_t\)</span>，如果我们令<span class="math inline">\(\boldsymbol\varphi_t=-\mathbf R_t\)</span>，那么最大化的问题就可以转化为最小化的问题。然后我们采用<span class="math inline">\(\ell^1\)</span>正则化，和自筹资金的限制，这让我们只关注于少量的资产。那么最后模型大概如下：</p>
+<p><span class="math display">\[
+\mathbf b_{t+1}=\mathop{\min}_{\mathbf b}\mathbf b^{\top}\boldsymbol\varphi_t+\lambda\|\mathbf b\|_1,\quad s.t.\mathbf 1^{\top}\mathbf b=1
+\]</span> 其中<span class="math inline">\(\lambda\)</span>代表正则化强度。这个模型实际上还没有公开的求解方法，所以我们自己必须设计一个新的算法。</p>
+<p>我们引入一个辅助向量<span class="math inline">\(\mathbf g\in\mathbb R^d\)</span>，用它来逼近<span class="math inline">\(\mathbf b\)</span>并且最小化<span class="math inline">\(\lambda \|\mathbf g\|_1\)</span>，同时对约束<span class="math inline">\(\mathbf 1^{\top}\mathbf b = 1\)</span>引入一个对偶变量<span class="math inline">\(\rho\)</span>（或者拉格朗日乘子），并且把约束转化为一个惩罚项。那么约束模型就转变为了如下的无约束的增广拉格朗日优化函数：</p>
+<p><span class="math display">\[
+L(\mathbf b,\mathbf g,\rho)=\mathbf b^{\top}\boldsymbol\varphi_t+\frac{\lambda}{2\gamma}\|\mathbf b-\mathbf g\|^2+\lambda\|\mathbf g\|_1+\frac{\eta}{2}(\mathbf 1^{\top}\mathbf b -1)^2+\rho(\mathbf 1^{\top}\mathbf b -1)
+\]</span> 其中<span class="math inline">\(\gamma &gt;0\)</span>控制着<span class="math inline">\(\mathbf g\)</span>逼近<span class="math inline">\(\mathbf b\)</span>的程度，<span class="math inline">\(\eta&gt;0\)</span>能够在<span class="math inline">\(\mathbf 1^{\top}\mathbf b \not= 1\)</span>控制惩罚强度。如果<span class="math inline">\(\gamma \rightarrow 0\)</span>，那么惩罚项<span class="math inline">\(\frac{\lambda}{2\gamma}\|\mathbf b - \mathbf g\|^2\)</span>就会强迫<span class="math inline">\(\mathbf g \rightarrow \mathbf b\)</span>。</p>
+<h5 id="模型求解">模型求解</h5>
+<p>对于目标函数：</p>
+<p><span class="math display">\[
+L(\mathbf b,\mathbf g,\rho)=\mathbf b^{\top}\boldsymbol\varphi_t+\frac{\lambda}{2\gamma}\|\mathbf b-\mathbf g\|^2+\lambda\|\mathbf g\|_1+\frac{\eta}{2}(\mathbf 1^{\top}\mathbf b -1)^2+\rho(\mathbf 1^{\top}\mathbf b -1)
+\]</span> 首先证明其鞍点的存在性：</p>
+<p>假设存在鞍点<span class="math inline">\((\mathbf b^{*},\mathbf g^{*},\rho^{*})\)</span>那么鞍点一定满足下式</p>
+<p><span class="math display">\[
+L(\mathbf b^*,\mathbf g^*,\rho)\le L(\mathbf b^*,\mathbf g^*,\rho^*)\le L(\mathbf b,\mathbf g,\rho^*),\quad\forall\mathbf b,\mathbf g,\rho
+\]</span> 证明：</p>
+<p>对于给定的<span class="math inline">\(\rho\)</span>，下面等式成立</p>
+<p><span class="math display">\[
+\mathop{\min}_{\mathbf b,\mathbf g}L(\mathbf b,\mathbf g,\rho)=\mathop{\min}_{\mathbf b}\mathop{\min}_{\mathbf g}L(\mathbf b,\mathbf g,\rho)
+\]</span> 那么有</p>
+<p><span class="math display">\[
+\mathop{\min}_{\mathbf b,\mathbf g}L(\mathbf b,\mathbf g,\rho)\le\mathop{\min}_{\mathbf g}L(\mathbf b,\mathbf g,\rho)\le L(\mathbf b,\mathbf g,\rho)
+\]</span> 如果我们分别在上面三项前面加上<span class="math inline">\(\text{min}_{\mathbf b,\mathbf g}\)</span>，那么上面的不等式就变成了等式，为什么呢？因为第一项是等于最后一项的，所以中间这项自然就被压缩到和前一项和后一项相等，另外<span class="math inline">\(\text{min}_{\mathbf b,\mathbf g}\text{min}_{g}L(\mathbf b, \mathbf g \rho)=\text{min}_{\mathbf b}\text{min}_{\mathbf g}L(\mathbf b, \mathbf g, \rho)\)</span></p>
+<p>接下来我们看下面这个函数：</p>
+<p><span class="math display">\[
+l(\mathbf b,\rho)=\mathop{\min}_{\mathbf g}L(\mathbf b,\mathbf g,\rho)=\mathbf b^{\top}\boldsymbol\varphi_t+\lambda H(\mathbf b)+\frac{\eta}{2}(\mathbf 1^{\top}\mathbf b -1)^2+\rho(\mathbf 1^{\top}\mathbf b -1)
+\]</span> 其中</p>
+<p><span class="math display">\[
+H(\mathbf b)\overset{\triangle}{=}\mathop{\min}_{\mathbf g}\frac{1}{2\gamma}\|\mathbf b-\mathbf g\|^2+\|\mathbf g\|_1=\sum^d_{i=1}h(\mathbf b^{(i)})
+\]</span> 其中<span class="math inline">\(h(\mathbf b^{(i)})\)</span>是Huber 函数</p>
+<p><span class="math display">\[
+h(\mathbf b^{(i)})=\mathop{\min}_{\mathbf g^{(i)}}\frac{1}{2\gamma}(\mathbf b^{(i)}-\mathbf g^{(i)})^2+|\mathbf g^{(i)}|=\begin{cases}\frac{|\mathbf b^{(i)}|^2}{2\gamma}&amp;\text{if}\ |\mathbf b^{(i)}|\le \gamma\\|\mathbf b^{(i)}|-\frac{\gamma}{2}&amp;\text{if}\ |\mathbf b^{(i)}|&gt; \gamma\end{cases}
+\]</span> 可以看到<span class="math inline">\(\mathbf b^{(i)}\le 0\)</span>时函数是递减的，当<span class="math inline">\(\mathbf b^{(i)}&gt;0\)</span>时函数是递增的，这表明这个函数是一个严格凸函数。</p>
+<p>假设我们有两个向量<span class="math inline">\(\mathbf b\not = \mathbf c\)</span>，那么对于任意的<span class="math inline">\(0&lt;\theta&lt; 1\)</span>，有 <span class="math display">\[
+H(\theta\mathbf b + (1-\theta)\mathbf c)=\sum^{d}_{i=1}h(\theta\mathbf b^{(i)}+ (1-\theta)\mathbf c^{(i)})&lt;\theta\sum^{d}_{i=1}h\mathbf b^{(i)}+(1-\theta)\sum^d_{i=1}h\mathbf c^{(i)}=\theta H(\mathbf b)+(1-\theta)H(\mathbf c)
+\]</span> 因此<span class="math inline">\(H(\mathbf b)\)</span>也是一个严格凸的函数。</p>
+<p>然后我们再看到函数<span class="math inline">\(l(\mathbf b, \rho)\)</span>，它其实是如下问题的拉格朗日形式</p>
+<p><span class="math display">\[
+\mathop{\min}_{\mathbf b}\mathbf b^{\top}\boldsymbol\varphi_t+\lambda H(\mathbf b)+\frac{\eta}{2}(\mathbf 1^{\top}\mathbf b -1)^2,\quad s.t.\mathbf 1^{\top}\mathbf b=1
+\]</span> 因为我们证明了<span class="math inline">\(H(\mathbf b)\)</span>是严格凸的，而很容易看出<span class="math inline">\(\mathbf b^{\top}\boldsymbol \varphi_t\)</span>和<span class="math inline">\(\frac{n}{2}(\mathbf 1^{\top}\mathbf b-1)^2\)</span>在<span class="math inline">\(\mathbf b\)</span>上也是凸的（看不出来为什么<span class="math inline">\(\mathbf b^{\top}\boldsymbol \varphi_t\)</span>是凸的）。所以如上问题是严格凸的，那么根据Slater's theorem，强对偶成立，一定存在一个鞍点<span class="math inline">\((\mathbf b^{*},\rho^{*})\)</span></p>
+<p><span class="math display">\[
+l(\mathbf b^*,\rho)\le l(\mathbf b^*,\rho^*)\le l(\mathbf b,\rho^*),\quad\forall\mathbf b,\rho
+\]</span> 看上面这个式子好像和我们想要的有点接近了，那么接下来要做的就是找到<span class="math inline">\(\mathbf g^{*}\)</span>。</p>
+<p><span class="math display">\[
+\mathbf g^*=\text{sign}(\mathbf b^*)\otimes(\text{abs}(\mathbf b^*)-\gamma\mathbf 1)^+
+\]</span> 其中<span class="math inline">\((\cdot)^+\)</span>是保留正数部分，把负值变为0；<span class="math inline">\(\text{abs}(\cdot)，\text{sign}(\cdot)\)</span>是绝对值函数和符号函数。</p>
+<p>上面这个软收缩算子能够将<span class="math inline">\(\mathbf b^{*}\)</span>中的每个元素收缩到0，收缩步长为<span class="math inline">\(\gamma\)</span>。</p>
+<p>因此我们有</p>
+<p><span class="math display">\[
+L(\mathbf b^*,\mathbf g^*,\rho)= l(\mathbf b^*,\rho)\le l(\mathbf b^*,\rho^*)=L(\mathbf b^*,\mathbf g^*,\rho^*)
+\]</span></p>
+<p><span class="math display">\[
+L(\mathbf b^*,\mathbf g^*,\rho^*)= l(\mathbf b^*,\rho^*)=\mathop{\min}_{\mathbf b}l(\mathbf b,\rho^*)=\mathop{\min}_{\mathbf b}\mathop{\min}_{\mathbf g}L(\mathbf b,\mathbf g,\rho^*)=\mathop{\min}_{\mathbf b,\mathbf g}L(\mathbf b,\mathbf g,\rho^*)
+\]</span></p>
+<p>至此我们就证明了<span class="math inline">\((\mathbf b^{*},\mathbf g^{*},\rho^{*})\)</span>是鞍点。</p>
+<p>接下来是基于ADMM和鞍点求解拉格朗日函数，我们需要找到使拉格朗日函数最小化的<span class="math inline">\(\mathbf b ,\mathbf g\)</span>，使拉格朗日函数最大化的<span class="math inline">\(\rho\)</span>：</p>
+<p>分成如下三步迭代：</p>
+<p><span class="math display">\[
+\mathbf b_{(o+1)}=\mathop{\text{argmin}}_{\mathbf b}L(\mathbf b,\mathbf g_{(o)},\rho_{(o)})
+\]</span></p>
+<p><span class="math display">\[
+\mathbf g_{(o+1)}=\mathop{\text{argmin}}_{\mathbf g}L(\mathbf b_{(o+1)},\mathbf g,\rho_{(o)})
+\]</span></p>
+<p><span class="math display">\[
+\rho_{(o+1)}=\rho_{(o)}+\eta(\mathbf 1^{\top}\mathbf b_{(o+1)}-1)
+\]</span></p>
+<p>首先我们解决<span class="math inline">\(\mathbf b_{(o+1)}= \text{argmin}_{\mathbf b}L(\mathbf b,\mathbf g_{(o)},\rho_{(o)})\)</span>，把拉格朗日函数带入进来，并且丢弃拉式函数中不包括<span class="math inline">\(\mathbf b\)</span>的项（因为我们最后只需要得到<span class="math inline">\(\mathbf b\)</span>，并且函数的最小化只和<span class="math inline">\(\mathbf b\)</span>有关，其他变量在这步迭代中看作常量） <span class="math display">\[
+\begin{aligned}\mathbf b_{(o+1)}&amp;=\mathop{\text{argmin}}_{\mathbf b}\mathbf b^{\top}{\boldsymbol \varphi}_t+\frac{\lambda}{2\gamma}\mathbf b^{\top}\mathbf I\mathbf b-\frac{\lambda}{\gamma}\mathbf b^{\top}\mathbf g_{(o)}+\frac{\eta}{2}\mathbf b^{\top}\mathbf 1\mathbf 1^{\top}\mathbf b-(\eta-\rho_{(o)})\mathbf b^{\top}\mathbf 1\\&amp;=\mathop{\text{argmin}}_{\mathbf b}\frac{1}{2}\mathbf b^{\top}(\frac{\lambda}{\gamma}\mathbf I+\eta\mathbf 1\mathbf 1^{\top})\mathbf b+\mathbf b^{\top}\left[\varphi_t-\frac{\lambda}{\gamma}\mathbf g_{(o)}-(\eta-\rho_{(o)})\mathbf 1\right]\end{aligned}
+\]</span> 其中<span class="math inline">\(\mathbf I\)</span>是单位矩阵。</p>
+<p>现在证明上式具有唯一的最小值解，最小值解如下</p>
+<p><span class="math display">\[
+\mathbf b_{(o+1)}=\left(\frac{\lambda}{\gamma}\mathbf I+\eta\mathbf 1\mathbf 1^{\top}\right)^{-1}\left[\frac{\lambda}{\gamma}\mathbf g_{(o)}+(\eta-\rho_{(o)})\mathbf 1-\boldsymbol\varphi_t\right]
+\]</span> 证明：</p>
+<p>我们先分析公式中的<span class="math inline">\((\frac{\lambda}{\gamma}\mathbf I + \eta\mathbf 1\mathbf 1^{\top})\)</span>，因为<span class="math inline">\(\frac{\lambda}{\gamma}\mathbf I\)</span>是正定的，这就表明<span class="math inline">\(\eta\mathbf 1\mathbf 1^{\top}\)</span>是半正定的。</p>
+<p><span class="math display">\[
+\forall \mathbf b,\eta\mathbf b^{\top}\mathbf 1\mathbf 1^{\top}\mathbf b=\eta(\mathbf b^{\top}\mathbf 1)(\mathbf 1^{\top}\mathbf b)=\eta(\mathbf b^{\top}\mathbf 1)^2\ge0
+\]</span> 因此整个二次型<span class="math inline">\((\frac{\lambda}{\gamma}\mathbf I + \eta\mathbf 1\mathbf 1^{\top})\)</span>就是半正定的。因为<span class="math inline">\((\frac{\lambda}{\gamma}\mathbf I + \eta\mathbf 1\mathbf 1^{\top})\)</span>是半正定的，所以该函数就是凸的，所以具有唯一的最小值。</p>
+<p>接下来就好办了梯度为0的点即为最小值点。</p>
+<p>于是我们对公式中的<span class="math inline">\(\mathbf b\)</span>求梯度，并令梯度为0：</p>
+<p><span class="math display">\[
+\left(\frac{\lambda}{\gamma}\mathbf I+\eta\mathbf 1\mathbf 1^{\top}\right)\mathbf b+\boldsymbol\varphi_t-\frac{\lambda}{\gamma}\mathbf g_{(o)}-(\eta-\rho_{(o)})\mathbf 1=0
+\]</span> 得到唯一的最小值为：</p>
+<p><span class="math display">\[
+\mathbf b_{(o+1)}=\left(\frac{\lambda}{\gamma}\mathbf I+\eta\mathbf 1\mathbf 1^{\top}\right)^{-1}\left[\frac{\lambda}{\gamma}\mathbf g_{(o)}+(\eta-\rho_{(o)})\mathbf 1-\boldsymbol\varphi_t\right]
+\]</span> 接下来，我们解决<span class="math inline">\(\mathbf g_{(o+1)}=\text{argmin}_{\mathbf g}L(\mathbf b_{(o+1)},\mathbf g, \rho_{(o)}\)</span>，同样的方法，我们带入拉格朗日函数，并且丢弃掉所s有和<span class="math inline">\(\mathbf g\)</span>无关的项，于是得到一个Huber向量函数</p>
+<p><span class="math display">\[
+H(\mathbf b_{(o+1)})=\mathop{\min}_{\mathbf g}\frac{1}{2\gamma}\|\mathbf b_{(o+1)}-\mathbf g\|^2+\|\mathbf g\|_1
+\]</span> 该问题的求解在证明鞍点那部分讲过了，那么上式的最小值如下（这里不太懂，Huber函数和软收缩还需再看s凸优化进一步了解）：</p>
+<p><span class="math display">\[
+\mathbf g_{(o+1)}=\text{sign}(\mathbf b_{(o+1)})\otimes(\text{abs}(\mathbf b_{(o+1)})-\gamma\mathbf 1)^+
+\]</span> 接下来我们直接进行<span class="math inline">\(\rho_{(o+1)}= \rho_{(o)}+\eta(\mathbf 1^{\top}\mathbf b_{(o+1)-1})\)</span>，将其作为对偶上升步，然后转向下一次迭代。</p>
+<p>直到<span class="math inline">\(|\mathbf 1^{\top}\mathbf b_{(o)}|&lt;\epsilon\)</span>或者达到我们设定的最大迭代次数，算法终止。</p>
+<p>最后我们把得到的投资组合<span class="math inline">\(\mathbf b_{(0)}\)</span>投影到单纯型上</p>
+<p><span class="math display">\[
+\hat{\mathbf b}_{t+1}=\mathop{\text{argmin}}_{\mathbf b\in\triangle_d}\|\mathbf b-\zeta\mathbf b_{(o)}\|^2
+\]</span> 其中<span class="math inline">\(\zeta&gt;0\)</span>是一个比例参数。</p>
+<p>那么整个SSPO算法如下</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430152042.png" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" rel="tag"># 量化投资</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/16/2019RecSys%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="2019RecSys最佳论文------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> 2019RecSys最佳论文------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/23/OLPS%20Toolbox------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="OLPS Toolbox------论文阅读笔记">
+      OLPS Toolbox------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#sspo------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">SSPO------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#short-term-sparse-portfolio-optimization-based-on-alternating-direction-method-of-multipliers"><span class="nav-number">2.</span> <span class="nav-text">Short-term Sparse Portfolio Optimization Based on Alternating Direction Method of Multipliers</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#相关工作"><span class="nav-number">2.1.</span> <span class="nav-text">相关工作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文研究内容短期稀疏投资组合优化"><span class="nav-number">3.</span> <span class="nav-text">本文研究内容：短期稀疏投资组合优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#模型输入"><span class="nav-number">3.1.</span> <span class="nav-text">模型输入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建立模型"><span class="nav-number">3.2.</span> <span class="nav-text">建立模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型求解"><span class="nav-number">3.3.</span> <span class="nav-text">模型求解</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

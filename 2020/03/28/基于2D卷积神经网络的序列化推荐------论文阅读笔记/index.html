@@ -27,16 +27,16 @@
 <meta property="og:site_name" content="YY&#39;s blog">
 <meta property="og:description" content="基于2D卷积神经网络的序列化推荐------论文阅读笔记 CosRec：2D Convolutional Neural Networks for Sequential Recommendation 出发点 虽然已有几个建立于马克科夫链和回归模型，但是这些序列化模型仍然难以发现用户购买历史中的复杂关系，所以本文提出建模pairwise关系可以对序列化特征直接有比较有效的表示，并且能够捕获复杂的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200401222853283.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200322141746052.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200322152455568.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153149.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153220.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153243.png">
 <meta property="article:published_time" content="2020-03-28T03:31:00.000Z">
-<meta property="article:modified_time" content="2020-04-02T08:34:25.320Z">
+<meta property="article:modified_time" content="2020-04-30T07:33:15.749Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="推荐系统">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200401222853283.png">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153149.png">
 
 <link rel="canonical" href="http://yy-oops.github.io/2020/03/28/%E5%9F%BA%E4%BA%8E2D%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">20</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">22</span></a>
 
   </li>
   </ul>
@@ -191,7 +191,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-02 16:34:25" itemprop="dateModified" datetime="2020-04-02T16:34:25+08:00">2020-04-02</time>
+                <time title="修改时间：2020-04-30 15:33:15" itemprop="dateModified" datetime="2020-04-30T15:33:15+08:00">2020-04-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,14 +243,14 @@
 <p>序列模型：除了利用到用户的历史行为外，还要考虑用户历史行为的顺序</p>
 <h5 id="创新点">创新点</h5>
 <p>接下来我们看看本文提出的结构和前人工作的不同</p>
-<p><img src="/images/image-20200401222853283.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153149.png" /></p>
 <p>上图中（a）就是基于RNN或者基于马尔科夫链的序列模型，可以看到这种模型是有一个动作序列的单向链结构，比如你连续购买了摄像机、闪存卡、镜头那么我们推测你极有可能会购买三脚架。我们注意到这里其实是有一个约束存在，那就是这些购买行为必须是连续的。</p>
 <p>上图中（b）就是本文提出的结构了，利用了pairwise编码，可以让我们的动作序列没有必要必须连续。例如图中购买自行车显然和上下文没有太大相关性，这虽然破坏了单向链结构的局部，但是可以通过我们的pairwise编码跳过该物品。</p>
 <h5 id="问题设置">问题设置</h5>
 <p>假设我们有一个用户集合<span class="math inline">\(\mathcal U\)</span>和一个物品集合<span class="math inline">\(\mathcal I\)</span>。对于集合<span class="math inline">\(\mathcal U\)</span>中的每个用户<span class="math inline">\(u\)</span>都有一个历史交互序列<span class="math inline">\(\mathcal S^u=(\mathcal S^u_1,\dots,\mathcal S^u_{|\mathcal S_u|}),\mathcal S^u\in\mathcal I\)</span>，我们的目的就是根据用户的偏好预测下一个物品。</p>
 <hr />
 <h4 id="本文重点cosrec">本文重点：CosRec</h4>
-<p><img src="/images/image-20200322141746052.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153220.png" /></p>
 <h5 id="嵌入查找层">嵌入查找层</h5>
 <p>首先把所有物品嵌入为一个矩阵<span class="math inline">\(\mathbf E_{\mathcal I }\in\mathbb R^{|\mathcal I|\times d}\)</span>，其中d是隐层的维度，那么<span class="math inline">\(\mathbf e_i\)</span>和代表矩阵<span class="math inline">\(\mathbf E_{\mathcal I }\)</span>中的第i行；把所有用户嵌入为一个矩阵<span class="math inline">\(\mathbf E_{\mathcal U}\in\mathbb R^{|\mathcal U|\times d}\)</span>，其中d是隐层维度，那么<span class="math inline">\(\mathbf e_u\)</span>代表矩阵<span class="math inline">\(\mathbf E_{\mathcal U}\)</span>中的第u行。</p>
 <p>那么对于在时间t时刻的一个用户，我们需要构建一个输入嵌入矩阵<span class="math inline">\(\mathbf E^{L}_{(u,t)}\in\mathbb R^{L\times d}\)</span>，该矩阵由该用户在时间t之前交互过的L个物品组成，那么我们在物品嵌入矩阵<span class="math inline">\(\mathbf E_{\mathcal I}\)</span>中找到在时间t之前的L个物品<span class="math inline">\((\mathcal S^u_{t-L},\dots,\mathcal S^u_{t-1})\)</span>。</p>
@@ -259,7 +259,7 @@
 <p>不像之前的方法直接在输入嵌入矩阵上进行卷积，本篇论文是在我们得到的这个张量上进行卷积的。</p>
 <h5 id="d卷积层">2D卷积层</h5>
 <p>接下来就需要把我们的张量<span class="math inline">\(\mathbf T^L_{(u,t)}\)</span>送到2D卷积网络进行卷积操作，卷积操作的各层情况如下表</p>
-<p><img src="/images/image-20200322152455568.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153243.png" /></p>
 <p>这里我们看上表，先是输入层，然后是两个卷积块，每个卷积块又包括两个卷积层，这两个卷积块的第一层都是用的<span class="math inline">\(1\times 1\)</span>的核，第二层都是用的<span class="math inline">\(3\times3\)</span>的核。第一层用于丰富特征表示，第二层用于收集序列特征并提取更复杂的关系。还有一点上表没有显示出来就是：每个卷积层后面紧接着一个batch normalization和一个ReLu激活函数。那么经过这两个卷积块之后，采用了一个带有dropout的全连接层，最终其实已经就获得了序列特征向量<span class="math inline">\(\mathbf v_{u,t}\in\mathbb R^d\)</span>，但是为了捕获用户的全局偏好，于是把用户嵌入<span class="math inline">\(\mathbf e_u\)</span>和序列向量<span class="math inline">\(\mathbf v_{(u,t)}\)</span>拼接在一起然后投影到一个具有<span class="math inline">\(|\mathcal I|\)</span>个结点的输出层，然后采用一个sigmoid函数来产生最终的概率<span class="math inline">\(\sigma(\mathbf y^{(u,t)})\in R^{|\mathcal I|}\)</span>。</p>
 <h5 id="模型训练">模型训练</h5>
 <p>最后采用的损失函数是二元交叉熵损失</p>
@@ -371,7 +371,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

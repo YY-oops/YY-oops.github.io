@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="YY&#39;s blog">
 <meta property="og:description" content="基于深度矩阵分解模型的推荐系统------论文阅读笔记 Deep Matrix Factorization Models for Recommender Systems 本文贡献：提出了一种使用神经网络技术的矩阵分解模型，基于二元交叉熵提出了一种新的损失函数。 出发点：之前的利用神经网络的工作都只是利用隐式反馈进行推荐，在这篇文章中既利用了隐式反馈也利用了显式反馈。 创新点：1. 之前的用">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200308172056767.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200308194530453.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153634.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153649.png">
 <meta property="article:published_time" content="2020-03-09T03:28:00.000Z">
-<meta property="article:modified_time" content="2020-04-02T08:35:29.373Z">
+<meta property="article:modified_time" content="2020-04-30T07:37:10.602Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="推荐系统">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200308172056767.png">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153634.png">
 
 <link rel="canonical" href="http://yy-oops.github.io/2020/03/09/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
@@ -135,7 +135,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">20</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">22</span></a>
 
   </li>
   </ul>
@@ -190,7 +190,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-02 16:35:29" itemprop="dateModified" datetime="2020-04-02T16:35:29+08:00">2020-04-02</time>
+                <time title="修改时间：2020-04-30 15:37:10" itemprop="dateModified" datetime="2020-04-30T15:37:10+08:00">2020-04-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,7 +256,7 @@ Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\R_{ij}, &amp;otherwise\end{c
 \]</span> 就是上面的式子：在输入<span class="math inline">\(u_i,v_j\)</span>且参数为<span class="math inline">\(\Theta\)</span>的情况下由模型得到预测评分。</p>
 <h5 id="dmf模型deep-matrix-factorization">DMF模型（Deep Matrix Factorization）</h5>
 <h5 id="模型">模型</h5>
-<p><img src="/images/image-20200308172056767.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153634.png" /></p>
 <p>将交互矩阵<span class="math inline">\(Y\)</span>作为输入，其中每个用户可以用一个高维向量<span class="math inline">\(Y_{i*}\)</span>来表示，这代表着该用户<span class="math inline">\(i\)</span>对所有物品的评分向量；而每个物品也可以用一个高维向量<span class="math inline">\(Y_{*j}\)</span>来表示，这代表着所有用户对物品<span class="math inline">\(j\)</span>的评分向量。那么每一层我们把这高维向量映射到一个新的空间中的一个向量。如果我们以<span class="math inline">\(x\)</span>作为输入向量，<span class="math inline">\(y\)</span>作为输出向量，<span class="math inline">\(\{l_i,i=1,\dots,N-1\}\)</span>作为隐向量，第<span class="math inline">\(i\)</span>层的权重矩阵用<span class="math inline">\(W_i\)</span>表示，第<span class="math inline">\(i\)</span>层的偏置用<span class="math inline">\(b_i\)</span>表示，那么最终的输出为<span class="math inline">\(h\)</span>。所以整个计算过程如下：</p>
 <p><span class="math display">\[
 l_1=W_1x
@@ -297,7 +297,7 @@ L=-\sum_{(i,j)\in Y^+\cup Y^-}\left(\frac{Y_{ij}}{max(R)}log \hat Y_{ij}+\left(1
 \hat{Y}^o_{ij}=max(\mu,\hat Y_{ij})
 \]</span> 得到损失函数后，参数更新学习的办法是常见的反向传播算法。</p>
 <p>下面是整个DMF模型的算法：</p>
-<p><img src="/images/image-20200308194530453.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153649.png" /></p>
 <p>算法中涉及到几个式子，总结罗列如下：</p>
 <p><span class="math display">\[
 Y_{i,j}=\begin{cases}0, &amp; if\quad R_{ij}=unk\\\\R_{ij}, &amp;otherwise\end{cases}\tag{2}
@@ -340,8 +340,8 @@ L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij}
       <i class="fa fa-chevron-left"></i> PR对数正则化------论文阅读笔记
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/03/11/KTPT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="KTPT------论文阅读笔记">
-      KTPT------论文阅读笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/03/09/RPRT------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="RPRT------论文阅读笔记">
+      RPRT------论文阅读笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -418,7 +418,7 @@ L=-\sum_{(i,j)\in Y^+\cup Y^-}Y_{ij}log\hat{Y}_{ij}+(1-Y_{ij})log(1-\hat{Y}_{ij}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

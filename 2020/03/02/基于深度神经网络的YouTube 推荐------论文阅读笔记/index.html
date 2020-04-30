@@ -27,20 +27,20 @@
 <meta property="og:site_name" content="YY&#39;s blog">
 <meta property="og:description" content="基于深度神经网络的YouTube 推荐------论文阅读笔记 Deep Neural Networks for YouTube Recommendations YouTube推荐的三个挑战：  规模：许多现存的算法在小规模问题上表现很好，但是在大规模数据上表现差。专业化的分布式学习算法和高效的服务系统对于处理YouTube巨大的用户库和视频库是非常重要的。 新鲜度：Youtube的视频">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200301111443106.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200302111523384.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200302104751338.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200302110241397.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200302110654007.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200302111953943.png">
-<meta property="og:image" content="http://yy-oops.github.io/images/image-20200302121739289.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153756.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153809.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153850.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153906.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153919.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153929.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153943.png">
 <meta property="article:published_time" content="2020-03-02T04:49:00.000Z">
-<meta property="article:modified_time" content="2020-04-02T09:24:40.759Z">
+<meta property="article:modified_time" content="2020-04-30T07:40:11.817Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="推荐系统">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yy-oops.github.io/images/image-20200301111443106.png">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153756.png">
 
 <link rel="canonical" href="http://yy-oops.github.io/2020/03/02/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84YouTube%20%E6%8E%A8%E8%8D%90------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
@@ -140,7 +140,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">20</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">22</span></a>
 
   </li>
   </ul>
@@ -195,7 +195,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-02 17:24:40" itemprop="dateModified" datetime="2020-04-02T17:24:40+08:00">2020-04-02</time>
+                <time title="修改时间：2020-04-30 15:40:11" itemprop="dateModified" datetime="2020-04-30T15:40:11+08:00">2020-04-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,11 +247,11 @@
 <li>新鲜度：Youtube的视频库是动态的，因为每分钟就有大量视频上传到YouTube，那么推荐系统必须对新上传的内容和用户最近的操作反应足够灵敏。</li>
 <li>噪声：由于未观察到的外部因素和稀疏性，使YouTube上的历史用户行为很难预测，而且和内容相关的元数据在没有被很好定义时结构性很差。所以我们的算法需要对我们训练数据的这些特殊特征要具有鲁棒性。<a id="more"></a></li>
 </ol>
-<p><img src="/images/image-20200301111443106.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153756.png" /></p>
 <p>本文基于深度神经网络的技术路线如上图：首先利用一些简单的模型（这里统称候选生成模型）从数百万记录的视频库中粗排出几百个候选项，然后再利用复杂模型（排名模型）考虑各种视频特性和各种动态因素对几百个候选项进行精排，获取到和用户最相关的几十个物品。</p>
 <h4 id="matching">Matching</h4>
 <p>下面来看一下候选生成模型：</p>
-<p><img src="/images/image-20200302111523384.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153809.png" /></p>
 <p>我们将视频推荐看成一个超大规模多分类问题，那么我们的目标就是根据用户U和上下文C从语料库V中的数百万个视频i（一个视频作为一个类别）里准确分类在时间点t观看的视频<span class="math inline">\(w_t\)</span>。那么这里的类别就有数百万类，我们最后得到每个视频观看的概率。</p>
 <p><span class="math display">\[
 P(w_t=i|U,C)=\frac{e^{v_iu}}{\sum_{j\in V}e^{v_ju}}
@@ -267,16 +267,16 @@ P(w_t=i|U,C)=\frac{e^{v_iu}}{\sum_{j\in V}e^{v_ju}}
 <p>为什么要忽略序列信息，文章中给出了让人信服的解释。举个例子：你刚刚搜索了泰勒斯威夫特，于是根据的序列化行为，这个搜索操作是你最近的行为，占的权重最大，于是你的下一个页面就全是关于泰勒斯威夫特的物品，显然这种推荐是很让人反感的，于是忽略掉序列信息，让各个观看历史不再有序，分类器就无法利用这里的时间戳信息，从而导致不好的推荐。</p>
 <h5 id="next-watch-or-held-out-watch">Next Watch or Held-out Watch</h5>
 <p>视频的自然假设模式通常会导致非常不对称的共同观看概率。用户通常发现艺术家是因为他先发现一些比较广为流行的艺术，然后再聚焦于更细的定位。于是我们发现预测用户的下一次将观看的视频比预测一个会让用户持久观看的随机视频表现会更好。如下图：</p>
-<p><img src="/images/image-20200302104751338.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153850.png" /></p>
 <p>在这里解释一下上面两幅图：图a是预测用户会持久观看的视频，每一行代表的是一个历史序列，比如上面一行是代表用户的观看历史序列，下一行代表的是用户的搜索历史序列。held-out watch 是指根据上下文信息预测一个视频，而图b是预测下一次会观看的视频，就是用所有的历史信息当作输入来预测用户下一次将会看什么视频。</p>
 <h5 id="增加特征和深度">增加特征和深度</h5>
 <p>这里采用的神经网络模式如下：</p>
-<p><img src="/images/image-20200302110241397.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153906.png" /></p>
 <p>显然当层数增加并且特征增多时，Mean Average Precision (MAP)都有显著提高。</p>
-<p><img src="/images/image-20200302110654007.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153919.png" /></p>
 <h4 id="ranking">Ranking</h4>
 <p>下面看一下排序阶段的模型</p>
-<p><img src="/images/image-20200302111953943.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153929.png" /></p>
 <h5 id="特征工程">特征工程</h5>
 <p>最重要的就是能描述用户和物品之前的交互和物品与相似物品之间的交互</p>
 <h5 id="嵌入分类特征">嵌入分类特征</h5>
@@ -298,7 +298,7 @@ E(T)(1+P)
 <p>最后我们用指数函数<span class="math inline">\(e^x\)</span>作为最后的激活函数来产生这些概率，这样就能紧密的估计期望观看时长。</p>
 <h5 id="不同隐层实验">不同隐层实验</h5>
 <p>我们先来看不同宽度和深度的隐层，最后的结果：</p>
-<p><img src="/images/image-20200302121739289.png" /></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430153943.png" /></p>
 <p>这里说明一下什么是weighted，per-user loss：考虑在一个页面上展示给用户的所有的正样例和负样例，接着用模型给这些样例进行打分，如果负样例比正样例的分更高，那么正样例的观看时长就是预测失误的观看时长，那么weighted，per-user loss就是：所有的预测失误的观看时长在整个观看时长中所占的比例。</p>
 
     </div>
@@ -401,7 +401,7 @@ E(T)(1+P)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
