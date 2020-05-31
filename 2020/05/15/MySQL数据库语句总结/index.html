@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":240,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="MySQL数据库语句总结 参考MySQL必知必会，廖雪峰SQL教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库语句总结">
+<meta property="og:url" content="http://yy-oops.github.io/2020/05/15/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%AD%E5%8F%A5%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="MySQL数据库语句总结 参考MySQL必知必会，廖雪峰SQL教程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-15T04:33:00.000Z">
+<meta property="article:modified_time" content="2020-05-31T07:36:55.321Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/05/15/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%AD%E5%8F%A5%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>MySQL数据库语句总结 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">28</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/05/15/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%AD%E5%8F%A5%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL数据库语句总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-15 12:33:00" itemprop="dateCreated datePublished" datetime="2020-05-15T12:33:00+08:00">2020-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-31 15:36:55" itemprop="dateModified" datetime="2020-05-31T15:36:55+08:00">2020-05-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">学习总结</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>15k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="mysql数据库语句总结">MySQL数据库语句总结</h4>
+<p>参考MySQL必知必会，廖雪峰SQL教程<a id="more"></a></p>
+<hr />
+<h5 id="管理数据库">管理数据库</h5>
+<ul>
+<li><p>列出所有数据库</p>
+<pre class="mysql"><code>SHOW DATABASES;</code></pre></li>
+<li><p>创建一个新数据库</p>
+<pre class="mysql"><code>CREATE DATABASE test;</code></pre></li>
+<li><p>删除一个数据库</p>
+<pre class="mysql"><code>DROP DATABASE test;</code></pre></li>
+<li><p>使用一个数据库，或者说切换到一个数据库</p>
+<pre class="mysql"><code>USE test;</code></pre></li>
+<li><p>显示一个数据库内的所有表</p>
+<pre class="mysql"><code>SHOW TABLES;</code></pre></li>
+<li><p>显示表中每个字段的字段名、数据类型、是否允许NULL、键信息、默认值和其他信息</p>
+<pre class="mysql"><code>SHOW COLUMNS FROM customers;</code></pre>
+<p>或者</p>
+<pre class="mysql"><code>DESC customers;</code></pre></li>
+<li><p>显示创建特定数据库或者表的MySQL语句</p>
+<pre class="mysql"><code>SHOW CREATE DATABASE test;</code></pre>
+<pre class="mysql"><code>SHOW CREATE TABLE customers;</code></pre></li>
+</ul>
+<hr />
+<h5 id="查询数据">查询数据</h5>
+<ul>
+<li><p>检索表中的一列</p>
+<pre class="mysql"><code>SELECT prod_name;</code></pre></li>
+<li><p>检索多列</p>
+<pre class="mysql"><code>SELECT prod_id, prod_name, prod_price FROM products;</code></pre></li>
+<li><p>检索所有列</p>
+<pre class="mysql"><code>SELECT * FROM products;</code></pre></li>
+<li><p>检索一列，但是这一列的每一行都唯一</p>
+<pre class="mysql"><code>SELECT DISTINCT vend_id FROM products;</code></pre></li>
+<li><p>限制返回表中的前几行，比如前7行</p>
+<pre class="mysql"><code>SELECT prod_name FROM products LIMIT 7;</code></pre>
+<p>可以指定检索的开始行和行数，比如返回从行5开始的3行，第一个数为开始的位置，第二个数为检索的行数</p>
+<pre class="mysql"><code>SELECT prod_name FROM products LIMIT 5,3;</code></pre></li>
+</ul>
+<hr />
+<h5 id="排序数据">排序数据</h5>
+<ul>
+<li><p>排序数据</p>
+<pre class="mysql"><code>SELECT prod_name FROM products ORDER BY prod_name;</code></pre>
+<pre class="mysql"><code>SELECT prod_name FROM products ORDER BY prod_id;</code></pre></li>
+<li><p>按多个列排序，比如先按价格排序，如果价格相同再按名称排序</p>
+<pre class="mysql"><code>SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price, prod_name;</code></pre></li>
+<li><p>指定排序方向，可以降序或者升序，默认升序，比如下面的是降序</p>
+<pre class="mysql"><code>SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC;</code></pre></li>
+<li><p>可以先降序排列再升序排列，比如先按价格降序排列，如果价格相同，再按产品名称升序排列</p>
+<pre class="mysql"><code>SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC，prod_name;</code></pre></li>
+</ul>
+<hr />
+<h5 id="按条件查询数据">按条件查询数据</h5>
+<ul>
+<li><p>检索列并显示只满足条件的行，比如显示只满足产品价格为2.5的行或者显示产品名称为fuses的行</p>
+<pre class="mysql"><code>SELECT prod_price, prod_name FROM products WHERE prod_price = 2.50;</code></pre>
+<pre class="mysql"><code>SELECT prod_price, prod_name FROM products WHERE prod_name = &#39;fuses&#39;;</code></pre>
+<p>检索价格在5美元和10美元之间的所有产品</p>
+<pre class="mysql"><code>SELECT prod_price, prod_name FROM products WHERE prod_price BETWEEN 5 AND 10;</code></pre>
+<p>检索列中具有空值的行</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_price IS NULL;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">操作符</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">=</td>
+<td style="text-align: center;">等于</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&lt;&gt;</td>
+<td style="text-align: center;">不等于</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">!=</td>
+<td style="text-align: center;">不等于</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&lt;</td>
+<td style="text-align: center;">小于</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&lt;=</td>
+<td style="text-align: center;">小于等于</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&gt;</td>
+<td style="text-align: center;">大于</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&gt;=</td>
+<td style="text-align: center;">大于等于</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">BETWEEN</td>
+<td style="text-align: center;">在指定的两个值之间</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<h6 id="组合过滤">组合过滤</h6>
+<ul>
+<li><p>利用AND操作符过滤出列中符合多个条件的行</p>
+<pre class="mysql"><code>SELECT prod_id, prod_price, prod_name FROM products WHERE vend_id = 1003 AND prod_price &lt;= 10;</code></pre></li>
+<li><p>利用OR操作符过滤出列中符合条件的行</p>
+<pre class="mysql"><code>SELECT prod_price, prod_name FROM products WHERE vend_id = 1002 OR vend_id = 1003;</code></pre></li>
+<li><p>利用IN操作符检索列中满足一组指定条件任意一个条件的行，和上述的OR操作符有相同作用</p>
+<pre class="mysql"><code>SELECT prod_price, prod_name FROM products WHERE vend_id IN (1002,1003) ORDER BY prod_name;</code></pre></li>
+<li><p>利用NOT操作符否定其后的条件，比如选出除了供应商id为1002和1003之外的所有供应商生产的产品</p>
+<pre class="mysql"><code>SELECT prod_price, prod_name FROM products WHERE vend_id NOT IN (1002,1003) ORDER BY prod_name;</code></pre></li>
+</ul>
+<h6 id="通配符">通配符</h6>
+<ul>
+<li><p>利用通配符%进行过滤，%表示任何字符出现任意次数，比如找出所有产品名以jet开头的产品</p>
+<pre class="mysql"><code>SELECT prod_id, prod_name FROM products WHERE prod_name LIKE &#39;jet%&#39;;</code></pre>
+<p>找出所有产品名称包含anvil的产品</p>
+<pre class="mysql"><code>SELECT prod_id, prod_name FROM products WHERE prod_name LIKE &#39;%anvil%&#39;;</code></pre>
+<p>找出产品名称以s开头e结尾的所有产品</p>
+<pre class="mysql"><code>SELECT prod_id, prod_name FROM products WHERE prod_name LIKE &#39;s%e&#39;;</code></pre></li>
+<li><p>利用下划线_通配符进行过滤，_表示匹配单个字符</p>
+<pre class="mysql"><code>SELECT prod_id, prod_name FROM products WHERE prod_name LIKE &#39;_ ton anvil&#39;;</code></pre></li>
+</ul>
+<h6 id="正则表达式">正则表达式</h6>
+<ul>
+<li><p>使用正则表达式进行匹配，比如匹配产品名包含文本1000的所有行</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;1000&#39; ORDER BY prod_name;</code></pre></li>
+<li><p>使用正则表达式中的.进行匹配，.表示匹配任意一个字符，</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;.000&#39; ORDER BY prod_name;</code></pre></li>
+<li><p>正则表达式中匹配一般不区分大小写，为了区分大小写可以使用BINARY关键字</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP BINARY &#39;jectPack .000&#39;;</code></pre></li>
+<li><p>为了搜索两个串之一，或者说匹配其中之一，可以使用|进行匹配</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;1000|2000&#39; ORDER BY prod_name;</code></pre></li>
+<li><p>匹配几个字符之一，比如[1234]表示匹配1或者2或者3或者4，也可以简写成[1-4]</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;[1234] Ton&#39; ORDER BY prod_name;</code></pre>
+<p>用^进行否定，比如[^123]表示匹配除这些字符之外的任何东西</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;[^123] Ton&#39; ORDER BY prod_name;</code></pre></li>
+<li><p>匹配特殊字符需要转义，用\，比如查找-和查找.分别转义为\\-，\\.，匹配反斜杠\\<br />
+</p>
+<pre class="mysql"><code>SELECT vend_name FROM vendors WHERE vend_name REGEXP &#39;\\.&#39; ORDER BY vend_name;</code></pre></li>
+<li><p>为了方便工作，可以使用预定义的字符集合，比如[:digit:]等价于[0-9]等价于[0123456789]</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;[:digit:]&#39; ORDER BY prod_name;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">类</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">[:alnum:]</td>
+<td style="text-align: center;">任意字母和数字（同[a-zA-Z0-9]）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[:alpha:]</td>
+<td style="text-align: center;">任意字符（同[a-zA-Z]）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[:blank:]</td>
+<td style="text-align: center;">空格和制表（同[\）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[:cntrl:]</td>
+<td style="text-align: center;">ASCII控制字符（ASCII 0到31和127）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[:digit:]</td>
+<td style="text-align: center;">任意数字（同[0-9]）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[:xdigit:]</td>
+<td style="text-align: center;">任意十六进制数字（同[a-fA-F0-9]）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[:lower:]</td>
+<td style="text-align: center;">任意小写字母（同[a-z]）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[:upper:]</td>
+<td style="text-align: center;">任意大写字母（同[A-Z]）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[:punct:]</td>
+<td style="text-align: center;">既不在[:alnum:]又不在[:cntrl:]中的任意字符</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[:space:]</td>
+<td style="text-align: center;">包括空格在内的任意空白字符串（同[\\）换页、换行、回车、制表、纵向制表</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[:print:]</td>
+<td style="text-align: center;">任意可打印字符</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[:graph:]</td>
+<td style="text-align: center;">与[:print:]相同，但是不包括空格</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>匹配多个实例，比如匹配连在一起的4位数字</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;[[:digit:]]{4}&#39; ORDER BY prod_name;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">重复元字符</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">0个或多个匹配</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">+</td>
+<td style="text-align: center;">1个或多个匹配（等价于{1,}）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">？</td>
+<td style="text-align: center;">0个或1个匹配（等价于{0,1}）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">{n}</td>
+<td style="text-align: center;">指定数目的匹配</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">{n,}</td>
+<td style="text-align: center;">不少于指定数目的匹配</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">{n,m}</td>
+<td style="text-align: center;">匹配数目的范围（m不超过255）</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>找到一个以小数点或者数字开头的产品</p>
+<pre class="mysql"><code>SELECT prod_name FROM products WHERE prod_name REGEXP &#39;^[0-9\\.]&#39; ORDER BY prod_name;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">定位元字符</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">^</td>
+<td style="text-align: center;">文本的开始</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">$</td>
+<td style="text-align: center;">文本的末尾</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[[:&lt;:]]</td>
+<td style="text-align: center;">词的开始</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[[:&gt;:]]</td>
+<td style="text-align: center;">词的末尾</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<h5 id="计算数据">计算数据</h5>
+<ul>
+<li><p>拼接两个列，把两个值联结到一起变为单个值，比如把生产商名称和生产商所在国家拼接，得到类似ACME(USA)</p>
+<pre class="mysql"><code>SELECT Concat(vend_name, &#39;(&#39; , vend_country, &#39;)&#39;) FROM vendors ORDER BY vend_name;</code></pre></li>
+<li><p>使用RTrim()来删除数据右侧多余空格，LTrim()来删除数据左侧多余空格，Trim()删除两侧多余空格</p>
+<pre class="mysql"><code>SELECT Concat(RTrim(vend_name), &#39;(&#39; , RTrim(vend_country), &#39;)&#39;) FROM vendors ORDER BY vend_name;</code></pre></li>
+<li><p>使用别名</p>
+<pre class="mysql"><code>SELECT Concat(RTrim(vend_name), &#39;(&#39; , RTrim(vend_country), &#39;)&#39;) AS vend_title FROM vendors ORDER BY vend_name;</code></pre>
+<p>或者</p>
+<pre class="mysql"><code>SELECT Concat(RTrim(vend_name), &#39;(&#39; , RTrim(vend_country), &#39;)&#39;) vend_title FROM vendors ORDER BY vend_name;</code></pre></li>
+<li><p>执行计算，比如用数量乘单价得到总价</p>
+<pre class="mysql"><code>SELECT prod_id, quantity, item_price, quantity*item_price AS expanded_price FROM orderitems WHERE oder_num = 20005;</code></pre></li>
+</ul>
+<h5 id="处理数据">处理数据</h5>
+<ul>
+<li><p>使用文本处理函数，比如Upper()用来将文本转换为大写</p>
+<pre class="mysql"><code>SELECT vend_name, Upper(vend_name) AS vend_name_upcase FROM vendors ORDER BY vend_name;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">函数</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Left()</td>
+<td style="text-align: center;">返回串左边的字符</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Length()</td>
+<td style="text-align: center;">返回串的长度</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Locate()</td>
+<td style="text-align: center;">找出串的一个子串</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Lower()</td>
+<td style="text-align: center;">将串转换为小写</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">LTrim()</td>
+<td style="text-align: center;">去掉串左边的空格</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Right()</td>
+<td style="text-align: center;">返回串右边的字符</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">RTrim()</td>
+<td style="text-align: center;">去掉串右边的空格</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Soundex()</td>
+<td style="text-align: center;">返回串的SOUNDEX值（返回同音词）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">SubString()</td>
+<td style="text-align: center;">返回子串的字符</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Upper()</td>
+<td style="text-align: center;">将串转换为大写</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>日期和时间处理函数，比如检索日期2005-09-01，注意需要使用Date()使得2005-09-01 11:30:05也能被检索出来</p>
+<pre class="mysql"><code>SELECT cust_id, order_num FROM orders WHERE Date(order_date) = &#39;2005-09-01&#39;;</code></pre>
+<p>检索一个日期范围</p>
+<pre class="mysql"><code>SELECT cust_id, order_num FROM orders WHERE Date(order_date) BETWEEN &#39;2005-09-01&#39; AND &#39;2005-09-30&#39;;</code></pre>
+<p>检索2005年9月的所有行</p>
+<pre class="mysql"><code>SELECT cust_id, order_num FROM orders WHERE Year(order_date) = 2005 AND Month(order_date) = 9;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">函数</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">AddDate()</td>
+<td style="text-align: center;">增加一个日期（天、周等）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">AddTime()</td>
+<td style="text-align: center;">增加一个时间（时、分等）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Now()</td>
+<td style="text-align: center;">返回当前日期和时间</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CurDate()</td>
+<td style="text-align: center;">返回当前日期</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">CurTime()</td>
+<td style="text-align: center;">返回当前时间</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">DateDiff()</td>
+<td style="text-align: center;">计算两个日期之差</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Date_Add()</td>
+<td style="text-align: center;">高度灵活的日期运算函数</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Date_Format()</td>
+<td style="text-align: center;">返回一个格式化的日期或者时间串</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">DayOfWeek()</td>
+<td style="text-align: center;">对于一个日期，返回对应的星期几</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Time()</td>
+<td style="text-align: center;">返回日期时间的时间部分</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Date()</td>
+<td style="text-align: center;">返回日期时间的日期部分</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Second()</td>
+<td style="text-align: center;">返回一个时间的秒部分</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Minute()</td>
+<td style="text-align: center;">返回一个时间的分钟部分</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Hour()</td>
+<td style="text-align: center;">返回一个时间的小时部分</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Day()</td>
+<td style="text-align: center;">返回一个日期的天数部分</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Month()</td>
+<td style="text-align: center;">返回一个日期的月份部分</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Year()</td>
+<td style="text-align: center;">返回一个日期的年份部分</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>数值处理函数</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">函数</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Abs()</td>
+<td style="text-align: center;">返回一个数的绝对值</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Exp()</td>
+<td style="text-align: center;">返回一个数的指数值</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sqrt()</td>
+<td style="text-align: center;">返回一个数的平方根</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mod()</td>
+<td style="text-align: center;">返回除操作的余数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Pi()</td>
+<td style="text-align: center;">返回圆周率</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Rand()</td>
+<td style="text-align: center;">返回一个随机数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sin()</td>
+<td style="text-align: center;">返回一个角度的正弦</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Cos()</td>
+<td style="text-align: center;">返回一个角度的余弦</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Tan()</td>
+<td style="text-align: center;">返回一个角度的正切</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<h5 id="汇总数据">汇总数据</h5>
+<ul>
+<li><p>比如返回products表中所有产品的平均价格</p>
+<pre class="mysql"><code>SELECT AVG(prod_price) AS avg_price FROM products;</code></pre>
+<p>返回价格不同的产品的平均价格</p>
+<pre class="mysql"><code>SELECT AVG(DISTINCT prod_price) AS avg_price FROM products;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">函数</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">AVG()</td>
+<td style="text-align: center;">返回某列的平均值</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">COUNT()</td>
+<td style="text-align: center;">返回某列的行数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">MAX()</td>
+<td style="text-align: center;">返回某列的最大值</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">MIN()</td>
+<td style="text-align: center;">返回某列的最小值</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">SUM()</td>
+<td style="text-align: center;">返回某列值之和</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<h5 id="分组数据">分组数据</h5>
+<ul>
+<li><p>利用GROUP BY进行分组，比如按照供应商id进行分组</p>
+<pre class="mysql"><code>SELECT vend_id, COUNT(*) AS num_prods FROM products GROUP BY vend_id;</code></pre></li>
+<li><p>利用HAVING 对分好的组进行过滤，比如选出订购了两个订单以上的客户id和订单数</p>
+<pre class="mysql"><code>SELECT cust_id, COUNT(*) AS orders FROM orders GROUP BY cust_id HAVING COUNT(*) &gt;= 2;</code></pre></li>
+<li><p>注意SELECT子句的顺序：SELECT --&gt; FROM --&gt; WHERE --&gt; GROUP BY --&gt; HAVING --&gt; ORDER BY --&gt; LIMIT</p>
+<pre class="mysql"><code>SELECT order_num, SUM(quantity * item_price) AS ordertotal FROM oderitems GROUP BY order_num HAVING SUM(quantity * item_price) &gt;= 50 ORDER BY ordertotal;</code></pre></li>
+</ul>
+<h5 id="高级查询技术">高级查询技术</h5>
+<h6 id="使用子查询">使用子查询</h6>
+<ul>
+<li><p>子查询由内向外处理，比如首先通过产品id为TNT2查询到订单号，然后通过订单号查询到顾客id</p>
+<pre class="mysql"><code>SELECT cust_id FROM orders WHERE order_num IN (SELECT order_num FROM orderitems WHERE prod_id = &#39;TNT2&#39;);</code></pre></li>
+<li><p>作为计算字段进行子查询</p>
+<pre class="mysql"><code>SELECT cust_name, cust_state, (SELECT COUNT(*) FROM orders WHERE orders.cust_id = customer.cust_id) AS oders FROM customers ORDER BY cust_name;</code></pre></li>
+</ul>
+<h6 id="使用联结表">使用联结表</h6>
+<ul>
+<li><p>为存储在多个表中的数据进行查询</p>
+<pre class="mysql"><code>SELECT vend_name, prod_name, prod_price FROM vendors, products WHERE vendors.vend_id = products.vend_id ORDER BY vend_name, prod_name;</code></pre></li>
+<li><p>内联结（内连接），下面语句的作用和上面语句的作用完全相同</p>
+<pre class="mysql"><code>SELECT vend_name, prod_name, prod_price FROM vendors INNER JOIN products ON vendors.vend_id = products.vend_id ORDER BY vend_name, prod_name;</code></pre></li>
+<li><p>联结多个表，比如这里有三个表orderitems, products, vendors</p>
+<pre class="mysql"><code>SELECT prod_name, vend_name, prod_price, quantity FROM orderitems, products, vendors WHERE products.vend_id = vendors.vend_id AND orderitems.prod_id = products.prod_id AND order_num = 20005;</code></pre></li>
+<li><p>自联结，即表自身与自身联结</p>
+<pre class="mysql"><code>SELECT p1.prod_id, p1.prod_name FROM products AS p1, products AS p2 WHERE p1.vend_id =  p2.vend_id AND p2.prod_id = &#39;DINTR&#39;;</code></pre></li>
+<li><p>自然联结，使相同的列只出现一次，排除多次出现，使每个列只返回一次，但是系统不会自动完成这项工作，需要你自己来实现，即只选择那些唯一的列进行展示</p>
+<pre class="mysql"><code>SELECT c.*, o.order_num, o.order_date, oi.prod_id, oi.quantity, oi.item_price FROM customers AS c, orders AS o, orderitems AS oi WHERE c.cust_id = o.cust_id AND oi.order_num = o.order_num AND prod_id = &#39;FB&#39;;</code></pre></li>
+<li><p>左外部联结和右外部联结全外部连接，具体的区别可以看廖雪峰SQL教程-&gt;连接查询</p>
+<pre class="mysql"><code>SELECT customers.cust_id, orders.order_num, FROM customers LEFT OUTER JOIN orders ON customers.cust_id = orders.cust_id;</code></pre>
+<pre class="mysql"><code>SELECT customers.cust_id, orders.order_num, FROM customers RIGHT OUTER JOIN orders ON customers.cust_id = orders.cust_id;</code></pre>
+<pre class="mysql"><code>SELECT customers.cust_id, orders.order_num, FROM customers FULL OUTER JOIN orders ON customers.cust_id = orders.cust_id;</code></pre></li>
+</ul>
+<h6 id="组合查询">组合查询</h6>
+<ul>
+<li><p>UNION可以让MySQL执行两条SELECT语句，并把输出组合成一个结果表，并且自动去除重复行，若想返回所有匹配行，则可以使用UNION ALL</p>
+<pre class="mysql"><code>SELECT vend_id, prod_id, prod_price FROM prodcuts WHERE prod_price &lt;= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001,1002);</code></pre></li>
+<li><p>对组合结果排序，不能对每个SELECT进行排序后再UNION，只能放在查询的最后对组合结果进行排序</p>
+<pre class="mysql"><code>SELECT vend_id, prod_id, prod_price FROM prodcuts WHERE prod_price &lt;= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001,1002) ORDER BY vend_id, prod_price;</code></pre></li>
+</ul>
+<h6 id="全文本搜索">全文本搜索</h6>
+<ul>
+<li><p>启用全文本搜索支持，只有启用的字段才能支持全文本搜索</p>
+<pre class="mysql"><code>CREATE TABLE productnotes(
+    note_id   int       NOT NULL AUTO_INCREMENT,
+  prod_id   char(10)  NOT NULL,
+    note_date datetime  NOT NULL,
+    note_text text      NULL,
+    PRIMARY KEY(note_id),
+    FULLTEXT(note_text)
+)ENGINE = MyISAM;</code></pre></li>
+<li><p>使用两个函数Match()和Against()执行全文本搜索，前者指定要搜索的列，后者指定使用的搜索表达式</p>
+<pre class="mysql"><code>SELECT note_text FROM productnotes WHERE Match(note_text) Against(&#39;rabbit&#39;);</code></pre></li>
+<li><p>使用查询扩展搜索和你的搜索有关的所有其他行</p>
+<pre class="mysql"><code>SELECT note_text FROM productnotes WHERE Match(note_text) Against(&#39;anvils&#39; WITH QUERY EXPANSION);</code></pre></li>
+<li><p>使用布尔文本搜索，不需要建立FULLTEXT索引，可直接使用</p>
+<pre class="mysql"><code>SELECT note_text FROM productnotes WHERE Match(note_text) Against(&#39;heavy&#39; IN BOOLEAN MODE);</code></pre></li>
+<li><p>匹配包含heavy但是不包含任意以rope开始的词的行</p>
+<pre class="mysql"><code>SELECT note_text FROM productnotes WHERE Match(note_text) Against(&#39;heavy -rope*&#39; IN BOOLEAN MODE);</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">布尔操作符</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">+</td>
+<td style="text-align: center;">包含，词必须存在</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">排除，词必须不出现</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&gt;</td>
+<td style="text-align: center;">包含，且增加等级值</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&lt;</td>
+<td style="text-align: center;">包含，且减少等级值</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">()</td>
+<td style="text-align: center;">把词组成子表达式</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">~</td>
+<td style="text-align: center;">取消一个词的排序值</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">词尾的通配符</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">“ ”</td>
+<td style="text-align: center;">定义一个短语</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<h5 id="插入更新和删除数据">插入、更新和删除数据</h5>
+<ul>
+<li><p>在students表中插入一行，字段的值与字段要一一对应</p>
+<pre class="mysql"><code>INSERT INTO students(class_id, name, gender, score) VALUES (2, &#39;大牛&#39;, &#39;M&#39;, 80);</code></pre></li>
+<li><p>插入多行</p>
+<pre class="mysql"><code>INSERT INTO students(class_id, name, gender, score) VALUES (1, &#39;大宝&#39;, &#39;M&#39;, 87), (2, &#39;二宝&#39;, &#39;M&#39;, 81);</code></pre></li>
+<li><p>插入从一个表中检索出来的数据，比如从stu_new 中检索出来的数据插入到students表中</p>
+<pre class="mysql"><code>INSERT INTO students(class_id, name, gender, score) SELECT class_id, name, gender, score FROM stu_new;</code></pre></li>
+<li><p>更新表中数据，比如为客户10005更新邮件地址</p>
+<pre class="mysql"><code>UPDATE customers SET cust_email = &#39;elmer@fudd.com&#39; WHERE cust_id = 10005;</code></pre></li>
+<li><p>更新多个列</p>
+<pre class="mysql"><code>UPDATE customers SET cust_name = &#39;The Fudds&#39;, cust_email = &#39;elmer@fudd.com&#39; WHERE cust_id = 10005;</code></pre></li>
+<li><p>用NULL来删除某个列的值</p>
+<pre class="mysql"><code>UPDATE customers SET cust_email = NULL WHERE cust_id = 10005;</code></pre></li>
+<li><p>用DELETE语句从表中删除一行</p>
+<pre class="mysql"><code>DELETE FROM customers WHERE cust_id = 10006;</code></pre></li>
+</ul>
+<h5 id="创建和操作表">创建和操作表</h5>
+<ul>
+<li><p>包括表名、字段名、字段的数据类型、是否为NULL、以及主键的自增操作AUTO_INCREMENT、主键的定义、和使用的引擎类型InnoDB</p>
+<pre class="mysql"><code>CREATE TABLE customers(
+  cust_id        int       NOT NULL AUTO_INCREMENT,
+    cust_name      char(50)  NOT NULL,
+    cust_address   char(50)  NULL,
+    cust_city      char(50)  NULL,
+    cust_state     char(5)   NULL,
+    cust_zip       char(10)  NULL,
+    cust_country   char(50)  NULL,
+    cust_contact   char(50)  NULL,
+    cust_email     char(255) NULL,
+    PRIMARY KEY (cust_id)
+)ENGINE = InnoDB;</code></pre></li>
+<li><p>使用联合主键，并为quantity指定默认值</p>
+<pre class="mysql"><code>CREATE TABLE orderitems(
+  order_num   int          NOT NULL,
+    order_item  int          NOT NULL,
+    prod_id     char(10)     NOT NULL,
+    quantity    int          NOT NULL DEFAULT 1,
+    item_price  decimal(8,2) NOT NULL,
+    PRIMARY KEY (order_num, order_item)
+)ENGINE = InnoDB;</code></pre></li>
+<li><p>更新表，比如给表增加一列</p>
+<pre class="mysql"><code>ALTER TABLE vendors ADD vend_phone CHAR(20);</code></pre></li>
+<li><p>删除刚刚增加的一列</p>
+<pre class="mysql"><code>ALTER TABLE vendors DROP COLUMN vend_phone;</code></pre></li>
+<li><p>删除表</p>
+<pre class="mysql"><code>DROP TABLE customers2;</code></pre></li>
+<li><p>重命名表</p>
+<pre class="mysql"><code>RENAME TABLE customers2 TO customers;</code></pre></li>
+</ul>
+<h5 id="视图存储过程函数游标和触发器">视图、存储过程（函数）、游标和触发器</h5>
+<h6 id="视图">视图</h6>
+<ul>
+<li><p>利用视图CREATE VIEW来简化复杂操作，按照我的理解可以把视图想象成一个虚拟的中间状态结果表，比如首先创建一个productcustomers视图，然后再在视图中查询</p>
+<pre class="mysql"><code>CREATE VIEW productcustomers AS SELECT cust_name, cust_contact, prod_id FROM customers, orders, orderitems WHERE customers.cust_id = order.cust_id AND orderitems.order_num = order.order_num;</code></pre>
+<pre class="mysql"><code>  SELECT cust_name, cust_contcat FROM productcustomers WHERE prod_id = &#39;TNT2&#39;;</code></pre></li>
+</ul>
+<h6 id="存储过程">存储过程</h6>
+<ul>
+<li><p>创建存储过程，这个东西我一般看作函数，把一组操作封装在一个函数内，然后通过调用语句进行调用，比如如下过程就是首先创建一个存储过程productpricing，然后使用存储过程，类似于定义函数并调用函数</p>
+<pre class="mysql"><code>CREATE PROCEDURE productpricing()
+BEGIN
+  SELECT Avg(prod_price) AS priceaverage
+  FROM products;
+END;</code></pre>
+<pre class="mysql"><code>CALL productpricing();</code></pre></li>
+<li><p>删除一个存储过程，删除时只需要给出存储过程名，不需要后面的（）</p>
+<pre class="mysql"><code>DROP PROCEDURE productpricing;</code></pre></li>
+<li><p>上述例子是无参数的存储过程及其使用，接下来是带有参数的存储过程及其使用，此存储过程接受三个参数，关键字OUT指出相应的参数用来传出存储过程返回的值，用关键字INTO将检索出的值保存到相应变量</p>
+<pre class="mysql"><code>CREATE PROCEDURE productpricing(OUT pl DECIMAL(8,2), OUT ph DECIMAL(8,2), OUT pa DECIMAL(8,2))
+BEGIN
+  SELECT Min(prod_price) INTO pl FROM products;
+  SELECT Max(prod_price) INTO ph FROM products;
+  SELECT Avg(prod_price) INTO pa FROM products;
+END;</code></pre>
+<pre class="mysql"><code>CALL productpricing(@pricelow, @pricehigh, @priceaverage);</code></pre></li>
+<li><p>上述例子调用后，<span class="citation" data-cites="pricelow">@pricelow</span>，<span class="citation" data-cites="pricehigh">@pricehigh</span>，<span class="citation" data-cites="priceaverage三个变量保存了调用存储过程">@priceaverage三个变量保存了调用存储过程</span>，由存储过程计算出的三个值，那么可以直接检索出这三个值</p>
+<pre class="mysql"><code>SELECT @pricelow, @pricehigh, @priceaverage;</code></pre></li>
+<li><p>存储过程除了将结果传出外，还可以传入值，使用IN和OUT参数实现，比如计算特定订单号的产品总价</p>
+<pre class="mysql"><code>CREATE PROCEDURE ordertotal(IN onumber INT, OUT otoal DECIMAL(8,2))
+BEGIN
+  SELECT Sum(item_price*quantity) FROM orderitems WHERE order_num = onumber INTO      ototal;
+END;</code></pre>
+<pre class="mysql"><code>CALL ordertotal(20005, @total);</code></pre>
+<pre class="mysql"><code>SELECT @total;</code></pre></li>
+<li><p>一个更复杂的存储过程，其功能是根据输入订单号及是否需要计算税费，输出产品总价。其中，</p>
+<p>taxable是一个bool值，只有0和1两种状态，1表示需要计算税费，0表示不需要计算税费</p>
+<p>COMMENT关键字是对存储过程的描述，可要可不要，执行SHOW PROCEDURE STATUS时将在结果中显示</p>
+<p>DECLARE语句则定义了两个局部临时变量</p>
+<p>IF 语句还支持 ELSEIF 和 ELSE 子句</p>
+<pre class="mysql"><code>CREATE PROCEDURE ordertotal(IN onumber INT, IN taxable BOOLEAN, OUT ototal DECIMAL(8,2)) COMMENT &#39;Obtain order total, optionally adding tax&#39;
+BEGIN
+  DECLARE total DECIMAL(8,2);
+  DECLARE taxrate INT DEFAULT 6;
+  SELECT Sum(item_price*quantity) FROM orderitems WHERE order_num = onumber INTO      total;
+  IF taxale THEN
+      SELECT total + (total/100 * taxrate) INTO total;
+  END IF;
+  SELECT total INTO ototal;
+END;</code></pre>
+<pre class="mysql"><code>CALL ordertotal(20005, 0, @total);</code></pre>
+<pre class="mysql"><code>SELECT @total;</code></pre></li>
+<li><p>显示创建一个存储过程的CREATE语句</p>
+<pre class="mysql"><code>SHOW CREATE PROCEDURE ordertotal;</code></pre></li>
+</ul>
+<h6 id="游标">游标</h6>
+<ul>
+<li><p>游标只能应用在存储过程中，下面例子包括声明一个游标，打开游标并关闭游标，但是该游标只检索出数据没有做处理</p>
+<pre class="mysql"><code>CREATE PROCEDURE processorders()
+BEGIN
+  -- Declare the cursor
+    DECLARE ordernumbers CURSOR
+    FOR
+    SELECT order_num FROM orders;
+
+    -- Open the cursor
+    OPEN ordernumbers;
+
+    -- Close the cursor
+    CLOSE ordernumbers;
+END;</code></pre></li>
+<li><p>使用FETCH访问每一行（默认从第一行开始），下一条FETCH语句访问下一行，下面这个例子只检索第一行</p>
+<pre class="mysql"><code>CREATE PROCEDURE processorders()
+BEGIN
+  -- Declare local variables
+  DECLARE o INT;
+
+  -- Declare the cursor
+    DECLARE ordernumbers CURSOR
+    FOR
+    SELECT order_num FROM orders;
+
+    -- Open the cursor
+    OPEN ordernumbers;
+
+    -- Get order number
+    FETCH ordernumbers INTO o;
+
+    -- Close the cursor
+    CLOSE ordernumbers;
+END;</code></pre></li>
+<li><p>下面这个例子循环检索数据，从第一行到最后一行，其中定义了一个局部变量done，一直循环直到done为1时退出循环，定义了一个CONTINUE HANDLER语句，当SQLSTATE = '02000'，也就是未找到状态时，使done为1。</p>
+<pre class="mysql"><code>CREATE PROCEDURE processorders()
+BEGIN
+  -- Declare local variables
+  DECLARE done BOOLEAN DEFAULT 0;
+  DECLARE o INT;
+
+  -- Declare the cursor
+    DECLARE ordernumbers CURSOR
+    FOR
+    SELECT order_num FROM orders;
+
+    -- Declare continue handler
+    DECLARE CONTINUE HANDLER FOR SQLSTATE &#39;02000&#39; SET done = 1;
+
+    -- Open the cursor
+    OPEN ordernumbers;
+
+    -- Loop through all rows
+    REPEAT
+      -- Get order number
+      FETCH ordernumbers INTO o;
+    -- End of loop
+    UNTIL done END REPEAT;
+
+    -- Close the cursor
+    CLOSE ordernumbers;
+END;</code></pre></li>
+</ul>
+<h6 id="触发器">触发器</h6>
+<ul>
+<li><p>一个简单的触发器（只有表才支持触发器，视图不支持），对每个行成功插入后，显示Product added 消息</p>
+<pre class="mysql"><code>CREATE TRIGGER newproduct AFTER INSERT ON products FOR EACH ROW SELECT &#39;Product added&#39;;</code></pre></li>
+<li><p>删除触发器</p>
+<pre class="mysql"><code>DROP TRIGGER newproduct;</code></pre></li>
+<li><p>INSERT触发器，可以引用一个名为NEW的虚拟表，以访问被插入的行</p>
+<pre class="mysql"><code>CREATE TRIGGER neworder AFTER INSERT ON orders FOR EACH ROW SELECT NEW.order_num;</code></pre></li>
+<li><p>DELETE触发器，可以引用一个名为OLD的虚拟表，以访问被删除的行</p>
+<pre class="mysql"><code>CREATE TRIGGER deleteorder BEFORE DELETE ON orders FOR EACH ROW
+BEGIN
+  INSERT INTO archive_orders(order_num, order_date, cust_id) VALUES(OLD.order_num,     OLD.order_date, OLD.cust_id);
+END;</code></pre></li>
+<li><p>UPDATE触发器，可以引用一个名为OLD的虚拟表访问旧值和一个名为NEW的虚拟表访问新值</p>
+<pre class="mysql"><code>CREATE TRIGGER updatevendor BEFORE UPDATE ON vendors FOR EACH ROW SET NEW.vend_state = Upper(NEW.vend_state);</code></pre></li>
+</ul>
+<h5 id="事务处理">事务处理</h5>
+<ul>
+<li><p>用START TRANSACTION标识一个事物的开始，用ROLLBACK来撤销MySQL语句</p>
+<pre class="mysql"><code>START TRANSACTION;
+DELETE FROM ordertotals;
+SELECT * FROM ordertotals;
+ROLLBACK;</code></pre></li>
+<li><p>一般的MySQL语句的提交保存操作都是自动的，但是在事务处理块中提交不会隐含的进行，需要我们手动进行提交</p>
+<pre class="mysql"><code>START TRANSACTION;
+DELETE FROM orderitems WHERE order_num = 20010;
+DELETE FROM orders WHERE order_num = 20010;
+COMMIT;</code></pre></li>
+<li><p>使用保留点，可以让我们更灵活的处理回退的点，使用保留点，可以让MySQL知道自己要回退到何处</p>
+<pre class="mysql"><code>SAVEPOINT delete1;</code></pre>
+<pre class="mysql"><code>ROLLBACK TO delete1;</code></pre></li>
+</ul>
+<h5 id="管理用户">管理用户</h5>
+<ul>
+<li><p>获得MySQL数据库中所有用户账号</p>
+<pre class="mysql"><code>USE mysql;
+SELECT user FROM user;</code></pre></li>
+<li><p>创建用户账号，比如创建账号名为ben，密码为p@$$w0rd</p>
+<pre class="mysql"><code>CREATE USER ben IDENTIFIED BY &#39;p@$$w0rd&#39;;</code></pre></li>
+<li><p>重命名一个用户账号</p>
+<pre class="mysql"><code>RENAME USER ben TO bforta;</code></pre></li>
+<li><p>删除一个用户账号</p>
+<pre class="mysql"><code>DROP USER bforta;</code></pre></li>
+<li><p>更改密码</p>
+<pre class="mysql"><code>SET PASSWORD FOR bforta = Password(&#39;n3w p@$$w0rd&#39;);</code></pre></li>
+</ul>
+<h5 id="leetcode刷题时遇到的用法">Leetcode刷题时遇到的用法</h5>
+<ul>
+<li><p>条件判断语句，条件判断，IF(condition，arg1， arg2) 如果condition为真，arg1，否则arg2，比如如果sex为m则更新为f，否则更新为m</p>
+<pre class="mysql"><code>UPDATE salary SET sex = IF(sex = &#39;m&#39;, &#39;f&#39;,&#39;m&#39;);</code></pre></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/25/CAPM------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="CAPM------论文阅读笔记">
+      <i class="fa fa-chevron-left"></i> CAPM------论文阅读笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql数据库语句总结"><span class="nav-number">1.</span> <span class="nav-text">MySQL数据库语句总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#管理数据库"><span class="nav-number">1.1.</span> <span class="nav-text">管理数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询数据"><span class="nav-number">1.2.</span> <span class="nav-text">查询数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#排序数据"><span class="nav-number">1.3.</span> <span class="nav-text">排序数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#按条件查询数据"><span class="nav-number">1.4.</span> <span class="nav-text">按条件查询数据</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#组合过滤"><span class="nav-number">1.4.1.</span> <span class="nav-text">组合过滤</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#通配符"><span class="nav-number">1.4.2.</span> <span class="nav-text">通配符</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#正则表达式"><span class="nav-number">1.4.3.</span> <span class="nav-text">正则表达式</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#计算数据"><span class="nav-number">1.5.</span> <span class="nav-text">计算数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#处理数据"><span class="nav-number">1.6.</span> <span class="nav-text">处理数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#汇总数据"><span class="nav-number">1.7.</span> <span class="nav-text">汇总数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分组数据"><span class="nav-number">1.8.</span> <span class="nav-text">分组数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#高级查询技术"><span class="nav-number">1.9.</span> <span class="nav-text">高级查询技术</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#使用子查询"><span class="nav-number">1.9.1.</span> <span class="nav-text">使用子查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用联结表"><span class="nav-number">1.9.2.</span> <span class="nav-text">使用联结表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#组合查询"><span class="nav-number">1.9.3.</span> <span class="nav-text">组合查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#全文本搜索"><span class="nav-number">1.9.4.</span> <span class="nav-text">全文本搜索</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#插入更新和删除数据"><span class="nav-number">1.10.</span> <span class="nav-text">插入、更新和删除数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建和操作表"><span class="nav-number">1.11.</span> <span class="nav-text">创建和操作表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#视图存储过程函数游标和触发器"><span class="nav-number">1.12.</span> <span class="nav-text">视图、存储过程（函数）、游标和触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#视图"><span class="nav-number">1.12.1.</span> <span class="nav-text">视图</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#存储过程"><span class="nav-number">1.12.2.</span> <span class="nav-text">存储过程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#游标"><span class="nav-number">1.12.3.</span> <span class="nav-text">游标</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#触发器"><span class="nav-number">1.12.4.</span> <span class="nav-text">触发器</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务处理"><span class="nav-number">1.13.</span> <span class="nav-text">事务处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#管理用户"><span class="nav-number">1.14.</span> <span class="nav-text">管理用户</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#leetcode刷题时遇到的用法"><span class="nav-number">1.15.</span> <span class="nav-text">Leetcode刷题时遇到的用法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+<link rel="stylesheet" href="/lib/prettify/skins/github.css" type="text/css">
+<script src="/lib/prettify/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+      prettyPrint();
+  });
+</script>
+
+</body>
+</html>
