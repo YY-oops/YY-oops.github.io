@@ -20,21 +20,19 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":240,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="亚马逊网站推荐：Item-to-Item的协同过滤-----论文阅读笔记 Amazon.com Recommendations Item-to-Item Collaborative Filtering">
+  <meta name="description" content="YY&#39;blog">
 <meta property="og:type" content="article">
 <meta property="og:title" content="亚马逊网站推荐：Item-to-Item的协同过滤------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/02/15/%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90%EF%BC%9AItem-to-Item%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4-----%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="亚马逊网站推荐：Item-to-Item的协同过滤-----论文阅读笔记 Amazon.com Recommendations Item-to-Item Collaborative Filtering">
+<meta property="og:description" content="YY&#39;blog">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430160931.png">
 <meta property="article:published_time" content="2020-02-15T06:24:00.000Z">
 <meta property="article:modified_time" content="2020-04-30T08:09:53.436Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="推荐系统">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430160931.png">
 
 <link rel="canonical" href="http://yy-oops.github.io/2020/02/15/%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90%EF%BC%9AItem-to-Item%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4-----%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
@@ -233,33 +231,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="亚马逊网站推荐item-to-item的协同过滤-----论文阅读笔记">亚马逊网站推荐：Item-to-Item的协同过滤-----论文阅读笔记</h4>
-<h4 id="amazon.com-recommendations-item-to-item-collaborative-filtering">Amazon.com Recommendations Item-to-Item Collaborative Filtering</h4>
-<a id="more"></a>
-<h5 id="推荐算法">推荐算法</h5>
-<ol type="1">
-<li><p>传统的协同过滤</p>
-<p>利用余弦相似度等相似度度量方法计算与user最相似的用户，然后基于这些相似用户生成推荐。</p>
-<p>缺点是计算代价太高，虽然摒弃低评分、低购买用户或者丢弃不流行项目可以降低计算代价，但是推荐准确度又下降了。</p></li>
-<li><p>聚类模型</p>
-<p>聚类模型是将用户细分成为不同的部分（段），该算法的目的就是把user分配给与其最相似的客户群中，然后根据该段内客户的评分来生成推荐。相比于传统的协同过滤，一个user只需要与数量大大减少的段计算相似度，所以大大减少了计算代价。</p>
-<p>缺点就是推荐质量太低，因为用聚类模型发现的相似用户往往不是最相似的。</p></li>
-<li><p>基于搜索的模型</p>
-<p>基于搜索或者内容的方法就是搜索那些相关item（注意这里不是相似，而是相关项）。例如你买了教父DVD，那么它就会给你推荐其他犯罪剧电影，马龙·白兰度主演的其他电影或者弗朗西斯·福特·科波拉导演的其他电影。用户购买或者评分少时，可能很有效。缺点就是当用户有大量的购买记录时基于所有item的查询就是不切实际了。</p></li>
-</ol>
-<hr />
-<h4 id="本文提出的方法">本文提出的方法</h4>
-<h5 id="item-to-item-collaborative-filtering">Item-to-Item Collaborative Filtering</h5>
-<p><strong>方法</strong></p>
-<p>找到与用户购买过的和评过分的item相似的item，然后将这些item组合到推荐列表中，根据相似度高低进行排序，依次进行推荐。</p>
-<p><strong>算法</strong></p>
-<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200430160931.png" /></p>
-<p>该算法实现两个功能：1.找到用户购买的产品里经常成对出现的item；2.计算所有产品两两之间的相似度（余弦相似度），那么这时候计算的两个向量是对应于两个item，向量有M维，代表购买该产品的用户。</p>
-<p><strong>缺点</strong></p>
-<p>计算相似度表非常耗时，但是有解决办法，那就是进行抽样，而且质量几乎不会下降。</p>
-<h5 id="优点">优点</h5>
-<p>1.对非常大的数据集，该算法也比传统的要快，并且可以离线计算。2.对于数量有限的用户数据也可以产生高质量的推荐。</p>
-
+        <div id="hexo-blog-encrypt" data-wpm="YY'blog" data-whm="YY'blog"><div class="hbe-input-container"><input type="password" id="hbePass" placeholder="YY'blog" /><label>YY'blog</label><div class="bottom-line"></div></div><script id="hbeData" type="hbeData" data-hmacdigest="bcac024c71f1a91117ad2d1ba316c2ea3e3e1b6474b52b89db2e5bdc898fa2b0">93fc8cfbb3c20366d6526919352ee545370ca497f25fd3ced58aca7dd4b6cebcaad49817d49b8d5a02e43d7f7f9a21dbf413539a8687f9327af210c9da2887962393cc30e814779377e3ac0a05fb060d9e5d2050e6d4ef0b0b9a4db947ced9f1f402e11446c33ec45099bd8f74c0ae43c9eec2b0ffbeb098e2d44ef50d206d8caeb2b786ab35da381c8b094b99d3a3d1359f64e6ef766c77cf28e6a57a4ea15705757b0e6c96bc4f21dc8f9703ca589764c81721dab922089456ab0d35f04e66e02a3f7e84d2514d0032f1e48233b7e2c091bac8622ce4000cf672f0c3918200ce3fe88f3578367877e3c59704794fff53013a0e40f91c806fdc1cea37edaab75a1d9fca4b4d2a054457590d9d7224b567e0845434201cf5f234d9c596f374741b81608202ad36de54e26f5f063a02faae83fa8b1d9ab5db53993c3b81a8ce3ee5d3d5add51b3191c11e1655e9a3c6ccf230f8b7a6d301b55d075ea1bfa8db87b950164d07ce8682fbcee840613cb2c9a4c17d18863a156cab654ba57cbcb90e6bb63840619847ebe86813d046455c3009deeb927a0a56ee1e495a7a2b3c64f7d1619e912502254e5fc77bff2d66fa5a8d27bb677c69d4631eacca46a130b123ed564c84426001b4cbaf323de19c2411770757fcd67b2ce4f6d7c26e810d38b16d7ffff60e0d55493f165da3b497dca45355852675c1f4dedc6ee3133a16d3361d9218142eab614e1f47f1e867da393c642fd23e57f3c8f2fdd086e5c3e681f71ff8831e18a11a5873677f6aaf8459eef319986ef851635e8ba9375ae6b83c20d616c26bc631dc23b9db80bec7ac9fb698ab8a3936826a657c776b880602a14afd0a1dcc6b8ad55819b6fb8983d47bfca979a610c6d3a991c81971b5eb0175c4841a1ab9ed1bb5a5a0d3a684f16c3fa41a7247d1e330a9ad1ae481caaff3877a1f2a972727158139b2d5e9cb0034c5ca7dbd4e66eb80e03bf8ef665bdb0c41516c7ca18872d9b385685a82ee17af261ccf61674eaaefe3d88633b1785bf11b3cefe5a2d0c6e1099d684ba5e2d4fc1caa9c35fbd7a8737e67418347276ef5759931c6311b75ebae1d013b1f12df58d33278d214ec1b7e59f566477bc0e32ff7c85942bd3029f137ee578bae9cacc18c931d26362cbf39e516e7b63d609786417395f112ad76b31f6d820adc8b338f1d1e68459769c0b0d8da3e3152ffff96afdf5dc734a5fd02c84c2310f925e0c3af077590a4fbdb61bb57323867b68fbaa20dfc1c41b849bf3c9c6868b9dc1dc560a876b3e2f3bbda9418771563c08be828a53b7ff62ccbe09d0688464ac975b62ad7d636ac10d0252e4cdd0262e0ad3d4f009aefa18b2ba1ad714b3123aec712e05f9addf4d57318458011adfc2a75a6d69a618b789db98238785d2e85e4191bba26d9fec1b1e89a6250caec33546837a5cdf136d6524f69b8076708b9792bc4f978810e47a9c4f845e8373dba8b14bc57e6a344ba4444eb32d4bc049302a2580f9d02cc49c538c3c6b621703a4e34a6b83265a7adb6de50717c5d06e965a1e90d879b68b66c7ddcb5b681fae3ae821c83469fd192162078362c69523270405444b0b96a3f8023fc2059158acf3505a461a7f6afbcf9fd5017679e24cd51da0e09cbf6e2b50ff62f5a6862bf1cf1f62e7f70e3f117685ce1de0c7ac37c8423284b2f067a619b19258f43294561af61fd4bf7eb248da129b98828db148b343f6ec7204034cdc84b1d7363ef17b3d8cc9c9b1773dc5e8c9ae1df04eefa2ffa25bfecb532fae2d8395bd9d1532c1dba26ab5d00578e83b7fdf856e156a78e26412a64585c2b26146add4f252bf43fb3113300131dcd5ef8d169d7968a02016523a409fc87f0a76fdb4b5e8a2adffb8d97d8ab01ff408a4242eb6342225a9ac492365560910792a1bc7d00e08d1bb3bded8e453b4e4d1aba4d01de8004fca11c29261cd10a6316b26b6ac927994d57563d8f1bd954825b0daa0132ce5688a662660aa9c34487448dd53d840e3795c27f11826cad6a9fad7253f180155f02ba1660c367611cde42d5982866276460d1789de9dc6704835b537528874d7e0a61b3d553f60ddb12bc1a6e987205d7643e34ca9f54fe9b52c2bb2e57cb9d6d38d4d86f49b878bf8b73b3261d326e4835a2d33261100930a05a849c221f7f7fbbd8a5f9201e543a8c4db24cd1bc266b8c7b8dee03a09503ccd30b45ec56c8a609812eacb127810df1bc382fc6fac1007f34e1c84c4526958d34fed4d43e396422a2534635141e7aa45bf8c49072e5c97d0ccf0cd44ff28bfbcf9631f0ad9fd4b1d9986a23b352e91520562f2d3257d88af01f33f854c6c97f5f361349057eef2154589837c70c36cdae533547150e1612c04af30520cf803256f10a487b2b7c77a28b444a1a898c79c9f4c881324c28652bcbc58aebf5b754522b32438778927b8ff6c4714b9cbd5ac1afbe844e8cffc808b7a991bd42652d144d69ac20ac72bfc0d1907ae63bdeb9211a7a45dd2aed97e50e19a28e68c4b71716bd3a8bbd4450e225516dca621e3b6c2217a2af9537732febee356d7c48a12701150609fb6571bc09189bd55e417ee9433e1f9cde6899ca25b34f8210edbe92794cf89ccf13917be276e6eedb113afc06aaa5d1691498fa46226061869d9b7c1766e8462dd2afcbd39b9eb0349ebf95d2eeb0c45050c445037d2453f572ad2ebf2b4bfa87d0a66c8f440e554c7cbef636ebb8e1fe7b2f4117b6b5c22ca8020e13a07cf8ce124437f69d20f417f94ad3770b2c59c43068a029ac3101885d0d13a4b15fdf1c3dea3581447e806d9740b3b171743564af45b90793be54f4a69e94f715b12b6b00745c071840aab42d5d9db0e0a88df1f7f084fe347f3f90fb939d4b7d09edc9328caf4f002d06780fe22892a191a20bfe97f93a68f68c579ec92e3706e9805c16138766956443ce72b7ae011cda1ce238284dcd8b11da0c5f32dd5e1ec46378745e2d8e310a4b0801bd25467b8c7b78bf33366f4638e193cbd112564cb85791ba8c6fbaf290e2ba90a4fadc2b987018227b371eed0bcf30c5c66b271333a42b5c2ba17728295e7855334017324005deba0d81018bc4d068e1c576251a3c3cec9bee3c76a06e79992248d879dd5c8e20a2d914b549384f1156548a09f3cb1ff8f98524f6d8be8a32448dd3b5dc28b4195ca230539bc81d69d273e0f4cc609b275285fe42683776fa79c873c5d6a160b6a156eeb77cc71e99867bcbb575bddaef87b9116497fba19571dc8777a52a7b95a13975c65f3431c9c94af09f7bdb523ef6513824b8e8662224506f8429f5e189671b16f9e423db2348d7e6e51aba036a1403c84454a69d235ad2c009b68f61b742447d50a85099635ba8c657f15352b7de69291e843cee7ae9db54d9ff8fce0c2d30892c08afa83f6720ca46cf2dd7287ccffa79c62e087c8eaaa5b8ce79dfa0ccde9e9401419baa0f464612bd7429728775e2a061a61b648542855b545861ce1e9c0b218eb9a440bb738d926c1b9c3f3257ba92b1413d025ecd4cd2074bbe247a3a74854fca51edf9d1a2029cbffdf251c334c149f36b7674a02222f0dbff79dba6204ba47b0bfcc7188b6e88f732dba0c948a7d12021d2f7b929c7d80a9dcbb537e9f92cb854769de6d595df769f89e78bee2c5ad4a46efbbcf1d3ee48e1a0b936232fc67fa3d53f910cdca785bf417c9678a7b2292ee60771153924157e610c136833bb39f76edb912e7dc080cc44e6a7f01d22dc07bb4ce9e0af5500d73107446ecfea5b0c09ae6cae58b0caeee149b6b49423db6a6d65b31969d5fc6a1f768891ad5d95576453d86576b5235afd30a704a58e78192eb915038bb2e079d5973debbe2c7beffbcc39b542379b3fe7907766ff194e94b7dd8db3545ccd61744108637250030a300f9306c30707d1d64791df879c779577</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -344,7 +316,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#亚马逊网站推荐item-to-item的协同过滤-----论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">亚马逊网站推荐：Item-to-Item的协同过滤-----论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#amazon.com-recommendations-item-to-item-collaborative-filtering"><span class="nav-number">2.</span> <span class="nav-text">Amazon.com Recommendations Item-to-Item Collaborative Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐算法"><span class="nav-number">2.1.</span> <span class="nav-text">推荐算法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文提出的方法"><span class="nav-number">3.</span> <span class="nav-text">本文提出的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#item-to-item-collaborative-filtering"><span class="nav-number">3.1.</span> <span class="nav-text">Item-to-Item Collaborative Filtering</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优点"><span class="nav-number">3.2.</span> <span class="nav-text">优点</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
