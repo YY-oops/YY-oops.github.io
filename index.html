@@ -118,7 +118,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">5</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -128,7 +128,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">28</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">29</span></a>
 
   </li>
   </ul>
@@ -149,6 +149,677 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/06/19/Java%E9%9B%86%E5%90%88%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/19/Java%E9%9B%86%E5%90%88%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">Java集合总结</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-19 13:06:00" itemprop="dateCreated datePublished" datetime="2020-06-19T13:06:00+08:00">2020-06-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-20 18:06:22" itemprop="dateModified" datetime="2020-07-20T18:06:22+08:00">2020-07-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">学习总结</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="java集合总结">Java集合总结</h3>
+<p>由于Java集合中有众多接口和实现类，本文只选取常用的集合。</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200619132233.png" /></p>
+<h4 id="collection">Collection</h4>
+<p>Collection接口在java.util中，是所有单列集合的父接口，比如List和Set</p>
+<p>常用方法：</p>
+<ol type="1">
+<li><code>public boolean add(E e);</code> 添加给定对象</li>
+<li><code>public void clear();</code> 清空集合</li>
+<li><code>public boolean remove(E e);</code> 删除给定对象</li>
+<li><code>public boolean contains(E e);</code> 判断集合中是否包含指定对象</li>
+<li><code>public boolean isEmpty();</code> 判断当前集合是否为空</li>
+<li><code>public int size();</code> 返回集合中元素的个数</li>
+<li><code>public Object[] toArray();</code> 将集合元素存储到数组中Collection集合在java.util中，是所有单列集合的父接口，比如List和Set</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">public</span> <span class="kw">class</span> CollectionDemo {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>        <span class="co">// 创建集合对象</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>        <span class="bu">Collection</span>&lt;<span class="bu">String</span>&gt; coll = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;&gt;();</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="co">// 添加元素</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>        coll.<span class="fu">add</span>(<span class="st">&quot;古力娜扎&quot;</span>);</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        coll.<span class="fu">add</span>(<span class="st">&quot;迪丽热巴&quot;</span>);</span>
+<span id="cb1-10"><a href="#cb1-10"></a>        coll.<span class="fu">add</span>(<span class="st">&quot;马儿扎哈&quot;</span>);</span>
+<span id="cb1-11"><a href="#cb1-11"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(coll);  <span class="co">// [古力娜扎, 迪丽热巴, 马儿扎哈]</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a>        <span class="co">// 判断是否包含指定对象</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>        <span class="dt">boolean</span> b = coll.<span class="fu">contains</span>(<span class="st">&quot;马儿扎哈&quot;</span>);</span>
+<span id="cb1-15"><a href="#cb1-15"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(b);  <span class="co">// true</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>        <span class="co">// 删除指定对象</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>        coll.<span class="fu">remove</span>(<span class="st">&quot;迪丽热巴&quot;</span>);</span>
+<span id="cb1-19"><a href="#cb1-19"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(coll);  <span class="co">// [古力娜扎, 马儿扎哈]</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a>        <span class="co">// 判断集合是否为空</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>        <span class="dt">boolean</span> e = coll.<span class="fu">isEmpty</span>();</span>
+<span id="cb1-23"><a href="#cb1-23"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(e);  <span class="co">// false</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a>        <span class="co">// 集合中的元素个数</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>        <span class="dt">int</span> size = coll.<span class="fu">size</span>();</span>
+<span id="cb1-27"><a href="#cb1-27"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(size);  <span class="co">// 2</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a></span>
+<span id="cb1-29"><a href="#cb1-29"></a>        <span class="co">// 将集合元素存储到数组</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a>        <span class="bu">Object</span>[] obj = coll.<span class="fu">toArray</span>();</span>
+<span id="cb1-31"><a href="#cb1-31"></a>        <span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; obj.<span class="fu">length</span>; i++) {</span>
+<span id="cb1-32"><a href="#cb1-32"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(obj[i]); <span class="co">// 依次输出古力娜扎 马儿扎哈</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>        }</span>
+<span id="cb1-34"><a href="#cb1-34"></a></span>
+<span id="cb1-35"><a href="#cb1-35"></a>        <span class="co">// 清空集合中的所有元素，但是不删除集合</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>        coll.<span class="fu">clear</span>();</span>
+<span id="cb1-37"><a href="#cb1-37"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(coll); <span class="co">// []</span></span>
+<span id="cb1-38"><a href="#cb1-38"></a>    }</span>
+<span id="cb1-39"><a href="#cb1-39"></a>}</span></code></pre></div>
+<h4 id="list">List</h4>
+<p>List集合接口中有四个常用的方法 1. <code>add()</code> 2. <code>remove()</code> 3. <code>get()</code> 4. <code>set()</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">public</span> <span class="kw">class</span> ListDemo {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a>        <span class="co">// 创建一个list集合</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>        <span class="bu">List</span>&lt;<span class="bu">String</span>&gt; list = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;&gt;();</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a>        <span class="co">// 添加元素</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>        list.<span class="fu">add</span>(<span class="st">&quot;a&quot;</span>);</span>
+<span id="cb2-9"><a href="#cb2-9"></a>        list.<span class="fu">add</span>(<span class="st">&quot;d&quot;</span>);</span>
+<span id="cb2-10"><a href="#cb2-10"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [a, d]</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a>        <span class="co">// 在指定位置添加元素</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>        list.<span class="fu">add</span>(<span class="dv">2</span>, <span class="st">&quot;m&quot;</span>);</span>
+<span id="cb2-14"><a href="#cb2-14"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [a, d, m]</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16"></a>        <span class="co">// 移除指定位置的元素</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>        list.<span class="fu">remove</span>(<span class="dv">2</span>);</span>
+<span id="cb2-18"><a href="#cb2-18"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [a, d]</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a></span>
+<span id="cb2-20"><a href="#cb2-20"></a>        <span class="co">// 用指定元素替换指定位置的元素</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>        list.<span class="fu">set</span>(<span class="dv">1</span>, <span class="st">&quot;c&quot;</span>);</span>
+<span id="cb2-22"><a href="#cb2-22"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [a, c]</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a>        <span class="co">// 获取指定位置的元素</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>        <span class="bu">String</span> s = list.<span class="fu">get</span>(<span class="dv">1</span>);</span>
+<span id="cb2-26"><a href="#cb2-26"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(s);  <span class="co">// c</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a>    }</span>
+<span id="cb2-28"><a href="#cb2-28"></a>}</span></code></pre></div>
+<h4 id="arraylist">ArrayList</h4>
+<p>ArrayList是变长数组，类似于C++中的vector。注意&lt;&gt;中是泛型，只能是引用类型，而不能是基本类型</p>
+<p>基本类型 包装类（引用类型） byte Byte short Short int Integer 需要记 long Long float Float double Double char Character 需要记 boolean Boolean</p>
+<p>常用方法有：</p>
+<ol type="1">
+<li><code>public boolean add(E e);</code> 添加元素</li>
+<li><code>public E get(int index);</code> 读取元素</li>
+<li><code>public E remove(int index);</code> 删除元素</li>
+<li><code>public int size();</code> 获取集合中元素个数</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">public</span> <span class="kw">class</span> ArrayListDemo1 {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a>        <span class="co">// 创建ArrayList集合</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>        <span class="bu">ArrayList</span>&lt;<span class="bu">String</span>&gt; list = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;&gt;();</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="bu">ArrayList</span>&lt;<span class="bu">Integer</span>&gt; list1 = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;&gt;();</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>        <span class="co">// 向集合中添加一些数据，采用add方法</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>        list.<span class="fu">add</span>(<span class="st">&quot;马儿扎哈&quot;</span>);</span>
+<span id="cb3-10"><a href="#cb3-10"></a>        list.<span class="fu">add</span>(<span class="st">&quot;interesting&quot;</span>);</span>
+<span id="cb3-11"><a href="#cb3-11"></a>        list.<span class="fu">add</span>(<span class="st">&quot;123456&quot;</span>);</span>
+<span id="cb3-12"><a href="#cb3-12"></a>        list1.<span class="fu">add</span>(<span class="dv">100</span>);</span>
+<span id="cb3-13"><a href="#cb3-13"></a>        list1.<span class="fu">add</span>(<span class="dv">200</span>);</span>
+<span id="cb3-14"><a href="#cb3-14"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [马儿扎哈, interesting, 123456]</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list1); <span class="co">// [100, 200]</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a></span>
+<span id="cb3-17"><a href="#cb3-17"></a>        <span class="co">// 读取下标为1的元素</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>        <span class="bu">String</span> get_s = list.<span class="fu">get</span>(<span class="dv">1</span>);</span>
+<span id="cb3-19"><a href="#cb3-19"></a>        <span class="dt">int</span> get_i = list1.<span class="fu">get</span>(<span class="dv">1</span>);</span>
+<span id="cb3-20"><a href="#cb3-20"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(get_s);  <span class="co">// interesting</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(get_i);  <span class="co">// 200</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a></span>
+<span id="cb3-23"><a href="#cb3-23"></a>        <span class="co">// 从集合中移除下标为0的元素</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>        <span class="bu">String</span> remove_s = list.<span class="fu">remove</span>(<span class="dv">0</span>);</span>
+<span id="cb3-25"><a href="#cb3-25"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(remove_s);  <span class="co">// 马儿扎哈</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [interesting, 123456]</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a></span>
+<span id="cb3-28"><a href="#cb3-28"></a>        <span class="co">// 获取集合中的元素个数</span></span>
+<span id="cb3-29"><a href="#cb3-29"></a>        <span class="dt">int</span> size = list.<span class="fu">size</span>();</span>
+<span id="cb3-30"><a href="#cb3-30"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(size);  <span class="co">// 2</span></span>
+<span id="cb3-31"><a href="#cb3-31"></a></span>
+<span id="cb3-32"><a href="#cb3-32"></a>        <span class="co">// 遍历集合,IDEA中用list.fori快速生成</span></span>
+<span id="cb3-33"><a href="#cb3-33"></a>        <span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; list.<span class="fu">size</span>(); i++){</span>
+<span id="cb3-34"><a href="#cb3-34"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list.<span class="fu">get</span>(i));  <span class="co">// interesting 123456</span></span>
+<span id="cb3-35"><a href="#cb3-35"></a>        }</span>
+<span id="cb3-36"><a href="#cb3-36"></a>    }</span>
+<span id="cb3-37"><a href="#cb3-37"></a>}</span></code></pre></div>
+<h4 id="linkedlist">LinkedList</h4>
+<p>LinkedList是List接口的另一个实现类</p>
+<p>常用的方法： 一、与添加相关的方法</p>
+<ol type="1">
+<li><code>public void addFirst(E e);</code> 添加指定元素到链表的开头</li>
+<li><code>public void addLast(E e);</code> 添加指定的元素到链表的结尾</li>
+<li><code>public void push(E e);</code> 添加元素到此列表所表示的堆栈，就是添加元素到链表开头</li>
+</ol>
+<p>二、与获取相关的方法</p>
+<ol type="1">
+<li><code>public E getFirst();</code> 获取链表的第一个元素</li>
+<li><code>public E getLast();</code> 获取链表的最后一个元素</li>
+</ol>
+<p>三、 删除相关的方法</p>
+<ol type="1">
+<li><code>public E removeFirst();</code> 移除链表的第一个元素</li>
+<li><code>public E removeLast();</code> 移除链表的最后一个元素</li>
+<li><code>public E pop();</code> 列表所表示的堆栈中弹出一个元素， 就是弹出链表开头的元素</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">public</span> <span class="kw">class</span> LinkedListDemo {</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>        <span class="co">// 创建LinkedList集合对象</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="bu">LinkedList</span>&lt;<span class="bu">String</span>&gt; linkedlist = <span class="kw">new</span> <span class="bu">LinkedList</span>&lt;&gt;();</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a>        <span class="co">// 添加元素,可以使用其父类的方法添加</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>        linkedlist.<span class="fu">add</span>(<span class="st">&quot;love&quot;</span>);</span>
+<span id="cb4-9"><a href="#cb4-9"></a>        linkedlist.<span class="fu">add</span>(<span class="st">&quot;you&quot;</span>);</span>
+<span id="cb4-10"><a href="#cb4-10"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linkedlist);  <span class="co">// [love, you]</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a>        <span class="co">// 在链表开头添加元素</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>        linkedlist.<span class="fu">addFirst</span>(<span class="st">&quot;I&quot;</span>);</span>
+<span id="cb4-14"><a href="#cb4-14"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linkedlist);  <span class="co">// [I, love, you]</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a></span>
+<span id="cb4-16"><a href="#cb4-16"></a>        <span class="co">// 在链表结尾添加元素, 等效于add方法</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>        linkedlist.<span class="fu">addLast</span>(<span class="st">&quot;!&quot;</span>);</span>
+<span id="cb4-18"><a href="#cb4-18"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linkedlist);  <span class="co">// [I, love, you, !]</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a></span>
+<span id="cb4-20"><a href="#cb4-20"></a>        <span class="co">// 在链表所表示的堆栈上添加，等效于addFirst,在链表开头添加一个元素</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>        linkedlist.<span class="fu">push</span>(<span class="st">&quot;Hello&quot;</span>);</span>
+<span id="cb4-22"><a href="#cb4-22"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linkedlist);  <span class="co">// [Hello, I, love, you, !]</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a></span>
+<span id="cb4-24"><a href="#cb4-24"></a>        <span class="co">// 获取并返回第一个元素</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>        <span class="bu">String</span> first = linkedlist.<span class="fu">getFirst</span>();</span>
+<span id="cb4-26"><a href="#cb4-26"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(first);  <span class="co">// Hello</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a>        <span class="co">// 获取并返回最后一个元素</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a>        <span class="bu">String</span> last = linkedlist.<span class="fu">getLast</span>();</span>
+<span id="cb4-30"><a href="#cb4-30"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(last);  <span class="co">// !</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a></span>
+<span id="cb4-32"><a href="#cb4-32"></a>        <span class="co">// 移除第一个元素</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a>        <span class="bu">String</span> s = linkedlist.<span class="fu">removeFirst</span>();</span>
+<span id="cb4-34"><a href="#cb4-34"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(s);  <span class="co">// Hello</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linkedlist);  <span class="co">// [I, love, you, !]</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a></span>
+<span id="cb4-37"><a href="#cb4-37"></a>        <span class="co">// 移除最后一个元素</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a>        <span class="bu">String</span> s1 = linkedlist.<span class="fu">removeLast</span>();</span>
+<span id="cb4-39"><a href="#cb4-39"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(s1);  <span class="co">// !</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linkedlist);  <span class="co">// [I, love, you]</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a></span>
+<span id="cb4-42"><a href="#cb4-42"></a>        <span class="co">// 弹出一个元素，相当于removeFirst， 弹出第一个元素</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a>        <span class="bu">String</span> s2 = linkedlist.<span class="fu">pop</span>();</span>
+<span id="cb4-44"><a href="#cb4-44"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(s2);  <span class="co">// I</span></span>
+<span id="cb4-45"><a href="#cb4-45"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linkedlist);  <span class="co">// [love, you]</span></span>
+<span id="cb4-46"><a href="#cb4-46"></a></span>
+<span id="cb4-47"><a href="#cb4-47"></a>        <span class="co">// 判断链表是否为空</span></span>
+<span id="cb4-48"><a href="#cb4-48"></a>        <span class="dt">boolean</span> empty = linkedlist.<span class="fu">isEmpty</span>();</span>
+<span id="cb4-49"><a href="#cb4-49"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(empty);  <span class="co">// false</span></span>
+<span id="cb4-50"><a href="#cb4-50"></a>    }</span>
+<span id="cb4-51"><a href="#cb4-51"></a>}</span></code></pre></div>
+<h4 id="hashset">HashSet</h4>
+<p>HashSet是Set接口的实现类</p>
+<p>Person类会默认继承Object类的hashCode方法，该方法返回对象的hash值</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">public</span> <span class="kw">class</span> HashSetDemo {</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>        <span class="co">// 创建HashSet集合</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>        <span class="bu">Set</span>&lt;<span class="bu">Integer</span>&gt; set = <span class="kw">new</span> <span class="bu">HashSet</span>&lt;&gt;();</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>        <span class="co">// 添加元素</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>        set.<span class="fu">add</span>(<span class="dv">1</span>);</span>
+<span id="cb5-8"><a href="#cb5-8"></a>        set.<span class="fu">add</span>(<span class="dv">2</span>);</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        set.<span class="fu">add</span>(<span class="dv">4</span>);</span>
+<span id="cb5-10"><a href="#cb5-10"></a>        set.<span class="fu">add</span>(<span class="dv">3</span>);</span>
+<span id="cb5-11"><a href="#cb5-11"></a>        set.<span class="fu">add</span>(<span class="dv">3</span>);</span>
+<span id="cb5-12"><a href="#cb5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13"></a>        <span class="co">// 遍历set集合</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>        <span class="bu">Iterator</span>&lt;<span class="bu">Integer</span>&gt; iterator = set.<span class="fu">iterator</span>();</span>
+<span id="cb5-15"><a href="#cb5-15"></a>        <span class="kw">while</span>(iterator.<span class="fu">hasNext</span>()){</span>
+<span id="cb5-16"><a href="#cb5-16"></a>            <span class="bu">Integer</span> n = iterator.<span class="fu">next</span>();</span>
+<span id="cb5-17"><a href="#cb5-17"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(n);  <span class="co">// 依次输出1， 2， 3， 4</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>        }</span>
+<span id="cb5-19"><a href="#cb5-19"></a>        <span class="co">//  增强for循环</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a>        <span class="kw">for</span> (<span class="bu">Integer</span> integer : set) {</span>
+<span id="cb5-21"><a href="#cb5-21"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(integer );  <span class="co">// 依次输出1， 2， 3，4</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>        }</span>
+<span id="cb5-23"><a href="#cb5-23"></a></span>
+<span id="cb5-24"><a href="#cb5-24"></a>        <span class="co">// 返回对象的hash值</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>        Person p1 = <span class="kw">new</span> <span class="fu">Person</span>();</span>
+<span id="cb5-26"><a href="#cb5-26"></a>        <span class="dt">int</span> hash1 = p1.<span class="fu">hashCode</span>();</span>
+<span id="cb5-27"><a href="#cb5-27"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(hash1);  <span class="co">// 284720968</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a>    }</span>
+<span id="cb5-29"><a href="#cb5-29"></a>}</span></code></pre></div>
+<h4 id="linkedhashset">LinkedHashSet</h4>
+<p>LinkedHashSet是HashSet类的子类</p>
+<p>和HashSet不同的是LinkedHashSet是有顺序的,按照存储的顺序</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">public</span> <span class="kw">class</span> LinkedHashSetDemo {</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a>        <span class="co">// 创建一个HashSet</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>        <span class="bu">HashSet</span>&lt;<span class="bu">String</span>&gt; set = <span class="kw">new</span> <span class="bu">HashSet</span>&lt;&gt;();</span>
+<span id="cb6-6"><a href="#cb6-6"></a>        set.<span class="fu">add</span>(<span class="st">&quot;www&quot;</span>);</span>
+<span id="cb6-7"><a href="#cb6-7"></a>        set.<span class="fu">add</span>(<span class="st">&quot;abc&quot;</span>);</span>
+<span id="cb6-8"><a href="#cb6-8"></a>        set.<span class="fu">add</span>(<span class="st">&quot;abc&quot;</span>);</span>
+<span id="cb6-9"><a href="#cb6-9"></a>        set.<span class="fu">add</span>(<span class="st">&quot;name&quot;</span>);</span>
+<span id="cb6-10"><a href="#cb6-10"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(set);  <span class="co">// [abc, www, name]</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a></span>
+<span id="cb6-12"><a href="#cb6-12"></a>        <span class="co">// 创建一个LinkedHashSet</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>        <span class="bu">HashSet</span>&lt;<span class="bu">String</span>&gt; linked = <span class="kw">new</span> <span class="bu">LinkedHashSet</span>&lt;&gt;();</span>
+<span id="cb6-14"><a href="#cb6-14"></a>        linked.<span class="fu">add</span>(<span class="st">&quot;www&quot;</span>);</span>
+<span id="cb6-15"><a href="#cb6-15"></a>        linked.<span class="fu">add</span>(<span class="st">&quot;abc&quot;</span>);</span>
+<span id="cb6-16"><a href="#cb6-16"></a>        linked.<span class="fu">add</span>(<span class="st">&quot;abc&quot;</span>);</span>
+<span id="cb6-17"><a href="#cb6-17"></a>        linked.<span class="fu">add</span>(<span class="st">&quot;name&quot;</span>);</span>
+<span id="cb6-18"><a href="#cb6-18"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(linked);  <span class="co">// [www, abc, name]</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>    }</span>
+<span id="cb6-20"><a href="#cb6-20"></a>}</span></code></pre></div>
+<h4 id="map">Map</h4>
+<p>Map&lt;K,V&gt;是与Collection完全不同的两个接口，key不允许重复，而value允许重复</p>
+<p>常用方法：</p>
+<ol type="1">
+<li><code>public V put(K key, V value);</code> 把指定的键值对添加到集合中</li>
+<li><code>public V remove(Object key);</code> 把指定的键对应的键值对从集合中删除，返回删除的元素的值</li>
+<li><code>public V get(Object key);</code> 根据指定的键获取对应的值</li>
+<li><code>boolean containsKey(Object key);</code> 判断集合中是否包含指定的键</li>
+<li><code>boolean Set&lt;K&gt; keySet();</code> 获取集合中的所有键，存储到Set集合中</li>
+<li><code>public Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet();</code> 获取map集合中的所有键值对，存储到Set集合中</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">public</span> <span class="kw">class</span> MapDemo {</span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>        <span class="co">// 创建一个map集合</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>        <span class="bu">Map</span>&lt;<span class="bu">String</span>, <span class="bu">String</span>&gt; map = <span class="kw">new</span> <span class="bu">HashMap</span>&lt;&gt;();</span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a>        <span class="co">// 添加键值对</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>        map.<span class="fu">put</span>(<span class="st">&quot;李晨&quot;</span>, <span class="st">&quot;范冰冰&quot;</span>);</span>
+<span id="cb7-9"><a href="#cb7-9"></a>        map.<span class="fu">put</span>(<span class="st">&quot;杨过&quot;</span>, <span class="st">&quot;小龙女&quot;</span>);</span>
+<span id="cb7-10"><a href="#cb7-10"></a>        map.<span class="fu">put</span>(<span class="st">&quot;尹志平&quot;</span>, <span class="st">&quot;小龙女&quot;</span>);</span>
+<span id="cb7-11"><a href="#cb7-11"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(map);  <span class="co">// {杨过=小龙女, 尹志平=小龙女, 李晨=范冰冰}</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a></span>
+<span id="cb7-13"><a href="#cb7-13"></a>        <span class="co">// 根据指定的键删除对应的键值对</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>        <span class="bu">String</span> v1 = map.<span class="fu">remove</span>(<span class="st">&quot;杨过&quot;</span>);</span>
+<span id="cb7-15"><a href="#cb7-15"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(v1);  <span class="co">// 小龙女</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(map);  <span class="co">// {尹志平=小龙女, 李晨=范冰冰}</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a></span>
+<span id="cb7-18"><a href="#cb7-18"></a>        <span class="co">// 根据键获取对应的值</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a>        <span class="bu">String</span> v2 = map.<span class="fu">get</span>(<span class="st">&quot;李晨&quot;</span>);</span>
+<span id="cb7-20"><a href="#cb7-20"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(v2);  <span class="co">// 范冰冰</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a></span>
+<span id="cb7-22"><a href="#cb7-22"></a>        <span class="co">// 判断集合中是否包含指定的键</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>        <span class="dt">boolean</span> v3 = map.<span class="fu">containsKey</span>(<span class="st">&quot;尹志平&quot;</span>);</span>
+<span id="cb7-24"><a href="#cb7-24"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(v3);  <span class="co">// true</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a></span>
+<span id="cb7-26"><a href="#cb7-26"></a>        <span class="co">// 获取集合中所有的键存储到Set集合中</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a>        <span class="bu">Set</span>&lt;<span class="bu">String</span>&gt; str = map.<span class="fu">keySet</span>();</span>
+<span id="cb7-28"><a href="#cb7-28"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str);  <span class="co">// [尹志平, 李晨]</span></span>
+<span id="cb7-29"><a href="#cb7-29"></a></span>
+<span id="cb7-30"><a href="#cb7-30"></a>        <span class="co">// 遍历map</span></span>
+<span id="cb7-31"><a href="#cb7-31"></a>        <span class="kw">for</span>(<span class="bu">String</span> key : map.<span class="fu">keySet</span>()){</span>
+<span id="cb7-32"><a href="#cb7-32"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(map.<span class="fu">get</span>(key));  <span class="co">// 依次输出 小龙女 范冰冰</span></span>
+<span id="cb7-33"><a href="#cb7-33"></a>        }</span>
+<span id="cb7-34"><a href="#cb7-34"></a></span>
+<span id="cb7-35"><a href="#cb7-35"></a>        <span class="co">// 获取所有键值对，存储到集合中</span></span>
+<span id="cb7-36"><a href="#cb7-36"></a>        <span class="bu">Set</span>&lt;<span class="bu">Map</span>.<span class="fu">Entry</span>&lt;<span class="bu">String</span>, <span class="bu">String</span>&gt;&gt; ent = map.<span class="fu">entrySet</span>();</span>
+<span id="cb7-37"><a href="#cb7-37"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(ent);  <span class="co">// [尹志平=小龙女, 李晨=范冰冰]</span></span>
+<span id="cb7-38"><a href="#cb7-38"></a></span>
+<span id="cb7-39"><a href="#cb7-39"></a>        <span class="co">// 上面的entry对象存储在set中，有两个，entry对象可以分别调用getKey和getValue方法</span></span>
+<span id="cb7-40"><a href="#cb7-40"></a>        <span class="bu">Iterator</span>&lt;<span class="bu">Map</span>.<span class="fu">Entry</span>&lt;<span class="bu">String</span>, <span class="bu">String</span>&gt;&gt; it = ent.<span class="fu">iterator</span>();</span>
+<span id="cb7-41"><a href="#cb7-41"></a>        <span class="kw">while</span>(it.<span class="fu">hasNext</span>()){</span>
+<span id="cb7-42"><a href="#cb7-42"></a>            <span class="bu">Map</span>.<span class="fu">Entry</span>&lt;<span class="bu">String</span>, <span class="bu">String</span>&gt; next = it.<span class="fu">next</span>();</span>
+<span id="cb7-43"><a href="#cb7-43"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(next.<span class="fu">getKey</span>() + <span class="st">&quot;:&quot;</span> + next.<span class="fu">getValue</span>());  </span>
+<span id="cb7-44"><a href="#cb7-44"></a>            <span class="co">// 依次输出 尹志平:小龙女 李晨:范冰冰</span></span>
+<span id="cb7-45"><a href="#cb7-45"></a>        }</span>
+<span id="cb7-46"><a href="#cb7-46"></a>    }</span>
+<span id="cb7-47"><a href="#cb7-47"></a>}</span></code></pre></div>
+<h4 id="常用类string">常用类：String</h4>
+<p>特点： 1. 字符串是常量，在创建后不能更改 2. 字符串在效果上面相当于char[]字符数组，但是底层原理是byte[]字节数组 创建字符串的3+1种方式(三种构造方法一种直接创建) 1. <code>public String();</code> 创建一个空白字符串 2. <code>public String(char[] array);</code> 根据字符数组，创建对应的字符串 3. <code>public String(byte[] array);</code> 根据字节数组，创建对应的字符串 6. <code>String str = "hello";</code> 直接创建</p>
+<p>常用方法有：</p>
+<p>一、比较相关方法</p>
+<ol type="1">
+<li><code>public boolean equals(Object obj);</code> 比较两个字符串内容</li>
+<li><code>public boolean equalsIgnoreCase(String str);</code> 忽略大小写，进行内容比较</li>
+</ol>
+<p>二、与获取相关的方法</p>
+<ol type="1">
+<li><code>public int length();</code> 获取字符串中含有的字符个数</li>
+<li><code>public String concat(String str);</code> 将当前字符串和参数字符串进行拼接成为新的字符串</li>
+<li><code>public char charAt(int index);</code> 获取指定索引位置的单个字符</li>
+<li><code>int indexOf(String str);</code> 查找参数字符串在本字符当中首次出现的索引位置，没有返回-1</li>
+</ol>
+<p>三、截取相关的方法</p>
+<ol type="1">
+<li><code>public String substring(int index);</code> 从索引位置一直到字符串结尾，返回新字符串</li>
+<li><code>public String substring(int begin, int end);</code> 截取索引范围内的子串，[begin,end)，包含左边，不包含右边</li>
+</ol>
+<p>四、转换相关的方法</p>
+<ol type="1">
+<li><code>public char[] toCharArray();</code> 将当前字符串拆分为字符数组作为返回值</li>
+<li><code>public byte[] getBytes();</code> 获得当前字符串底层的字节数组</li>
+<li><code>public String replace(CharSequence oldString, CharSequence newString);</code> 将所有oldString替换为newString</li>
+</ol>
+<p>五、分割字符串的方法</p>
+<ol type="1">
+<li><code>public String split(String regex);</code> 按照参数的规则也就是正则表达式规则，将字符串切分为若干部分</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">public</span> <span class="kw">class</span> StringDemo1 {</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a>        <span class="co">// 使用空参构造方法</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>        <span class="bu">String</span> str1 = <span class="kw">new</span> <span class="bu">String</span>();</span>
+<span id="cb8-6"><a href="#cb8-6"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;--&quot;</span> + str1 + <span class="st">&quot;--&quot;</span>);  <span class="co">// ----</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a>        <span class="co">// 根据字符数组，创建字符串</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>        <span class="dt">char</span>[] charArray = {<span class="ch">&#39;A&#39;</span>, <span class="ch">&#39;B&#39;</span>, <span class="ch">&#39;C&#39;</span>};</span>
+<span id="cb8-10"><a href="#cb8-10"></a>        <span class="bu">String</span> str2 = <span class="kw">new</span> <span class="bu">String</span>(charArray);</span>
+<span id="cb8-11"><a href="#cb8-11"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str2);  <span class="co">// ABC</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a>        <span class="co">// 根据字节数组，创建字符串</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>        <span class="dt">byte</span>[] byteArray = {<span class="dv">97</span>, <span class="dv">98</span>, <span class="dv">99</span>};</span>
+<span id="cb8-15"><a href="#cb8-15"></a>        <span class="bu">String</span> str3 = <span class="kw">new</span> <span class="bu">String</span>(byteArray);</span>
+<span id="cb8-16"><a href="#cb8-16"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str3);  <span class="co">// abc</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a></span>
+<span id="cb8-18"><a href="#cb8-18"></a>        <span class="co">// 直接创建</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>        <span class="bu">String</span> str4 = <span class="st">&quot;Hello&quot;</span>;</span>
+<span id="cb8-20"><a href="#cb8-20"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str4);  <span class="co">// Hello</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a></span>
+<span id="cb8-22"><a href="#cb8-22"></a>        <span class="co">/*</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="co">        * 程序当中直接写上双引号字符串，在字符串常量池中，new的不在池中</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a><span class="co">        * 对于基本类型来说，==是进行值的比较</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="co">        * 对于引用类型来说，==是进行地址的比较</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="co">        * equals是对内容进行比较，推荐&quot;xyz&quot;.equals(str),不推荐str.equals(&quot;xyz&quot;)</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="co">        * */</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>        <span class="bu">String</span> str5 = <span class="st">&quot;xyz&quot;</span>;</span>
+<span id="cb8-29"><a href="#cb8-29"></a>        <span class="bu">String</span> str6 = <span class="st">&quot;xyz&quot;</span>;</span>
+<span id="cb8-30"><a href="#cb8-30"></a>        <span class="dt">char</span>[] chars = {<span class="ch">&#39;x&#39;</span>,<span class="ch">&#39;y&#39;</span>,<span class="ch">&#39;z&#39;</span>};</span>
+<span id="cb8-31"><a href="#cb8-31"></a>        <span class="bu">String</span> str7 = <span class="kw">new</span> <span class="bu">String</span>(chars);</span>
+<span id="cb8-32"><a href="#cb8-32"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str5 == str6);  <span class="co">// true</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str5 == str7);  <span class="co">// false</span></span>
+<span id="cb8-34"><a href="#cb8-34"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str6 == str7);  <span class="co">// false</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str5.<span class="fu">equals</span>(str6));  <span class="co">// true</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str5.<span class="fu">equals</span>(str7));  <span class="co">// true</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str6.<span class="fu">equals</span>(str7));  <span class="co">// true</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str7.<span class="fu">equals</span>(<span class="st">&quot;xyz&quot;</span>));  <span class="co">// true</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;xyz&quot;</span>.<span class="fu">equals</span>(str7));  <span class="co">// true</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;XYZ&quot;</span>.<span class="fu">equals</span>(str7));  <span class="co">// false</span></span>
+<span id="cb8-41"><a href="#cb8-41"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;XYZ&quot;</span>.<span class="fu">equalsIgnoreCase</span>(str7));  <span class="co">// true</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a></span>
+<span id="cb8-43"><a href="#cb8-43"></a>        <span class="co">// 获取字符串的长度</span></span>
+<span id="cb8-44"><a href="#cb8-44"></a>        <span class="dt">int</span> len = str7.<span class="fu">length</span>();</span>
+<span id="cb8-45"><a href="#cb8-45"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(len);  <span class="co">// 3</span></span>
+<span id="cb8-46"><a href="#cb8-46"></a></span>
+<span id="cb8-47"><a href="#cb8-47"></a>        <span class="co">// 拼接字符串</span></span>
+<span id="cb8-48"><a href="#cb8-48"></a>        <span class="bu">String</span> str8 = str4.<span class="fu">concat</span>(str7);</span>
+<span id="cb8-49"><a href="#cb8-49"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str4);  <span class="co">// Hello</span></span>
+<span id="cb8-50"><a href="#cb8-50"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str7);  <span class="co">// xyz</span></span>
+<span id="cb8-51"><a href="#cb8-51"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str8);  <span class="co">// Helloxyz</span></span>
+<span id="cb8-52"><a href="#cb8-52"></a></span>
+<span id="cb8-53"><a href="#cb8-53"></a>        <span class="co">// 获取指定索引位置的字符</span></span>
+<span id="cb8-54"><a href="#cb8-54"></a>        <span class="dt">char</span> ch = str8.<span class="fu">charAt</span>(<span class="dv">1</span>);</span>
+<span id="cb8-55"><a href="#cb8-55"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(ch);  <span class="co">// e</span></span>
+<span id="cb8-56"><a href="#cb8-56"></a></span>
+<span id="cb8-57"><a href="#cb8-57"></a>        <span class="co">// 查找参数字符串在原来字符串中第一次出现的位置</span></span>
+<span id="cb8-58"><a href="#cb8-58"></a>        <span class="bu">String</span> str9 = <span class="st">&quot;really&quot;</span>;</span>
+<span id="cb8-59"><a href="#cb8-59"></a>        <span class="dt">int</span> pos1 = <span class="st">&quot;i really really love you&quot;</span>.<span class="fu">indexOf</span>(str9);</span>
+<span id="cb8-60"><a href="#cb8-60"></a>        <span class="dt">int</span> pos2 = <span class="st">&quot;me&quot;</span>.<span class="fu">indexOf</span>(str9);</span>
+<span id="cb8-61"><a href="#cb8-61"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(pos1);  <span class="co">// 2</span></span>
+<span id="cb8-62"><a href="#cb8-62"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(pos2);  <span class="co">// -1</span></span>
+<span id="cb8-63"><a href="#cb8-63"></a></span>
+<span id="cb8-64"><a href="#cb8-64"></a>        <span class="co">// 截取子串</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a>        <span class="bu">String</span> str10 = str9.<span class="fu">substring</span>(<span class="dv">2</span>);</span>
+<span id="cb8-66"><a href="#cb8-66"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str10);  <span class="co">// ally</span></span>
+<span id="cb8-67"><a href="#cb8-67"></a>        <span class="bu">String</span> str11 = str9.<span class="fu">substring</span>(<span class="dv">2</span>,<span class="dv">4</span>);</span>
+<span id="cb8-68"><a href="#cb8-68"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str11);  <span class="co">// al</span></span>
+<span id="cb8-69"><a href="#cb8-69"></a></span>
+<span id="cb8-70"><a href="#cb8-70"></a>        <span class="co">// 将字符串拆分为字符数组</span></span>
+<span id="cb8-71"><a href="#cb8-71"></a>        <span class="dt">char</span>[] chararrs = str9.<span class="fu">toCharArray</span>();</span>
+<span id="cb8-72"><a href="#cb8-72"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(chararrs[<span class="dv">0</span>]);  <span class="co">// r</span></span>
+<span id="cb8-73"><a href="#cb8-73"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(chararrs.<span class="fu">length</span>);  <span class="co">// 6</span></span>
+<span id="cb8-74"><a href="#cb8-74"></a></span>
+<span id="cb8-75"><a href="#cb8-75"></a>        <span class="co">// 将字符串转换为字节数组</span></span>
+<span id="cb8-76"><a href="#cb8-76"></a>        <span class="dt">byte</span>[] bytes = str9.<span class="fu">getBytes</span>();</span>
+<span id="cb8-77"><a href="#cb8-77"></a>        <span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; bytes.<span class="fu">length</span>; i++) {</span>
+<span id="cb8-78"><a href="#cb8-78"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">print</span>(bytes[i] + <span class="st">&quot;,&quot;</span>);  <span class="co">// 114,101,97,108,108,121,</span></span>
+<span id="cb8-79"><a href="#cb8-79"></a>        }</span>
+<span id="cb8-80"><a href="#cb8-80"></a></span>
+<span id="cb8-81"><a href="#cb8-81"></a>        <span class="co">// 用新字符子串替换指定的字符子串</span></span>
+<span id="cb8-82"><a href="#cb8-82"></a>        <span class="bu">String</span> str12 = str9.<span class="fu">replace</span>(<span class="ch">&#39;l&#39;</span>, <span class="ch">&#39;o&#39;</span>);</span>
+<span id="cb8-83"><a href="#cb8-83"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(str12);  <span class="co">// reaooy</span></span>
+<span id="cb8-84"><a href="#cb8-84"></a></span>
+<span id="cb8-85"><a href="#cb8-85"></a>        <span class="co">// 按照正则表达式规则切割字符串</span></span>
+<span id="cb8-86"><a href="#cb8-86"></a>        <span class="bu">String</span> str13 = <span class="st">&quot;Hello,my,friend&quot;</span>;</span>
+<span id="cb8-87"><a href="#cb8-87"></a>        <span class="bu">String</span>[] array = str13.<span class="fu">split</span>(<span class="st">&quot;,&quot;</span>);</span>
+<span id="cb8-88"><a href="#cb8-88"></a>        <span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; array.<span class="fu">length</span>; i++) {</span>
+<span id="cb8-89"><a href="#cb8-89"></a>            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(array[i]);  <span class="co">// 依次返回 Hello my friend</span></span>
+<span id="cb8-90"><a href="#cb8-90"></a>        }</span>
+<span id="cb8-91"><a href="#cb8-91"></a>    }</span>
+<span id="cb8-92"><a href="#cb8-92"></a>}</span></code></pre></div>
+<h4 id="常用类string-builder">常用类：String Builder</h4>
+<p>字符串缓冲区，可以看成是一个长度可以变化的字符串，底层是一个数组，但是和String不一样，没有被final修饰，初始时16个byte,超出容量就容量翻倍。</p>
+<p>构造方法：</p>
+<ol type="1">
+<li><code>StringBuilder();</code> 空参构造方法</li>
+<li><code>StringBuilder(String str);</code> 初始化为指定字符串内容</li>
+</ol>
+<p>成员方法：</p>
+<ol type="1">
+<li><code>public StringBuilder append();</code> 加入任意类型数据</li>
+<li><code>public String toString();</code> 变为String类型字符串</li>
+</ol>
+<p>StringBuilder可以和String相互转化：</p>
+<ol type="1">
+<li>String --&gt; StringBuilder: 使用StringBuilder的带参构造方法</li>
+<li>StringBuilder --&gt; String: 使用StringBuilder的toString方法</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">public</span> <span class="kw">class</span> StringBuilderDemo {</span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a>        <span class="co">// 空参构造方法</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>        <span class="bu">StringBuilder</span> bu1 = <span class="kw">new</span> <span class="bu">StringBuilder</span>();</span>
+<span id="cb9-6"><a href="#cb9-6"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(bu1);  <span class="co">//</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a>        <span class="co">// 带字符串的有参构造方法</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>        <span class="bu">StringBuilder</span> bu2 = <span class="kw">new</span> <span class="bu">StringBuilder</span>(<span class="st">&quot;abc&quot;</span>);</span>
+<span id="cb9-10"><a href="#cb9-10"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(bu2);  <span class="co">// abc</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a>        <span class="co">// 加入任意类型的数据</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>        bu2.<span class="fu">append</span>(<span class="dv">1</span>);</span>
+<span id="cb9-14"><a href="#cb9-14"></a>        bu2.<span class="fu">append</span>(<span class="fl">1.</span><span class="dv">2</span>);</span>
+<span id="cb9-15"><a href="#cb9-15"></a>        bu2.<span class="fu">append</span>(<span class="kw">true</span>);</span>
+<span id="cb9-16"><a href="#cb9-16"></a>        bu2.<span class="fu">append</span>(<span class="ch">&#39;g&#39;</span>);</span>
+<span id="cb9-17"><a href="#cb9-17"></a>        bu2.<span class="fu">append</span>(<span class="st">&quot;love&quot;</span>);</span>
+<span id="cb9-18"><a href="#cb9-18"></a>        bu2.<span class="fu">append</span>(<span class="st">&quot;中&quot;</span>).<span class="fu">append</span>(<span class="st">&quot;国&quot;</span>);</span>
+<span id="cb9-19"><a href="#cb9-19"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(bu2);  <span class="co">// abc11.2trueglove中国</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a></span>
+<span id="cb9-21"><a href="#cb9-21"></a>        <span class="bu">String</span> s = bu2.<span class="fu">toString</span>();</span>
+<span id="cb9-22"><a href="#cb9-22"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(s);  <span class="co">// abc11.2trueglove中国</span></span>
+<span id="cb9-23"><a href="#cb9-23"></a>    }</span>
+<span id="cb9-24"><a href="#cb9-24"></a>}</span></code></pre></div>
+<h4 id="工具类collections">工具类：Collections</h4>
+<p>Collections是集合工具类，用于操作集合</p>
+<p>常用方法：</p>
+<ol type="1">
+<li><code>public static &lt;T&gt; boolean addAll(Collection&lt;T&gt; c, T...elements)</code> 往集合中添加一些元素</li>
+<li><code>public static void shuffle(List&lt;?&gt; list)</code> 打乱顺序</li>
+<li><code>public static &lt;T&gt; void sort(List&lt;T&gt; list)</code> 将集合中元素按照默认规则排序</li>
+<li><code>public static &lt;T&gt; void sort(List&lt;T&gt; list, Comparator&lt;? super T&gt;)</code> 将集合中元素按照指定规则排序</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">public</span> <span class="kw">class</span> CollectionsDemo {</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb10-3"><a href="#cb10-3"></a>        <span class="bu">ArrayList</span>&lt;<span class="bu">String</span>&gt; list = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;&gt;();</span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a>        <span class="co">// 在集合中一次性添加多个元素</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>        <span class="bu">Collections</span>.<span class="fu">addAll</span>(list, <span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>);</span>
+<span id="cb10-7"><a href="#cb10-7"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [a, b, c, d]</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a>        <span class="co">// 打乱集合中的元素顺序</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>        <span class="bu">Collections</span>.<span class="fu">shuffle</span>(list);</span>
+<span id="cb10-11"><a href="#cb10-11"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [b, d, a, c] 每次输出都不一样</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a>        <span class="co">// 将集合中的元素按照默认的规则排序</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>        <span class="bu">Collections</span>.<span class="fu">sort</span>(list);</span>
+<span id="cb10-15"><a href="#cb10-15"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [a, b, c, d]</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a></span>
+<span id="cb10-17"><a href="#cb10-17"></a>        <span class="co">// 无法对person类对象进行排序</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>        <span class="bu">ArrayList</span>&lt;Person&gt; list2 = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;&gt;();</span>
+<span id="cb10-19"><a href="#cb10-19"></a>        list2.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Person</span>(<span class="st">&quot;张三&quot;</span>, <span class="dv">18</span>));</span>
+<span id="cb10-20"><a href="#cb10-20"></a>        list2.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Person</span>(<span class="st">&quot;李四&quot;</span>, <span class="dv">20</span>));</span>
+<span id="cb10-21"><a href="#cb10-21"></a>        list2.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Person</span>(<span class="st">&quot;王五&quot;</span>, <span class="dv">19</span>));</span>
+<span id="cb10-22"><a href="#cb10-22"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list2);  </span>
+<span id="cb10-23"><a href="#cb10-23"></a>        <span class="co">// [Person{name=&#39;张三&#39;, age=18}, Person{name=&#39;李四&#39;,                                    //  age=20}, Person{name=&#39;王五&#39;, age=19}]</span></span>
+<span id="cb10-24"><a href="#cb10-24"></a>        </span>
+<span id="cb10-25"><a href="#cb10-25"></a>        <span class="co">// 此时使用Collections.sort(list2);报错</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a></span>
+<span id="cb10-27"><a href="#cb10-27"></a>        <span class="co">// 在Person类中重写compareTo方法后可以按照自己定义的规则排序， 即按照年龄升序排序</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a>        <span class="co">// 重写排序规则，按照年龄升序排序</span></span>
+<span id="cb10-29"><a href="#cb10-29"></a>        <span class="co">//  @Override</span></span>
+<span id="cb10-30"><a href="#cb10-30"></a>        <span class="co">//  public int compareTo(Person o) {</span></span>
+<span id="cb10-31"><a href="#cb10-31"></a>        <span class="co">//      return this.getAge() - o.getAge();</span></span>
+<span id="cb10-32"><a href="#cb10-32"></a>        <span class="co">//  }</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a>        <span class="bu">Collections</span>.<span class="fu">sort</span>(list2);</span>
+<span id="cb10-34"><a href="#cb10-34"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list2);  </span>
+<span id="cb10-35"><a href="#cb10-35"></a>        <span class="co">// [Person{name=&#39;张三&#39;, age=18}, Person{name=&#39;王五&#39;,</span></span>
+<span id="cb10-36"><a href="#cb10-36"></a>        <span class="co">// age=19}, Person{name=&#39;李四&#39;, age=20}]</span></span>
+<span id="cb10-37"><a href="#cb10-37"></a></span>
+<span id="cb10-38"><a href="#cb10-38"></a>        <span class="co">// 利用接口comparator重写规则,匿名内部类的方式</span></span>
+<span id="cb10-39"><a href="#cb10-39"></a>        <span class="bu">Collections</span>.<span class="fu">sort</span>(list, <span class="kw">new</span> <span class="bu">Comparator</span>&lt;<span class="bu">String</span>&gt;() {</span>
+<span id="cb10-40"><a href="#cb10-40"></a>            <span class="at">@Override</span></span>
+<span id="cb10-41"><a href="#cb10-41"></a>            <span class="kw">public</span> <span class="dt">int</span> <span class="fu">compare</span>(<span class="bu">String</span> o1, <span class="bu">String</span> o2) {</span>
+<span id="cb10-42"><a href="#cb10-42"></a>                <span class="kw">return</span> o2.<span class="fu">charAt</span>(<span class="dv">0</span>) - o1.<span class="fu">charAt</span>(<span class="dv">0</span>);</span>
+<span id="cb10-43"><a href="#cb10-43"></a>            }</span>
+<span id="cb10-44"><a href="#cb10-44"></a>        });</span>
+<span id="cb10-45"><a href="#cb10-45"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(list);  <span class="co">// [d, c, b, a]</span></span>
+<span id="cb10-46"><a href="#cb10-46"></a>    }</span>
+<span id="cb10-47"><a href="#cb10-47"></a>}</span></code></pre></div>
+<h4 id="工具类arrays">工具类：Arrays</h4>
+<p>java.util.Arrays是一个与数组相关的工具类</p>
+<p><code>public static String toString(数组);</code> 将参数数组转化为字符串</p>
+<p><code>public static void sort(数组);</code> 按照默认升序排序</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">public</span> <span class="kw">class</span> ArraysDemo {</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a>        <span class="co">// 将int数组按照默认格式转化为字符串</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>        <span class="dt">int</span>[] intArray = {<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>};</span>
+<span id="cb11-6"><a href="#cb11-6"></a>        <span class="bu">String</span> inStr = <span class="bu">Arrays</span>.<span class="fu">toString</span>(intArray);</span>
+<span id="cb11-7"><a href="#cb11-7"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(inStr);  <span class="co">// [10, 20, 30]</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a></span>
+<span id="cb11-9"><a href="#cb11-9"></a>        <span class="co">// 将数组按照默认升序排序</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>        <span class="dt">int</span>[] array1 = {<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">3</span>};</span>
+<span id="cb11-11"><a href="#cb11-11"></a>        <span class="bu">Arrays</span>.<span class="fu">sort</span>(array1);</span>
+<span id="cb11-12"><a href="#cb11-12"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Arrays</span>.<span class="fu">toString</span>(array1));  <span class="co">// [1, 2, 3, 4, 5, 6]</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>    }</span>
+<span id="cb11-14"><a href="#cb11-14"></a>}</span></code></pre></div>
+<h4 id="工具类math">工具类：Math</h4>
+<p>java.lang.Math是数学相关的工具类</p>
+<ol type="1">
+<li><p><code>public static double abs(double num);</code> 获取绝对值</p></li>
+<li><p><code>public static double ceil(double num);</code> 向上取整</p></li>
+<li><p><code>public static double floor(double num);</code> 向下取整</p></li>
+<li><p><code>public static Long round(double num);</code> 四舍五入</p></li>
+<li><p><code>Math.PI</code> 代表圆周率</p></li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">public</span> <span class="kw">class</span> MathDemo {</span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a>        <span class="co">// 获取绝对值</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">abs</span>(<span class="fl">3.</span><span class="dv">14</span>));  <span class="co">// 3.14</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">abs</span>(<span class="dv">0</span>));  <span class="co">// 0</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">abs</span>(-<span class="fl">2.</span><span class="dv">5</span>));  <span class="co">// 2.5</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a></span>
+<span id="cb12-9"><a href="#cb12-9"></a>        <span class="co">// 向上取整</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">ceil</span>(<span class="fl">3.</span><span class="dv">9</span>));  <span class="co">// 4.0</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">ceil</span>(<span class="fl">3.</span><span class="dv">1</span>));  <span class="co">// 4.0</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">ceil</span>(<span class="fl">3.</span><span class="dv">0</span>));  <span class="co">// 3.0</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a></span>
+<span id="cb12-14"><a href="#cb12-14"></a>        <span class="co">// 向下取整</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">floor</span>(<span class="fl">3.</span><span class="dv">9</span>));  <span class="co">// 3.0</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">floor</span>(<span class="fl">3.</span><span class="dv">1</span>));  <span class="co">// 3.0</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">floor</span>(<span class="fl">3.</span><span class="dv">0</span>));  <span class="co">// 3.0</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a></span>
+<span id="cb12-19"><a href="#cb12-19"></a>        <span class="co">// 四舍五入</span></span>
+<span id="cb12-20"><a href="#cb12-20"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">round</span>(<span class="fl">3.</span><span class="dv">9</span>));  <span class="co">// 4.0</span></span>
+<span id="cb12-21"><a href="#cb12-21"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">round</span>(<span class="fl">3.</span><span class="dv">1</span>));  <span class="co">// 3.0</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a>        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="bu">Math</span>.<span class="fu">round</span>(<span class="fl">3.</span><span class="dv">0</span>));  <span class="co">// 3.0</span></span>
+<span id="cb12-23"><a href="#cb12-23"></a>    }</span>
+<span id="cb12-24"><a href="#cb12-24"></a>}</span></code></pre></div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -1008,101 +1679,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
-      <meta itemprop="name" content="YY">
-      <meta itemprop="description" content="努力充实自己！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YY's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">PAMR------论文阅读笔记</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-27 17:30:00" itemprop="dateCreated datePublished" datetime="2020-03-27T17:30:00+08:00">2020-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-29 12:17:36" itemprop="dateModified" datetime="2020-04-29T12:17:36+08:00">2020-04-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          YY'blog
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/27/PAMR------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1175,7 +1751,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1188,7 +1764,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
