@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Y.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Y.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":240,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="反射 Java代码在计算机中经历的三个阶段">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反射">
+<meta property="og:url" content="http://yy-oops.github.io/2020/07/26/%E5%8F%8D%E5%B0%84/index.html">
+<meta property="og:site_name" content="YY&#39;s blog">
+<meta property="og:description" content="反射 Java代码在计算机中经历的三个阶段">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200726220529.png">
+<meta property="article:published_time" content="2020-07-26T14:50:00.000Z">
+<meta property="article:modified_time" content="2020-07-27T02:43:33.485Z">
+<meta property="article:author" content="YY">
+<meta property="article:tag" content="Java高级">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200726220529.png">
+
+<link rel="canonical" href="http://yy-oops.github.io/2020/07/26/%E5%8F%8D%E5%B0%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>反射 | YY's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YY's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">To be a better man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">31</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/07/26/%E5%8F%8D%E5%B0%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
+      <meta itemprop="name" content="YY">
+      <meta itemprop="description" content="努力充实自己！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YY's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          反射
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-26 22:50:00" itemprop="dateCreated datePublished" datetime="2020-07-26T22:50:00+08:00">2020-07-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-27 10:43:33" itemprop="dateModified" datetime="2020-07-27T10:43:33+08:00">2020-07-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">学习总结</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="反射">反射</h3>
+<p>Java代码在计算机中经历的三个阶段<a id="more"></a></p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200726220529.png" /></p>
+<h4 id="获取class对象的三种方式">获取Class对象的三种方式</h4>
+<ol type="1">
+<li><p><code>Class.forName("全类名")</code>：将字节码文件加载进内存，返回Class对象</p>
+<p>多用于配置文件，将全类名定义在配置文件中，读取配置文件，加载类</p></li>
+<li><p><code>类名.class</code>: 通过类名的属性class获取</p>
+<p>多用于参数的传递</p></li>
+<li><p><code>对象.getClass()</code>: 通过对象中定义的方法获取其Class对象</p>
+<p>用于对已知对象获取字节码</p></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 使用forName()</span></span><br><span class="line">        Class cls1 = Class.forName(<span class="string">"cn.day726.domain.Person"</span>);</span><br><span class="line">        System.out.println(cls1);  <span class="comment">// 返回class cn.day726.domain.Person</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用类名.class</span></span><br><span class="line">        Class cls2 = Person<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">        System.out.println(cls2);  <span class="comment">// 返回class cn.day726.domain.Person</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用对象.getClass()</span></span><br><span class="line">        Person person = <span class="keyword">new</span> Person();</span><br><span class="line">        Class cls3 = person.getClass();</span><br><span class="line">        System.out.println(cls3);  <span class="comment">// 返回class cn.day726.domain.Person</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 比较三个对象是否是同一个对象</span></span><br><span class="line">        System.out.println(cls1 == cls2);  <span class="comment">// 返回true</span></span><br><span class="line">        System.out.println(cls2 == cls3);  <span class="comment">// 返回true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>重点</strong>：同一个字节码文件在一次程序运行过程中，只会被加载一次，不论什么方式获取的Class对象都是同一个</p>
+<h4 id="例子person类">例子：Person类</h4>
+<p>接下来的反射知识以例子方式阐述，这里先放出Person类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String a;</span><br><span class="line">    <span class="keyword">protected</span> String b;</span><br><span class="line">    String c;</span><br><span class="line">    <span class="keyword">private</span> String d;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Person&#123;"</span> +</span><br><span class="line">                <span class="string">"name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", age="</span> + age +</span><br><span class="line">                <span class="string">", a='"</span> + a + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", b='"</span> + b + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", c='"</span> + c + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", d='"</span> + d + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"eat...."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">(String food)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"eat "</span> + food);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="获取对象的成员变量们">获取对象的成员变量们</h4>
+<ol type="1">
+<li><p><code>Field[] getFields()</code> 获取所有public修饰的成员变量</p></li>
+<li><p><code>Field getField(String name)</code> 获取指定名称public修饰的成员变量</p></li>
+<li><p><code>Field[] getDeclaredFields()</code> 获取所有的成员变量(需要通过暴力反射获取任意权限修饰符修饰的成员变量)</p></li>
+<li><p><code>Field getDeclaredField(String name)</code> 获取指定名称的成员变量(需要通过暴力反射获取任意权限修饰符修饰的成员变量)</p></li>
+<li><p><code>Object get(Object object)</code> 通过获取的成员变量获取成员变量的值</p></li>
+<li><p><code>set(Object obj, Object value)</code> 通过获取的成员变量设置成员变量的值</p></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 获取对象的成员变量们</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectDemo1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 使用 Class 对象名.class 获取Person的Class对象</span></span><br><span class="line">        Class personClass = Person<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Field[] getFields() 获取所有public修饰的成员变量</span></span><br><span class="line">        Field[] fields = personClass.getFields();</span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">            System.out.println(field);  <span class="comment">// 返回public java.lang.String cn.day726.domain.Person.a</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Field getField(String name) 获取指定名称public修饰的成员变量</span></span><br><span class="line">        Field a = personClass.getField(<span class="string">"a"</span>);</span><br><span class="line">        <span class="comment">// 使用 Object get(Object object) 获取成员变量a的值</span></span><br><span class="line">        Person person = <span class="keyword">new</span> Person();</span><br><span class="line">        Object value = a.get(person);</span><br><span class="line">        System.out.println(value);  <span class="comment">// 返回null</span></span><br><span class="line">        <span class="comment">// 使用 set(Object obj, Object value) 设置成员变量a的值</span></span><br><span class="line">        a.set(person, <span class="string">"张三"</span>);</span><br><span class="line">        System.out.println(person);  <span class="comment">// 返回Person&#123;name='null', age=0, a='张三', b='null', c='null', d='null'&#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Field[] getDeclaredFields() 获取所有的成员变量</span></span><br><span class="line">        Field[] declaredFields = personClass.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span> (Field declaredField : declaredFields) &#123;</span><br><span class="line">            System.out.println(declaredField);</span><br><span class="line">            <span class="comment">// 返回值如下</span></span><br><span class="line">            <span class="comment">// private java.lang.String cn.day726.domain.Person.name</span></span><br><span class="line">            <span class="comment">// private int cn.day726.domain.Person.age</span></span><br><span class="line">            <span class="comment">// public java.lang.String cn.day726.domain.Person.a</span></span><br><span class="line">            <span class="comment">// protected java.lang.String cn.day726.domain.Person.b</span></span><br><span class="line">            <span class="comment">// java.lang.String cn.day726.domain.Person.c</span></span><br><span class="line">            <span class="comment">// private java.lang.String cn.day726.domain.Person.d</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Field getDeclaredField(String name) 获取指定名称的成员变量</span></span><br><span class="line">        Field d = personClass.getDeclaredField(<span class="string">"d"</span>);</span><br><span class="line">        <span class="comment">// 忽略访问权限修饰符的安全检查</span></span><br><span class="line">        <span class="comment">// 也称暴力反射，不加下面这一行会报错IllegalAccessException</span></span><br><span class="line">        d.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object value2 = d.get(person);</span><br><span class="line">        System.out.println(value2);  <span class="comment">// 返回null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="获取对象的构造方法们">获取对象的构造方法们</h4>
+<ol type="1">
+<li><p><code>Constructor&lt;T&gt; getConstructor(Class&lt;?&gt;... parameterTypes)</code> 获取对象的有参构造方法</p></li>
+<li><p><code>Constructor&lt;?&gt;[] getConstructors()</code> 获取对象的所有构造方法</p></li>
+<li><p><code>Constructor&lt;?&gt;[] getDeclaredConstructor()</code>功能和获取成员变量的方法3类似，后面不再赘述</p></li>
+<li><p><code>Constructor&lt;T&gt; getDeclaredConstructor(Class&lt;?&gt;... parameterTypes)</code>功能和获取成员变量的方法4类似，后面不再赘述</p></li>
+<li><p><code>newInstance()</code> 使用获取的构造器方法创建对象</p></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 获取对象的构造方法们</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 使用 Class 对象名.class 获取Person的Class对象</span></span><br><span class="line">        Class personClass = Person<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Constructor&lt;T&gt; getConstructor(Class&lt;?&gt;... parameterTypes) 获取对象的有参构造方法</span></span><br><span class="line">        Constructor constructor1 = personClass.getConstructor(String<span class="class">.<span class="keyword">class</span>, <span class="title">int</span>.<span class="title">class</span>)</span>;</span><br><span class="line">        System.out.println(constructor1);  <span class="comment">// 返回public cn.day726.domain.Person(java.lang.String,int)</span></span><br><span class="line">        <span class="comment">// 使用 newInstance() 创建对象</span></span><br><span class="line">        Object person1 = constructor1.newInstance(<span class="string">"张三"</span>, <span class="number">23</span>);</span><br><span class="line">        System.out.println(person1);  <span class="comment">// 返回Person&#123;name='张三', age=23, a='null', b='null', c='null', d='null'&#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Constructor&lt;T&gt; getConstructor(Class&lt;?&gt;... parameterTypes) 获取对象的无参构造方法</span></span><br><span class="line">        Constructor constructor2 = personClass.getConstructor();</span><br><span class="line">        System.out.println(constructor2);</span><br><span class="line">        <span class="comment">// 使用 newInstance() 创建对象</span></span><br><span class="line">        Object person2 = constructor2.newInstance();</span><br><span class="line">        System.out.println(person2);  <span class="comment">// 返回Person&#123;name='null', age=0, a='null', b='null', c='null', d='null'&#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 还有一种简化方法直接用空参构造器创建类的实例对象（该方法以过时）</span></span><br><span class="line">        Object o = personClass.newInstance();</span><br><span class="line">        System.out.println(o);  <span class="comment">// 返回Person&#123;name='null', age=0, a='null', b='null', c='null', d='null'&#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Constructor&lt;?&gt;[] getConstructors() 获取对象的所有构造方法</span></span><br><span class="line">        Constructor[] constructors = personClass.getConstructors();</span><br><span class="line">        <span class="keyword">for</span> (Constructor constructor : constructors) &#123;</span><br><span class="line">            System.out.println(constructor);</span><br><span class="line">            <span class="comment">// 返回值如下</span></span><br><span class="line">            <span class="comment">// public cn.day726.domain.Person()</span></span><br><span class="line">            <span class="comment">// public cn.day726.domain.Person(java.lang.String,int)</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Constructor&lt;T&gt; getDeclaredConstructor(Class&lt;?&gt;... parameterTypes)</span></span><br><span class="line">        <span class="comment">// 略</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Constructor&lt;?&gt;[] getDeclaredConstructor()</span></span><br><span class="line">        <span class="comment">// 略</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="获取对象的成员方法们">获取对象的成员方法们</h4>
+<ol type="1">
+<li><p><code>Method getMethod(String name, Class&lt;?&gt;... parameterTypes)</code> 获取对象的指定名称的无参数方法</p></li>
+<li><p><code>Method[] getMethods()</code> 获取所有public修饰的方法</p></li>
+<li><p><code>Method[] getDeclaredMethods()</code></p></li>
+<li><p><code>Method[] getDeclaredMethod(String name, Class&lt;?&gt;... parameterTypes)</code></p></li>
+<li><p><code>invoke(Object object)</code> 通过获取的成员方法执行对象的方法</p></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 获取对象的成员方法们</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectDemo3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 使用 Class 对象名.class 获取Person的Class对象</span></span><br><span class="line">        Class personClass = Person<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 String getName() 获取全类名</span></span><br><span class="line">        String className = personClass.getName();</span><br><span class="line">        System.out.println(className);  <span class="comment">// 返回cn.day726.domain.Person</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Method getMethod(String name, Class&lt;?&gt;... parameterTypes) 获取对象的指定名称的无参数方法</span></span><br><span class="line">        Method eat_method1 = personClass.getMethod(<span class="string">"eat"</span>);</span><br><span class="line">        Person person = <span class="keyword">new</span> Person();</span><br><span class="line">        <span class="comment">// 使用 invoke(Object object) 方法执行对象的方法</span></span><br><span class="line">        eat_method1.invoke(person);  <span class="comment">// 返回eat....</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Method getMethod(String name, Class&lt;?&gt;... parameterTypes) 获取对象的指定名称的有参数方法</span></span><br><span class="line">        Method eat_method2 = personClass.getMethod(<span class="string">"eat"</span>, String<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        eat_method2.invoke(person,<span class="string">"apple"</span>);  <span class="comment">// 返回eat apple</span></span><br><span class="line">        <span class="comment">// 使用 String getName() 获取方法名称</span></span><br><span class="line">        String name = eat_method2.getName();</span><br><span class="line">        System.out.println(name);  <span class="comment">// 返回eat</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Method[] getMethods() 获取所有public修饰的方法</span></span><br><span class="line">        Method[] methods = personClass.getMethods();</span><br><span class="line">        <span class="keyword">for</span> (Method method : methods) &#123;</span><br><span class="line">            System.out.println(method);</span><br><span class="line">            <span class="comment">// 不仅会返回Person类中的方法还会返回其直接继承的父类Object中的方法</span></span><br><span class="line">            <span class="comment">// 返回值如下</span></span><br><span class="line">            <span class="comment">// public java.lang.String cn.day726.domain.Person.getName()</span></span><br><span class="line">            <span class="comment">// public java.lang.String cn.day726.domain.Person.toString()</span></span><br><span class="line">            <span class="comment">// public void cn.day726.domain.Person.setName(java.lang.String)</span></span><br><span class="line">            <span class="comment">// public void cn.day726.domain.Person.eat()</span></span><br><span class="line">            <span class="comment">// public void cn.day726.domain.Person.eat(java.lang.String)</span></span><br><span class="line">            <span class="comment">// public void cn.day726.domain.Person.setAge(int)</span></span><br><span class="line">            <span class="comment">// public int cn.day726.domain.Person.getAge()</span></span><br><span class="line">            <span class="comment">// public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException</span></span><br><span class="line">            <span class="comment">// public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException</span></span><br><span class="line">            <span class="comment">// public final void java.lang.Object.wait() throws java.lang.InterruptedException</span></span><br><span class="line">            <span class="comment">// public boolean java.lang.Object.equals(java.lang.Object)</span></span><br><span class="line">            <span class="comment">// public native int java.lang.Object.hashCode()</span></span><br><span class="line">            <span class="comment">// public final native java.lang.Class java.lang.Object.getClass()</span></span><br><span class="line">            <span class="comment">// public final native void java.lang.Object.notify()</span></span><br><span class="line">            <span class="comment">// public final native void java.lang.Object.notifyAll()</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Method[] getDeclaredMethods()</span></span><br><span class="line">        <span class="comment">// 略</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Method[] getDeclaredMethod(String name, Class&lt;?&gt;... parameterTypes)</span></span><br><span class="line">        <span class="comment">// 略</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E9%AB%98%E7%BA%A7/" rel="tag"># Java高级</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/19/Java%E9%9B%86%E5%90%88%E6%80%BB%E7%BB%93/" rel="prev" title="Java集合总结">
+      <i class="fa fa-chevron-left"></i> Java集合总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#反射"><span class="nav-number">1.</span> <span class="nav-text">反射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取class对象的三种方式"><span class="nav-number">1.1.</span> <span class="nav-text">获取Class对象的三种方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子person类"><span class="nav-number">1.2.</span> <span class="nav-text">例子：Person类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取对象的成员变量们"><span class="nav-number">1.3.</span> <span class="nav-text">获取对象的成员变量们</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取对象的构造方法们"><span class="nav-number">1.4.</span> <span class="nav-text">获取对象的构造方法们</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取对象的成员方法们"><span class="nav-number">1.5.</span> <span class="nav-text">获取对象的成员方法们</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YY"
+      src="/images/%E5%A4%B4%E5%83%8F.jpg">
+  <p class="site-author-name" itemprop="name">YY</p>
+  <div class="site-description" itemprop="description">努力充实自己！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YY-oops" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YY-oops" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-46-66-5" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-46-66-5" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>ZhiHu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YY</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+<link rel="stylesheet" href="/lib/prettify/skins/github.css" type="text/css">
+<script src="/lib/prettify/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+      prettyPrint();
+  });
+</script>
+
+</body>
+</html>

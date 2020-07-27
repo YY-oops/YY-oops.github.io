@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":240,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="JavaScript基础 五种变量类型：number, string, boolean, NaN, undefined  一元运算符中有两个特别的运算符，一个是正号：+，一个是负号：-">
+  <meta name="description" content="JavaScript基础  五种变量类型：number, string, boolean, NaN, undefined 一元运算符中有两个特别的运算符，一个是正号：+，一个是负号：-">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaWeb总结">
 <meta property="og:url" content="http://yy-oops.github.io/2020/06/07/Javaweb/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="JavaScript基础 五种变量类型：number, string, boolean, NaN, undefined  一元运算符中有两个特别的运算符，一个是正号：+，一个是负号：-">
+<meta property="og:description" content="JavaScript基础  五种变量类型：number, string, boolean, NaN, undefined 一元运算符中有两个特别的运算符，一个是正号：+，一个是负号：-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-07T04:44:00.000Z">
 <meta property="article:modified_time" content="2020-07-20T10:59:37.757Z">
@@ -121,7 +121,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">7</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">8</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -131,7 +131,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">30</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>文章<span class="badge">31</span></a>
 
   </li>
   </ul>
@@ -230,73 +230,63 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h5 id="JavaScript基础"><a href="#JavaScript基础" class="headerlink" title="JavaScript基础"></a>JavaScript基础</h5><ol>
-<li><p>五种变量类型：number, string, boolean, NaN, undefined</p>
-</li>
-<li><p>一元运算符中有两个特别的运算符，一个是正号：+，一个是负号：-<a id="more"></a></p>
-</li>
+        <h5 id="javascript基础">JavaScript基础</h5>
+<ol type="1">
+<li><p>五种变量类型：number, string, boolean, NaN, undefined</p></li>
+<li><p>一元运算符中有两个特别的运算符，一个是正号：+，一个是负号：-<a id="more"></a></p></li>
 <li><p>在JS中，如果运算数不是运算符所要求的类型，那么JS引擎会自动地将运算数进行类型转换，转换规则如下：</p>
 <ul>
 <li>string 转 number，按照字面值转换，例如”123“转换为数字类型的123；如果字面值不是数字，则转换为NaN(Not a Number表示不是数字的数字)，例如”abc“转换为NaN</li>
 <li>boolean 转 number，规则为true转换为1，false转换为0</li>
-</ul>
-</li>
+</ul></li>
 <li><p>== 和===</p>
 <ul>
 <li>== 如果类型相同则直接比较，如果类型不同，则先进行类型转换，比如“123” == 123 则返回true</li>
-<li>=== 全等于，在比较之前先判断类型，类型不同直接返回false，比如“123” \=\==123 则 返回false</li>
-</ul>
-</li>
+<li>=== 全等于，在比较之前先判断类型，类型不同直接返回false，比如“123” ===123 则 返回false</li>
+</ul></li>
 <li><p>var 关键字变量声明</p>
 <ul>
 <li>如果声明时为 var a = 1; 则a是一个局部变量</li>
-<li>如果声明时为 a  =1; 则 a 是一个全局变量</li>
-</ul>
-</li>
+<li>如果声明时为 a =1; 则 a 是一个全局变量</li>
+</ul></li>
 <li><p>switch语句</p>
 <ul>
 <li>java中可以接收的变量类型有：byte int short char enum(1.5之后) string(1.7)之后</li>
 <li>js中则可以接收任意类型</li>
-</ul>
-</li>
+</ul></li>
 <li><p>在js中一个函数（或者一个方法）就是一个对象，这和java中不同，例如如下两种声明方式都可，且注意形式参数无需声明变量类型var并且无需声明函数返回值类型</p>
 <ul>
 <li><p>function 方法名称（形式参数列表）{ 方法体}</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun1</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    alert(a);</span><br><span class="line">    alert(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun1</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    alert(a);</span><br><span class="line">    alert(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li><p>var 方法名称 = function （形式参数列表）{ 方法体 }</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fun2 = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    alert(a - b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fun2 = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    alert(a - b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 <p>注意由于一个函数是一个对象，所以js里面一个函数也就是一个对象是具有属性的，函数的一个隐藏属性是length，它代表的是形参的个数，比如 fun1.length 结果是2</p>
 <p>最后注意一点，方法的调用如下几种调用方法都可以</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fun1();  <span class="comment">// 弹出两个undefined</span></span><br><span class="line">fun1(<span class="number">1</span>); <span class="comment">// 弹出一个1，弹出一个undefined</span></span><br><span class="line">fun1(<span class="number">1</span>,<span class="number">2</span>);  <span class="comment">// 弹出一个1，弹出一个2</span></span><br><span class="line">fun1(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);  <span class="comment">// 弹出一个1，弹出一个2</span></span><br></pre></td></tr></table></figure>
 <p>还有最重要的一点，方法的内部有一个内置对象，上述例子中fun1(1,2,3)调用时，第3个参数3实际上被内置对象arguments接收，如下例子可以实现接收任意个参数并返回他们的和</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">arguments</span>.length; i++)&#123;</span><br><span class="line">        sum += <span class="built_in">arguments</span>[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> sum = add(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>);</span><br><span class="line">alert(sum);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>三种创建Array数组对象的方式</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);  <span class="comment">// return arr; 返回1，2，3</span></span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">5</span>);  <span class="comment">// 返回，，，，</span></span><br><span class="line"><span class="keyword">var</span> arr3 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];  <span class="comment">// 返回1，2，3，4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">arguments</span>.length; i++)&#123;</span><br><span class="line">        sum += <span class="built_in">arguments</span>[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> sum = add(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>);</span><br><span class="line">alert(sum);</span><br></pre></td></tr></table></figure></li>
+<li><p>三种创建Array数组对象的方式</p></li>
+</ol>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);  <span class="comment">// return arr; 返回1，2，3</span></span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">5</span>);  <span class="comment">// 返回，，，，</span></span><br><span class="line"><span class="keyword">var</span> arr3 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];  <span class="comment">// 返回1，2，3，4</span></span><br></pre></td></tr></table></figure></p>
 <p>数组元素的类型可变</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="string">"abc"</span>, <span class="literal">true</span>] <span class="comment">// 返回1，abc, true</span></span><br></pre></td></tr></table></figure>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="string">"abc"</span>, <span class="literal">true</span>] <span class="comment">// 返回1，abc, true</span></span><br></pre></td></tr></table></figure></p>
 <p>数组元素长度可变</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="string">"abc"</span>, <span class="literal">true</span>];</span><br><span class="line">arr[<span class="number">10</span>] = <span class="string">"hehe"</span>;</span><br><span class="line">alert(arr[<span class="number">10</span>]);  <span class="comment">// 弹出hehe</span></span><br></pre></td></tr></table></figure>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="string">"abc"</span>, <span class="literal">true</span>];</span><br><span class="line">arr[<span class="number">10</span>] = <span class="string">"hehe"</span>;</span><br><span class="line">alert(arr[<span class="number">10</span>]);  <span class="comment">// 弹出hehe</span></span><br></pre></td></tr></table></figure></p>
 <p>数组对象的属性是length</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="string">"abc"</span>, <span class="literal">true</span>];</span><br><span class="line">arr.length  <span class="comment">// 返回3</span></span><br><span class="line">arr[<span class="number">10</span>] = <span class="string">"hehe"</span>;</span><br><span class="line">arr.length  <span class="comment">// 返回11</span></span><br></pre></td></tr></table></figure>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="string">"abc"</span>, <span class="literal">true</span>];</span><br><span class="line">arr.length  <span class="comment">// 返回3</span></span><br><span class="line">arr[<span class="number">10</span>] = <span class="string">"hehe"</span>;</span><br><span class="line">arr.length  <span class="comment">// 返回11</span></span><br></pre></td></tr></table></figure></p>
 <p>数组对象中常用的方法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">concat();  <span class="comment">// 连接两个或多个数组，返回结果</span></span><br><span class="line">join();  <span class="comment">// 数组转为字符串，并用指定的分隔符分隔</span></span><br><span class="line">pop();  <span class="comment">// 删除并返回数组最后一个元素</span></span><br><span class="line">push();  <span class="comment">// 向数组末尾添加一个或多个元素，并返回数组长度</span></span><br><span class="line">reverse(); <span class="comment">// 颠倒数组中元素的顺序</span></span><br><span class="line">shift();  <span class="comment">// 删除并返回数组的第一个元素</span></span><br><span class="line">sort()；  <span class="comment">// 对数组元素排序</span></span><br><span class="line">toString(); <span class="comment">// 将数组转换为字符串并返回结果</span></span><br></pre></td></tr></table></figure>
-</li>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">concat();  <span class="comment">// 连接两个或多个数组，返回结果</span></span><br><span class="line">join();  <span class="comment">// 数组转为字符串，并用指定的分隔符分隔</span></span><br><span class="line">pop();  <span class="comment">// 删除并返回数组最后一个元素</span></span><br><span class="line">push();  <span class="comment">// 向数组末尾添加一个或多个元素，并返回数组长度</span></span><br><span class="line">reverse(); <span class="comment">// 颠倒数组中元素的顺序</span></span><br><span class="line">shift();  <span class="comment">// 删除并返回数组的第一个元素</span></span><br><span class="line">sort()；  <span class="comment">// 对数组元素排序</span></span><br><span class="line">toString(); <span class="comment">// 将数组转换为字符串并返回结果</span></span><br></pre></td></tr></table></figure></p>
+<ol start="9" type="1">
 <li><p>js中的正则表达式对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reg1 = <span class="built_in">RegExp</span>(<span class="string">"^w[0-9]*b$"</span>);</span><br><span class="line"><span class="keyword">var</span> reg2 = <span class="regexp">/^w[0-9]*b$/</span>;</span><br><span class="line">reg1.test(<span class="string">"w13b"</span>);</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reg1 = <span class="built_in">RegExp</span>(<span class="string">"^w[0-9]*b$"</span>);</span><br><span class="line"><span class="keyword">var</span> reg2 = <span class="regexp">/^w[0-9]*b$/</span>;</span><br><span class="line">reg1.test(<span class="string">"w13b"</span>);</span><br></pre></td></tr></table></figure></li>
 <li><p>Global 全局对象，调用全局对象内的方法不需要对象名，直接使用方法，比如有encodeURI() 即url编码，decodeURI() 即url解码；其次还有encodeURIComponent()和decodeURIComponent() 这两个方法能够转换更多的字符</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> encode = <span class="built_in">encodeURI</span>(<span class="string">"编码操作"</span>);</span><br></pre></td></tr></table></figure>
 <p>还有parseInt() 和isNaN()等方法，注意</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="literal">NaN</span>;</span><br><span class="line"><span class="keyword">return</span> a == <span class="literal">NaN</span>；  <span class="comment">// 返回false</span></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">isNaN</span>(a);  <span class="comment">// 返回true</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="literal">NaN</span>;</span><br><span class="line"><span class="keyword">return</span> a == <span class="literal">NaN</span>；  <span class="comment">// 返回false</span></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">isNaN</span>(a);  <span class="comment">// 返回true</span></span><br></pre></td></tr></table></figure></li>
 <li><p>获取元素对象：document.getElementById(); 修改内容innerHTML</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span> = <span class="string">"light"</span> <span class="attr">src</span> = <span class="string">"img/off.gif"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span> = <span class="string">"title"</span>&gt;</span>马云<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> light = <span class="built_in">document</span>.getElementById(<span class="string">"light"</span>);</span><br><span class="line">alert(<span class="string">"我要换图片了"</span>)</span><br><span class="line">light.src = <span class="string">"img/on.gif"</span>; <span class="comment">// 修改属性</span></span><br><span class="line"><span class="keyword">var</span> title = <span class="built_in">document</span>.getElementById(<span class="string">"title"</span>);</span><br><span class="line">alert(<span class="string">"我要换内容了"</span>)</span><br><span class="line">title.innerHTML = <span class="string">"刘强东"</span>  <span class="comment">// 修改内容</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> light = <span class="built_in">document</span>.getElementById(<span class="string">"light"</span>);</span><br><span class="line">alert(<span class="string">"我要换图片了"</span>)</span><br><span class="line">light.src = <span class="string">"img/on.gif"</span>; <span class="comment">// 修改属性</span></span><br><span class="line"><span class="keyword">var</span> title = <span class="built_in">document</span>.getElementById(<span class="string">"title"</span>);</span><br><span class="line">alert(<span class="string">"我要换内容了"</span>)</span><br><span class="line">title.innerHTML = <span class="string">"刘强东"</span>  <span class="comment">// 修改内容</span></span><br></pre></td></tr></table></figure></li>
 <li><p>事件：某些组件被执行了某些操作后，触发某些代码的执行，例如图片组件被点击后，就执行换图片的代码</p>
 <p>事件绑定：</p>
 <ul>
@@ -304,104 +294,83 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>  = <span class="string">"light"</span> <span class="attr">src</span> = <span class="string">"img/off.gif"</span> <span class="attr">onclick</span> = <span class="string">"alert('我被点了');"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>还可以改写为如下</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	alert(<span class="string">"我被点了"</span>)；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>  = <span class="string">"light"</span> <span class="attr">src</span> = <span class="string">"img/off.gif"</span> <span class="attr">onclick</span> = <span class="string">"fun();"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>  = <span class="string">"light"</span> <span class="attr">src</span> = <span class="string">"img/off.gif"</span> <span class="attr">onclick</span> = <span class="string">"fun();"</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
 <li><p>通过js获取元素对象，指定事件属性，设置一个函数（第二种绑定方式比较好）</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span> = <span class="string">"light"</span> <span class="attr">src</span> = <span class="string">"img/off.gif"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">"我被点了"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> light = <span class="built_in">document</span>.getElementById(<span class="string">"light"</span>);</span><br><span class="line">light.onclick = fun;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">"我被点了"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> light = <span class="built_in">document</span>.getElementById(<span class="string">"light"</span>);</span><br><span class="line">light.onclick = fun;</span><br></pre></td></tr></table></figure></li>
+</ul></li>
 </ol>
-<h5 id="BOM（Browser-Object-Model）"><a href="#BOM（Browser-Object-Model）" class="headerlink" title="BOM（Browser Object Model）"></a>BOM（Browser Object Model）</h5><ol>
-<li><p>浏览器将各个组成部分封装成对象，有五类对象Window（窗口对象）、Navigator（浏览器对象）、Screen（显示器屏幕对象）、History（历史记录对象）、Location（地址栏对象）</p>
-</li>
+<h5 id="bombrowser-object-model">BOM（Browser Object Model）</h5>
+<ol type="1">
+<li><p>浏览器将各个组成部分封装成对象，有五类对象Window（窗口对象）、Navigator（浏览器对象）、Screen（显示器屏幕对象）、History（历史记录对象）、Location（地址栏对象）</p></li>
 <li><p>Window对象 ，不需要创建可以直接使用，window.方法名（），而且window引用可以省略，直接方法名（），比如</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.alert(<span class="string">"hello"</span>);</span><br><span class="line">alert(<span class="string">"hell0"</span>);</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>与弹出相关的方法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alert(<span class="string">"hello"</span>);  <span class="comment">// 弹出一个警告框</span></span><br><span class="line">confirm(<span class="string">"您确定要退出吗？"</span>); <span class="comment">// 显示一段消息以及确定和取消按钮的对话框，返回true或false</span></span><br><span class="line">prompt(<span class="string">"请输入用户名"</span>);  <span class="comment">// 显示可提示用户输入的对话框,返回用户输入的值</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alert(<span class="string">"hello"</span>);  <span class="comment">// 弹出一个警告框</span></span><br><span class="line">confirm(<span class="string">"您确定要退出吗？"</span>); <span class="comment">// 显示一段消息以及确定和取消按钮的对话框，返回true或false</span></span><br><span class="line">prompt(<span class="string">"请输入用户名"</span>);  <span class="comment">// 显示可提示用户输入的对话框,返回用户输入的值</span></span><br></pre></td></tr></table></figure></li>
 <li><p>与打开关闭相关的方法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">close();  <span class="comment">// 关闭浏览器窗口,谁调用我我就关谁</span></span><br><span class="line">open();  <span class="comment">// 打开新的浏览器窗口，返回值是一个新的Window对象</span></span><br><span class="line">open(<span class="string">"www.baidu.com"</span>);  <span class="comment">// 打开新的浏览器窗口，百度首页</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">close();  <span class="comment">// 关闭浏览器窗口,谁调用我我就关谁</span></span><br><span class="line">open();  <span class="comment">// 打开新的浏览器窗口，返回值是一个新的Window对象</span></span><br><span class="line">open(<span class="string">"www.baidu.com"</span>);  <span class="comment">// 打开新的浏览器窗口，百度首页</span></span><br></pre></td></tr></table></figure></li>
 <li><p>与定时器相关的方法</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="string">"alert('bomm--');"</span>, <span class="number">3000</span>);  <span class="comment">// 在指定的毫秒数后调用函数或者表达式</span></span><br><span class="line"><span class="comment">// 或者如下方式</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'boom--'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> id = setTimeout(fun, <span class="number">3000</span>);  <span class="comment">// 3秒过后弹出警告框，返回一个唯一标识</span></span><br><span class="line">clearTimeout(id);  <span class="comment">// 取消上述方法的计时</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setInterval(<span class="string">"alert('bomm--');"</span>, <span class="number">3000</span>);  <span class="comment">// 按照指定的周期（毫秒）调用函数或表达式</span></span><br><span class="line"><span class="comment">// 或者如下方式</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'boom--'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> id = setInterval(fun, <span class="number">3000</span>); <span class="comment">// 每隔3秒弹出一个警告框,返回一个唯一标识</span></span><br><span class="line">clearInterval(id);  <span class="comment">// 取消上述方法的计时</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setInterval(<span class="string">"alert('bomm--');"</span>, <span class="number">3000</span>);  <span class="comment">// 按照指定的周期（毫秒）调用函数或表达式</span></span><br><span class="line"><span class="comment">// 或者如下方式</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'boom--'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> id = setInterval(fun, <span class="number">3000</span>); <span class="comment">// 每隔3秒弹出一个警告框,返回一个唯一标识</span></span><br><span class="line">clearInterval(id);  <span class="comment">// 取消上述方法的计时</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<p>Window对象可以获取其他Bom对象，比如window.history, window.location, window.navigator, window.screen。还可以获取Dom对象</p>
-</li>
+<p>Window对象可以获取其他Bom对象，比如window.history, window.location, window.navigator, window.screen。还可以获取Dom对象</p></li>
 <li><p>Location对象，地址栏对象</p>
 <ul>
-<li><p>reload()方法，重新加载当前文档，刷新</p>
-</li>
-<li><p>href属性，获取当前URL路径</p>
-</li>
-</ul>
-</li>
+<li><p>reload()方法，重新加载当前文档，刷新</p></li>
+<li><p>href属性，获取当前URL路径</p></li>
+</ul></li>
 <li><p>History对象，历史记录对象，指的是当前窗口地址栏访问过的url</p>
 <ul>
 <li>length属性，返回当前窗口历史列表中的url数量</li>
 <li>back()方法加载history列表中的前一个url</li>
 <li>forward()方法加载history列表中的下一个url</li>
 <li>go()方法加载history列表中的某个具体页面</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="DOM-Document-Object-Model"><a href="#DOM-Document-Object-Model" class="headerlink" title="DOM (Document Object Model)"></a>DOM (Document Object Model)</h5><ol>
-<li>将标记语言文档的各个组成部分，封装成对象，可以使用这些对象，对标记语言文档进行 CRUD的动态操作</li>
-<li><p>核心DOM有六个需要注意的对象，Document（文档对象），Element（元素对象），Attribute（属性对象），Text（文本对象），Comment（注释对象），Node（节点对象）该对象 是上述五个对象的父对象</p>
-</li>
+<h5 id="dom-document-object-model">DOM (Document Object Model)</h5>
+<ol type="1">
+<li><p>将标记语言文档的各个组成部分，封装成对象，可以使用这些对象，对标记语言文档进行 CRUD的动态操作</p></li>
+<li><p>核心DOM有六个需要注意的对象，Document（文档对象），Element（元素对象），Attribute（属性对象），Text（文本对象），Comment（注释对象），Node（节点对象）该对象 是上述五个对象的父对象</p></li>
 <li><p>Document对象</p>
 <ul>
 <li><p>获取Element对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">getElementById();  <span class="comment">// 根据id属性获取元素对象，id属性一般唯一</span></span><br><span class="line">getElementByTagName();  <span class="comment">// 根据元素名称获取元素对象们，返回值是一个数组</span></span><br><span class="line">getElementByClassName();  <span class="comment">// 根据Class属性值获取元素对象们，返回值是一个数组</span></span><br><span class="line">getElementByName();  <span class="comment">// 根据name属性值获取元素对象们，返回值是一个数组</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">getElementById();  <span class="comment">// 根据id属性获取元素对象，id属性一般唯一</span></span><br><span class="line">getElementByTagName();  <span class="comment">// 根据元素名称获取元素对象们，返回值是一个数组</span></span><br><span class="line">getElementByClassName();  <span class="comment">// 根据Class属性值获取元素对象们，返回值是一个数组</span></span><br><span class="line">getElementByName();  <span class="comment">// 根据name属性值获取元素对象们，返回值是一个数组</span></span><br></pre></td></tr></table></figure></li>
 <li><p>创建DOM对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">createAttribute(name);</span><br><span class="line">createComment();</span><br><span class="line">createElement();</span><br><span class="line">createTextNode();</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">createAttribute(name);</span><br><span class="line">createComment();</span><br><span class="line">createElement();</span><br><span class="line">createTextNode();</span><br></pre></td></tr></table></figure></li>
+</ul></li>
 <li><p>Element对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">removeAttribute();  <span class="comment">// 删除属性</span></span><br><span class="line">setAttribute();  <span class="comment">// 设置属性,两个参数，前一个是属性名，后面是属性值</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">removeAttribute();  <span class="comment">// 删除属性</span></span><br><span class="line">setAttribute();  <span class="comment">// 设置属性,两个参数，前一个是属性名，后面是属性值</span></span><br></pre></td></tr></table></figure></li>
 <li><p>Node对象，所有dom对象都可以被认为是一个节点</p>
 <ul>
 <li><p>增删改</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">appendChild();  <span class="comment">// 向节点的子节点列表的末尾添加新的子节点</span></span><br><span class="line">removeChild();  <span class="comment">// 删除（并返回）当前节点的指定子节点</span></span><br><span class="line">replaceChild();  <span class="comment">// 用新节点替换一个子节点</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>属性有parentNode</p>
-</li>
-</ul>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">appendChild();  <span class="comment">// 向节点的子节点列表的末尾添加新的子节点</span></span><br><span class="line">removeChild();  <span class="comment">// 删除（并返回）当前节点的指定子节点</span></span><br><span class="line">replaceChild();  <span class="comment">// 用新节点替换一个子节点</span></span><br></pre></td></tr></table></figure></li>
+<li><p>属性有parentNode</p></li>
+</ul></li>
 <li><p>HTML DOM</p>
 <ul>
 <li><p>使用innerHTML获取标签体并设置标签体</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"d"</span>&gt;</span> aili<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> div1 = <span class="built_in">document</span>.getElementById(<span class="string">"d"</span>);</span><br><span class="line">div1.innerHTML = <span class="string">"fenl"</span>;</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> div1 = <span class="built_in">document</span>.getElementById(<span class="string">"d"</span>);</span><br><span class="line">div1.innerHTML = <span class="string">"fenl"</span>;</span><br></pre></td></tr></table></figure></li>
 <li><p>修改样式</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"d"</span>&gt;</span> aili<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> div2 = <span class="built_in">document</span>.getElementById(<span class="string">"d"</span>);</span><br><span class="line">div2.style.border = <span class="string">"1px solid red"</span>;</span><br><span class="line">div2.style.width = <span class="string">"200px"</span>;</span><br><span class="line">div2.style.fontSize = <span class="string">"15px"</span>;  <span class="comment">// 遇到类似这种font-size属性，改成fontSize</span></span><br></pre></td></tr></table></figure>
 <p>或者先在css中定义好一个样式，然后对某个对象指定该样式</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.d1</span>&#123;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid red;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"d"</span>&gt;</span> aili<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> div2 = <span class="built_in">document</span>.getElementById(<span class="string">"d"</span>);</span><br><span class="line">div2.className = <span class="string">"d1"</span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> div2 = <span class="built_in">document</span>.getElementById(<span class="string">"d"</span>);</span><br><span class="line">div2.className = <span class="string">"d1"</span>;</span><br></pre></td></tr></table></figure></li>
+</ul></li>
 </ol>
-<h5 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h5><ol>
+<h5 id="事件">事件</h5>
+<ol type="1">
 <li><p>一些概念：</p>
 <ul>
 <li>事件：指某些操作。如：单击，双击，键盘按下，鼠标移动</li>
 <li>事件源：指事件发生的位置。如：按钮，文本输入框</li>
 <li>监听器：指事件发生后执行的代码</li>
 <li>注册监听：将事件，事件源，监听器结合在一起，当事件源上发生了某个事件，则触发某个监听器代码</li>
-</ul>
-</li>
-<li><p>一些事件 </p>
+</ul></li>
+<li><p>一些事件</p>
 <ul>
 <li>点击事件：onclick单击事件，ondbclick双击事件</li>
 <li>焦点事件：onblur失去焦点，onfocus获得焦点。比如光标在一个地方闪就是获得焦点</li>
@@ -410,28 +379,23 @@
 <li>键盘事件：onkeydown某个键盘按键被按下，onkeyup某个键盘按键被松开，onkeypress某个键盘按键被按下并松开</li>
 <li>选中和改变：onchange域的内容被改变，onselect文本 被选中</li>
 <li>表单事件：onsubmit确认按钮被点击，onreset重置按钮被点击</li>
-</ul>
-</li>
+</ul></li>
 <li><p>onmousedown事件，在定义方法时定义一个形参，接收event对象，event对象的button属性可以获取哪个鼠标按钮键被点击了</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">"username"</span>).onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    alert(event.button);<span class="comment">//点击左键，弹出0，点击滚轮，弹出1，点击右键，弹出2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">"username"</span>).onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    alert(event.button);<span class="comment">//点击左键，弹出0，点击滚轮，弹出1，点击右键，弹出2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h5 id="Bootstrap"><a href="#Bootstrap" class="headerlink" title="Bootstrap"></a>Bootstrap</h5><ol>
+<h5 id="bootstrap">Bootstrap</h5>
+<ol type="1">
 <li><p>响应式布局：即同一套页面可以兼容不同的分辨率（即不同大小）的设备。主要依赖于栅格系统：栅格系统将一行平均分为12个格子，可以指定元素占几个格子</p>
 <ul>
-<li><p>定义容器。(相当于之前的table)容器有两种，一种是container固定宽度，两边留白，一种是container-fluid自动占满浏览器屏幕宽度</p>
-</li>
-<li><p>定义行。(相当于之前的tr)采用样式：row</p>
-</li>
+<li><p>定义容器。(相当于之前的table)容器有两种，一种是container固定宽度，两边留白，一种是container-fluid自动占满浏览器屏幕宽度</p></li>
+<li><p>定义行。(相当于之前的tr)采用样式：row</p></li>
 <li><p>定义元素。指定该元素在不同的设备上，所占的格子数目。采用样式：col-设备代号-格子数目。</p>
-<p>设备代号：xs手机，sm平板，md笔记本电脑桌面，lg台式机电脑桌面</p>
-</li>
-</ul>
-</li>
+<p>设备代号：xs手机，sm平板，md笔记本电脑桌面，lg台式机电脑桌面</p></li>
+</ul></li>
 </ol>
-<h5 id="xml（Extensible-Markup-Language）"><a href="#xml（Extensible-Markup-Language）" class="headerlink" title="xml（Extensible Markup Language）"></a>xml（Extensible Markup Language）</h5><ol>
-<li><p>概念：xml可扩展标记语言是用来存储数据的，可以作为一种配置文件，在网络中传输，并且有严格的语法格式，xml和html有相似之处，都可以被浏览器解析，但是不像html的p标签，div标签等，xml的标签是可以自定义的。</p>
-</li>
+<h5 id="xmlextensible-markup-language">xml（Extensible Markup Language）</h5>
+<ol type="1">
+<li><p>概念：xml可扩展标记语言是用来存储数据的，可以作为一种配置文件，在网络中传输，并且有严格的语法格式，xml和html有相似之处，都可以被浏览器解析，但是不像html的p标签，div标签等，xml的标签是可以自定义的。</p></li>
 <li><p>基本语法</p>
 <ul>
 <li>xml文档后缀名为.xml</li>
@@ -440,48 +404,36 @@
 <li>属性值必须使用引号引起来</li>
 <li>标签必须正确关闭</li>
 <li>xml标签名区分大小写</li>
-</ul>
-</li>
+</ul></li>
 <li><p>组成部分</p>
 <ul>
 <li><p>文档声明</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml 属性列表 ?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>属性列表为：version版本号，encoding编码方式，standalone是否独立</p>
-</li>
+<p>属性列表为：version版本号，encoding编码方式，standalone是否独立</p></li>
 <li><p>指令</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml-stylesheet type = "text/css" href = "a.css"?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>和html一样，结合css可以控制标签样式</p>
-</li>
-<li><p>标签</p>
-</li>
+<p>和html一样，结合css可以控制标签样式</p></li>
+<li><p>标签</p></li>
 <li><p>属性</p>
-<p>id属性值必须唯一</p>
-</li>
+<p>id属性值必须唯一</p></li>
 <li><p>文本</p>
 <p>CDATA区：在该区域中的数据会原样展示</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;![CDATA[数据]]&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;![CDATA[数据]]&gt;</span><br></pre></td></tr></table></figure></li>
+</ul></li>
 <li><p>约束：约束规定了xml文档的书写规则，要求会看懂约束，并会根据约束写xml文档 即可</p>
 <ul>
-<li><p>DTD:一种简单的约束技术，后缀.dtd</p>
-</li>
-<li><p>Schema:一种复杂的约束技术，后缀.xsd</p>
-</li>
-</ul>
-</li>
+<li><p>DTD:一种简单的约束技术，后缀.dtd</p></li>
+<li><p>Schema:一种复杂的约束技术，后缀.xsd</p></li>
+</ul></li>
 <li><p>解析：操作xml文档，将文档中的数据读取到内存中</p>
 <p>解析xml的方式：</p>
 <ul>
 <li><p>DOM：将标记语言文档一次性加载进内存，在内存中形成一个树形结构DOM树</p>
 <p>其优点是操作方便，可以对文档进行CRUD的所有操作</p>
-<p>其缺点是占内存，一个小的标记语言文档形成一颗DOM树时，其大小会扩大1000倍左右</p>
-</li>
+<p>其缺点是占内存，一个小的标记语言文档形成一颗DOM树时，其大小会扩大1000倍左右</p></li>
 <li><p>SAX：逐行读取，基于事件驱动</p>
 <p>其优点是不占内存</p>
-<p>其缺点是只能读取，不能增删改</p>
-</li>
+<p>其缺点是只能读取，不能增删改</p></li>
 </ul>
 <p>常见的解析器：</p>
 <ul>
@@ -489,91 +441,75 @@
 <li>DOM4J：一款优秀的解析器</li>
 <li>Jsoup：本来是用来解析HTML的，但是它也可以用来解析xml</li>
 <li>PULL：安卓操作系统内置的解析器，sax方式</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="Jsoup"><a href="#Jsoup" class="headerlink" title="Jsoup"></a>Jsoup</h5><ol>
+<h5 id="jsoup">Jsoup</h5>
+<ol type="1">
 <li><p>一些对象</p>
 <ul>
 <li><p>Jsoup：工具类，可以解析html或者xml文档，返回Document</p>
-<p>parse用来解析html或者xml文档，返回Document。有三种方式来解析，parse(File in, String charsetName)：解析xml或者html文件；parse(String html)：解析xml或者html字符串；parse(URL url, int timeoutMillis)：通过网络路径或者说网址来获取指定html或xml的文档</p>
-</li>
+<p>parse用来解析html或者xml文档，返回Document。有三种方式来解析，parse(File in, String charsetName)：解析xml或者html文件；parse(String html)：解析xml或者html字符串；parse(URL url, int timeoutMillis)：通过网络路径或者说网址来获取指定html或xml的文档</p></li>
 <li><p>Document：文档对象，代表内存中的DOM树</p>
 <p>getElementById(String id)：根据id属性获取唯一的element对象</p>
 <p>getElementsByTag(String tagName) ：根据标签名称获取元素对象集合</p>
 <p>getElementsByAttribute(String key)：根据属性名称获取元素对象集合</p>
-<p>getElementsByAttributeValue(String key, String value)：根据对应的属性名和属性值获取元素对象集合</p>
-</li>
-<li><p>Elements：元素Element对象的集合，可以当作ArrayList来使用</p>
-</li>
+<p>getElementsByAttributeValue(String key, String value)：根据对应的属性名和属性值获取元素对象集合</p></li>
+<li><p>Elements：元素Element对象的集合，可以当作ArrayList来使用</p></li>
 <li><p>Element：元素对象</p>
 <p>String attr(String key)：根据属性名称获取属性值</p>
 <p>String text()：获取文本内容</p>
-<p>String html()：获取标签体的所有内容（包括子标签的标签体和文本内容）</p>
-</li>
+<p>String html()：获取标签体的所有内容（包括子标签的标签体和文本内容）</p></li>
 <li><p>Node：节点对象</p>
-<p>是Document和Element的父类</p>
-</li>
-</ul>
-</li>
+<p>是Document和Element的父类</p></li>
+</ul></li>
 <li><p>快捷查询方式</p>
 <ul>
 <li>selector选择器</li>
 <li>XPath</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h5><ol>
-<li><p>下载tomcat之后，解压即可，打开startup.bat即可打开tomcat服务器，在浏览器输入localhost:8080即可访问web项目页面。</p>
-</li>
-<li><p>部署项目时将项目打成var包，再将var包放入到webApps目录下，var自动在该目录下自动解压缩。</p>
-</li>
+<h5 id="tomcat">Tomcat</h5>
+<ol type="1">
+<li><p>下载tomcat之后，解压即可，打开startup.bat即可打开tomcat服务器，在浏览器输入localhost:8080即可访问web项目页面。</p></li>
+<li><p>部署项目时将项目打成var包，再将var包放入到webApps目录下，var自动在该目录下自动解压缩。</p></li>
 <li><p>可以在conf/server.xml文件中配置，在<Host>标签体中配置</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">docBase</span>=<span class="string">"D:/hello"</span> <span class="attr">path</span>=<span class="string">"/hehe"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<p>其中docBase是项目存放的路径，path是虚拟目录</p>
-</li>
-<li><p>第三种配置方式也是最重要的，在conf\Catalina\localhost创建任意名称的xml文件，在文件中编写</p>
+<p>其中docBase是项目存放的路径，path是虚拟目录</p></li>
+<li><p>第三种配置方式也是最重要的，在conf，在文件中编写</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">docBase</span>=<span class="string">"D:\hello"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<p>虚拟目录是xml文件的名称</p>
-</li>
+<p>虚拟目录是xml文件的名称</p></li>
 </ol>
-<h5 id="Servlet-server-applet"><a href="#Servlet-server-applet" class="headerlink" title="Servlet(server applet)"></a>Servlet(server applet)</h5><ol>
-<li><p>概念：运行在服务器端的小程序</p>
+<h5 id="servletserver-applet">Servlet(server applet)</h5>
+<ol type="1">
+<li>概念：运行在服务器端的小程序
 <ul>
 <li>servlet就是一个接口，定义了Java类被浏览器访问到(即被tomcat识别)的规则</li>
 <li>将来我们自定义一个类，实现servlet接口，覆写方法</li>
-</ul>
-</li>
-<li><p>servlet的体系结构</p>
+</ul></li>
+<li>servlet的体系结构
 <ul>
 <li>GenericServlet类，将Servlet接口中其他方法做了默认空实现，只需要实现service方法即可</li>
 <li>HttpServlet类是对http协议的一种封装，简化操作，需要实现doGet和doPost方法</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h5><ol>
-<li><p>HTTP是基于TCP/IP的高级协议，其默认端口号是80，是基于请求/响应模型，就是说一次请求对应一次响应，并且每次请求之间相互独立，不能交换数据</p>
-</li>
+<h5 id="http">HTTP</h5>
+<ol type="1">
+<li><p>HTTP是基于TCP/IP的高级协议，其默认端口号是80，是基于请求/响应模型，就是说一次请求对应一次响应，并且每次请求之间相互独立，不能交换数据</p></li>
 <li><p>请求消息数据格式</p>
 <ul>
 <li><p>请求行</p>
 <p>请求方式 请求url 请求协议/版本。</p>
-<p>http有7种请求方式，常用的有2种get和post</p>
-</li>
+<p>http有7种请求方式，常用的有2种get和post</p></li>
 <li><p>请求头</p>
 <p>请求头名称：请求头值</p>
 <p>User-Agent：可以在服务器端获取该头的信息，解决浏览器的兼容性问题</p>
-<p>Referer：主要是防盗链和计数工作</p>
-</li>
+<p>Referer：主要是防盗链和计数工作</p></li>
 <li><p>请求空行</p>
-<p>用于分隔POST请求的请求头和请求体</p>
-</li>
+<p>用于分隔POST请求的请求头和请求体</p></li>
 <li><p>请求体</p>
 <p>get方式没有请求体，post有，比如username = zhangsan</p>
-<p>用于封装POST请求消息的请求参数</p>
-</li>
-</ul>
-</li>
+<p>用于封装POST请求消息的请求参数</p></li>
+</ul></li>
 <li><p>响应消息数据格式</p>
 <ul>
 <li><p>响应行</p>
@@ -583,586 +519,474 @@
 <p>2xx：成功。典型的例子是200</p>
 <p>3xx：重定向。典型的例子是302（重定向），304（访问缓存）</p>
 <p>4xx：客户端错误。典型的例子是404(请求路径没有对应资源)，405(请求方式没有对应的doxxx方法)</p>
-<p>5xx：服务端错误。典型的例子是500(服务器内部出现异常)</p>
-</li>
+<p>5xx：服务端错误。典型的例子是500(服务器内部出现异常)</p></li>
 <li><p>响应头</p>
 <p>头名称：值</p>
 <p>Content-Type：服务器告诉客户端本次响应消息体数据格式和编码格式</p>
-<p>Content-disposition：服务器告诉客户端以什么格式打开响应体数据</p>
-</li>
-<li><p>响应空行</p>
-</li>
+<p>Content-disposition：服务器告诉客户端以什么格式打开响应体数据</p></li>
+<li><p>响应空行</p></li>
 <li><p>响应体</p>
-<p>传输的数据</p>
-</li>
-</ul>
-</li>
+<p>传输的数据</p></li>
+</ul></li>
 <li><p>get和post区别</p>
 <ul>
-<li>get：<ol>
+<li>get：
+<ol type="1">
 <li>请求参数在地址栏中显示，会封装在请求行中</li>
 <li>请求参数大小有限制</li>
 <li>不太安全</li>
-</ol>
-</li>
-<li>post：<ol>
+</ol></li>
+<li>post：
+<ol type="1">
 <li>请求参数不会再地址栏中显示，会封装在请求体中</li>
 <li>请求参数的大小没有限制</li>
 <li>较为安全</li>
+</ol></li>
+</ul></li>
 </ol>
-</li>
-</ul>
-</li>
-</ol>
-<h5 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h5><ol>
+<h5 id="request">Request</h5>
+<ol type="1">
 <li><p>获取请求行数据，比如请求行: GET /day13/demo1?name=zhangsan HTTP/1.1</p>
 <ul>
-<li><p>获取请求方式的方法：String getMethod()。返回GET</p>
-</li>
-<li><p>(<strong>重点</strong>)获取虚拟目录的方法：String getContextPath()。返回/day13</p>
-</li>
-<li><p>获取Servlet的路径：String getServletPath()。返回/demo1</p>
-</li>
-<li><p>获取get方式的请求参数：String getQueryString()。返回name = zhangsan</p>
-</li>
-<li><p>(<strong>重点</strong>)获取请求URI：String getRequestURI()。返回/day13/demo1</p>
-</li>
-<li><p>获取请求URL：StringBuffer getRequestURL()。返回<a href="http://localhost/day13/demo1" target="_blank" rel="noopener">http://localhost/day13/demo1</a></p>
-</li>
-<li><p>获取协议和版本：String getProtocol()。返回HTTP/1.1</p>
-</li>
-<li><p>获取客户机的IP地址：String getRemoteAddr()</p>
-</li>
-</ul>
-</li>
-<li>获取请求头数据，<ul>
+<li><p>获取请求方式的方法：String getMethod()。返回GET</p></li>
+<li><p>(<strong>重点</strong>)获取虚拟目录的方法：String getContextPath()。返回/day13</p></li>
+<li><p>获取Servlet的路径：String getServletPath()。返回/demo1</p></li>
+<li><p>获取get方式的请求参数：String getQueryString()。返回name = zhangsan</p></li>
+<li><p>(<strong>重点</strong>)获取请求URI：String getRequestURI()。返回/day13/demo1</p></li>
+<li><p>获取请求URL：StringBuffer getRequestURL()。返回http://localhost/day13/demo1</p></li>
+<li><p>获取协议和版本：String getProtocol()。返回HTTP/1.1</p></li>
+<li><p>获取客户机的IP地址：String getRemoteAddr()</p></li>
+</ul></li>
+<li><p>获取请求头数据，</p>
+<ul>
 <li>(<strong>重点</strong>)通过请求头的名称获取请求头的值：String getHeader(String name)</li>
-<li>获取所有的请求头名称：Enumeration\<String> getHeaderNames</li>
-</ul>
-</li>
-<li>获取请求体数据，只有POST才有请求体，在请求体中封装了POST的请求参数<ul>
+<li>获取所有的请求头名称：Enumeration&lt;String&gt; getHeaderNames</li>
+</ul></li>
+<li><p>获取请求体数据，只有POST才有请求体，在请求体中封装了POST的请求参数</p>
+<ul>
 <li>获取字符输入流，只能操作字符数据：BufferedReader getReader()</li>
 <li>获取字节输入流，可以操作所有类型数据：ServletInputStream getInputStream()</li>
-</ul>
-</li>
+</ul></li>
 <li><p>获取请求参数的通用方式：无论是get还是post</p>
 <ul>
-<li><p>(<strong>重点</strong>)根据参数名称获取参数值：String getParameter(String name)</p>
-</li>
-<li><p>根据参数名称获取参数值数组，多用于复选框：String[] getParameterValues(String name)</p>
-</li>
-<li><p>获取所有的请求参数名称：Enumeration\<String> getParameterNames()</p>
-</li>
-<li><p>(<strong>重点</strong>)获取所有参数的键值对集合：Map\<String, String[]> getParameterMap()</p>
-</li>
-</ul>
-</li>
+<li><p>(<strong>重点</strong>)根据参数名称获取参数值：String getParameter(String name)</p></li>
+<li><p>根据参数名称获取参数值数组，多用于复选框：String[] getParameterValues(String name)</p></li>
+<li><p>获取所有的请求参数名称：Enumeration&lt;String&gt; getParameterNames()</p></li>
+<li><p>(<strong>重点</strong>)获取所有参数的键值对集合：Map&lt;String, String[]&gt; getParameterMap()</p></li>
+</ul></li>
 <li><p>请求转发，一种在服务器内部的资源跳转方式</p>
 <ul>
 <li>通过request对象获取请求转发器对象：RequestDispatcher getRequestDispatcher(String path)</li>
 <li>使用RequestDispatcher对象来进行转发：forward(ServletRequest request, ServletResponse response)</li>
 <li>请求转发的特点：1. 浏览器的地址栏不发生改变；2. 只能将请求转发到服务器内部的资源中；3. 转发是一次请求</li>
-</ul>
-</li>
+</ul></li>
 <li><p>共享数据，是一个有作用范围的对象，可以在范围内共享数据。而request域代表一次请求的范围，一般用于共享数据</p>
 <ul>
 <li>存储数据到request域中：void setAttribute(String name, Object obj)</li>
 <li>通过键获取值：Object getAttribute(String name)</li>
 <li>通过键移除键值对：void removeAttribute(String name)</li>
-</ul>
-</li>
+</ul></li>
 <li><p>获取ServletContext</p>
 <ul>
 <li>ServletContext getServletContext()</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="BeanUtils"><a href="#BeanUtils" class="headerlink" title="BeanUtils"></a>BeanUtils</h5><ol>
+<h5 id="beanutils">BeanUtils</h5>
+<ol type="1">
 <li>概念：BeanUtils是一个工具类，用于简化数据封装的操作</li>
-<li><p>作用：封装JavaBean，JavaBean是一种标准的Java类，具备以下要求则称为是标准Java类</p>
+<li>作用：封装JavaBean，JavaBean是一种标准的Java类，具备以下要求则称为是标准Java类
 <ul>
 <li>类必须被public 修饰</li>
 <li>必须提供空参的构造器</li>
 <li>成员变量必须使用private修饰</li>
 <li>提供公共setter和getter方法</li>
-</ul>
-</li>
-<li><p>方法：</p>
+</ul></li>
+<li>方法：
 <ul>
 <li>setProperty()：设置属性值</li>
 <li>getProperty()：获取属性值</li>
 <li>populate(Object obj, Map map) : 将map集合的键值对信息，封装到对应的JavaBean对象中</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h5><ol>
-<li><p>设置响应行</p>
+<h5 id="response">Response</h5>
+<ol type="1">
+<li>设置响应行
 <ul>
 <li>设置状态码：setStatus(int sc)</li>
-</ul>
-</li>
-<li><p>设置响应头</p>
+</ul></li>
+<li>设置响应头
 <ul>
 <li>setHeader(String name, String value)</li>
-</ul>
-</li>
-<li><p>设置相应体</p>
+</ul></li>
+<li>设置相应体
 <ul>
 <li>获取字符输出流：Printwrite getWriter()</li>
 <li>获取字节输出流：servletOutputStream getOutputStream()</li>
-</ul>
-</li>
-<li><p>重定向</p>
+</ul></li>
+<li>重定向
 <ul>
 <li>简单的重定向方法：sendRedirect()</li>
 <li>重定向的特点：1. 地址栏发生变化，2. 重定向可以访问其他站点（服务器）的资源，3. 重定向是两次请求，不能采用request域对象共享数据</li>
-</ul>
-</li>
-<li><p>设置编码</p>
+</ul></li>
+<li>设置编码
 <ul>
-<li>setContentType(“text/html;charset=utf-8”)</li>
-</ul>
-</li>
+<li>setContentType("text/html;charset=utf-8")</li>
+</ul></li>
 </ol>
-<h5 id="ServletContext"><a href="#ServletContext" class="headerlink" title="ServletContext"></a>ServletContext</h5><ol>
-<li><p>概念：ServletContext是一个对象，代表整个web应用，用来和程序的容器（服务器）通信。可以通过如下两种方式获取</p>
+<h5 id="servletcontext">ServletContext</h5>
+<ol type="1">
+<li>概念：ServletContext是一个对象，代表整个web应用，用来和程序的容器（服务器）通信。可以通过如下两种方式获取
 <ul>
 <li>通过request对象获取：req.getServletContext()</li>
 <li>通过HttpServlet获取：this.getServletContext()</li>
-</ul>
-</li>
-<li><p>获取MIME类型，MIME类型是通信过程中定义的一种文件数据类型，例如text/html</p>
+</ul></li>
+<li>获取MIME类型，MIME类型是通信过程中定义的一种文件数据类型，例如text/html
 <ul>
 <li>String getMimeType(String file)</li>
-</ul>
-</li>
-<li><p>域对象：共享数据</p>
+</ul></li>
+<li>域对象：共享数据
 <ul>
 <li>setAttribute(String name, Object value)</li>
 <li>getAttribute(String name)</li>
 <li>removeAttribute(String name)</li>
-</ul>
-</li>
-<li><p>获取文件的真实路径（服务器路径）</p>
+</ul></li>
+<li>获取文件的真实路径（服务器路径）
 <ul>
 <li>String getRealPath(String path)</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h5><ol>
-<li><p>概念：是一种客户端会话技术，将数据保存到客户端</p>
-</li>
+<h5 id="cookie">Cookie</h5>
+<ol type="1">
+<li><p>概念：是一种客户端会话技术，将数据保存到客户端</p></li>
 <li><p>使用步骤：</p>
 <ul>
 <li><p>创建Cookie对象，绑定数据</p>
-<p>new Cookie(String name, String value)</p>
-</li>
+<p>new Cookie(String name, String value)</p></li>
 <li><p>发送Cookie对象</p>
-<p>response.addCookie(Cookie cookie)</p>
-</li>
+<p>response.addCookie(Cookie cookie)</p></li>
 <li><p>获取Cookie，拿到数据</p>
-<p>Cookie[] request.getCookies()</p>
-</li>
-</ul>
-</li>
-<li><p>一次可以发送多个Cookie，可以创建多个Cookie对象，使用response对象多次使用addCookies方法发送Cookie</p>
-</li>
+<p>Cookie[] request.getCookies()</p></li>
+</ul></li>
+<li><p>一次可以发送多个Cookie，可以创建多个Cookie对象，使用response对象多次使用addCookies方法发送Cookie</p></li>
 <li><p>默认情况下，浏览器关闭后，Cookie数据被销毁，如想要持久化存储，则需要使用如下方法</p>
-<p>setMaxAge(int seconds) </p>
+<p>setMaxAge(int seconds)</p>
 <p>如果传入的参数是正数，则表示将Cookies数据写到硬盘的文件中，该正数表示存活时间，也就是持久化时间</p>
 <p>如果传入的参数是负数，是默认值</p>
-<p>如果传入的参数是0，则表示删除Cookie信息</p>
-</li>
-<li><p>在tomcat 8 之前 cookie不支持中文，需要将中文数据转码，一般采用URL编码。在tomcat 8 之后，cookie支持中文，不支持特殊字符，建议使用URL编码存储，并用URL解析</p>
-</li>
+<p>如果传入的参数是0，则表示删除Cookie信息</p></li>
+<li><p>在tomcat 8 之前 cookie不支持中文，需要将中文数据转码，一般采用URL编码。在tomcat 8 之后，cookie支持中文，不支持特殊字符，建议使用URL编码存储，并用URL解析</p></li>
 <li><p>在一个tomcat服务器中，部署了多个web项目，那么在web项目间的cookie默认不能共享，但是可以采用如下方式扩大共享范围</p>
 <p>setPath(String path)：设置cookie的获取范围，默认情况下，path是当前的虚拟目录</p>
-<p>如果要不同项目间可以共享，则可以采用setPath(“/”)，意思是服务器根目录下的所有项目都可以共享</p>
-</li>
+<p>如果要不同项目间可以共享，则可以采用setPath(“/”)，意思是服务器根目录下的所有项目都可以共享</p></li>
 <li><p>而要想在不同的tomcat服务器之间共享cookie，则采用如下方法</p>
-<p>setDomain(String path)：如果一级域名相同则多个服务器之间cookie可以共享，比如setDomain(“.baidu.com”)则tieba.baidu.com和news.baidu.com两个服务器之间cookie可以共享</p>
-</li>
-<li><p>浏览器对单个cookie大小有限制（4kb）以及对同一个域名下的总cookies数量也有限制（20个）</p>
-</li>
+<p>setDomain(String path)：如果一级域名相同则多个服务器之间cookie可以共享，比如setDomain(".baidu.com")则tieba.baidu.com和news.baidu.com两个服务器之间cookie可以共享</p></li>
+<li><p>浏览器对单个cookie大小有限制（4kb）以及对同一个域名下的总cookies数量也有限制（20个）</p></li>
 </ol>
-<h5 id="JSP-已过时"><a href="#JSP-已过时" class="headerlink" title="JSP(已过时)"></a>JSP(已过时)</h5><ol>
-<li><p>JSP(Java Server Pages)是一个特殊的页面，其中既可以定义Html标签，也可以写java代码</p>
-</li>
+<h5 id="jsp已过时">JSP(已过时)</h5>
+<ol type="1">
+<li><p>JSP(Java Server Pages)是一个特殊的页面，其中既可以定义Html标签，也可以写java代码</p></li>
 <li><p>Jsp中定义java代码的方式</p>
 <ul>
 <li>&lt;% 代码 %&gt;：定义的java代码，在service方法中。service方法中可以定义什么，该脚本中就可以定义什么</li>
 <li>&lt;%! 代码 %&gt;：定义的java代码，在jsp转换后的java类的成员位置</li>
 <li>&lt;%= 代码 %&gt;：定义的java代码，会输出到页面上，输出语句中可以定义什么，该脚本中就可以定义什么</li>
-</ul>
-</li>
+</ul></li>
 <li><p>Jsp的内置对象，在jsp页面不需要获取和创建，可以直接使用的对象</p>
 <ul>
-<li>request  一次请求访问的多个资源</li>
-<li>response   响应对象</li>
-<li>out  输出对象，数据输出到页面</li>
-</ul>
-</li>
+<li>request 一次请求访问的多个资源</li>
+<li>response 响应对象</li>
+<li>out 输出对象，数据输出到页面</li>
+</ul></li>
 </ol>
 <ul>
-<li>pageContext  在当前页面共享数据，还可以通过它获取其他八个对象<ul>
-<li>session  一次会话的多个请求</li>
-<li>application  所有用户间共享数据</li>
-<li>page  当前页面的对象</li>
-<li>config  Servlet配置对象</li>
-<li>exception  异常对象</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li><p>Jsp的指令，用于配置Jsp页面，导入资源文件</p>
+<li>pageContext 在当前页面共享数据，还可以通过它获取其他八个对象
 <ul>
-<li><p>格式：\&lt;%@ 指令名称 属性名1=属性值1 属性名2=属性值2 … %&gt;</p>
-</li>
-<li><p>三个常用的指令：page、include、taglib</p>
-</li>
-<li><p>page用来配置Jsp页面：比如contentType属性、language属性、import属性</p>
-</li>
+<li>session 一次会话的多个请求</li>
+<li>application 所有用户间共享数据</li>
+<li>page 当前页面的对象</li>
+<li>config Servlet配置对象</li>
+<li>exception 异常对象</li>
+</ul></li>
+</ul>
+<ol start="4" type="1">
+<li>Jsp的指令，用于配置Jsp页面，导入资源文件
+<ul>
+<li><p>格式：&lt;%@ 指令名称 属性名1=属性值1 属性名2=属性值2 ... %&gt;</p></li>
+<li><p>三个常用的指令：page、include、taglib</p></li>
+<li><p>page用来配置Jsp页面：比如contentType属性、language属性、import属性</p></li>
 <li><p>include用来导入页面的资源文件</p>
-<p>\&lt;%@include file=”top.jsp”%&gt;</p>
-</li>
+<p>&lt;%<span class="citation" data-cites="include">@include</span> file="top.jsp"%&gt;</p></li>
 <li><p>taglib用来导入资源：比如标签库</p>
-<p>\&lt;%@ taglib prefix=”c” url=”<a href="http://java.sun.com/jsp/jstl/core" target="_blank" rel="noopener">http://java.sun.com/jsp/jstl/core</a>“ %&gt;</p>
-</li>
-</ul>
-</li>
-<li><p>Jsp的注释</p>
-</li>
+<p>&lt;%@ taglib prefix="c" url="http://java.sun.com/jsp/jstl/core" %&gt;</p></li>
+</ul></li>
+<li>Jsp的注释</li>
 </ol>
 <ul>
-<li>&lt;%— —%&gt;</li>
+<li>&lt;%-- --%&gt;</li>
 </ul>
-<ol>
-<li><h5 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h5></li>
-<li><p>概念：是一种服务器端的会话技术，在一次会话的多次请求间共享数据，将数据保存在服务器端对象中</p>
-</li>
+<ol start="6" type="1">
+<li></li>
+</ol>
+<h5 id="session">Session</h5>
+<ol type="1">
+<li><p>概念：是一种服务器端的会话技术，在一次会话的多次请求间共享数据，将数据保存在服务器端对象中</p></li>
 <li><p>使用步骤：</p>
 <ul>
 <li><p>获取HttpSession对象</p>
-<p>HttpSession session = request.getSession();</p>
-</li>
+<p>HttpSession session = request.getSession();</p></li>
 <li><p>使用HttpSession对象</p>
 <p>Object getAttribute(String name)</p>
 <p>void setAttribute(String name, Object value)</p>
-<p>void removeAttribute(String name)</p>
-</li>
+<p>void removeAttribute(String name)</p></li>
 <li><p>当客户端关闭后，服务器不关闭，两次获取的session默认情况下不是同一个。可以创建一个cookie，键为JSEESIONID，设置最大存活时间，让cookie持久化存储</p>
-<p>Cookie c = new Cookie(“JSESSIONID”，session.getId());</p>
-</li>
+<p>Cookie c = new Cookie("JSESSIONID"，session.getId());</p></li>
 <li><p>客户端不关闭，服务器关闭后，两次获取的session不是同一个，但是需要确保数据不丢失，tomcat服务器自动帮我们做了如下两件事</p>
 <p>session钝化：在服务器正常关闭之前，将session对象系列化到硬盘上</p>
-<p>session活化：在服务器启动后，将session文件转化为内存中的session对象</p>
-</li>
+<p>session活化：在服务器启动后，将session文件转化为内存中的session对象</p></li>
 <li><p>session在以下情况下时自动销毁</p>
 <p>服务器关闭</p>
 <p>session对象调用invalidate()</p>
-<p>session默认失效时间：30分钟</p>
-</li>
-<li><p>session用于存储一次会话的多次请求的数据，存在服务器</p>
-</li>
-<li>session可以存储任意类型，任意大小的数据</li>
-</ul>
-</li>
+<p>session默认失效时间：30分钟</p></li>
+<li><p>session用于存储一次会话的多次请求的数据，存在服务器</p></li>
+<li><p>session可以存储任意类型，任意大小的数据</p></li>
+</ul></li>
 </ol>
-<h5 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h5><ol>
+<h5 id="mvc">MVC</h5>
+<ol type="1">
 <li><p>M:Model，模型</p>
-<p>用来获取客户端输入，调用模型，将数据交给视图展示</p>
-</li>
+<p>用来获取客户端输入，调用模型，将数据交给视图展示</p></li>
 <li><p>V:View，视图</p>
-<p>展示数据</p>
-</li>
+<p>展示数据</p></li>
 <li><p>C:Controller，控制器</p>
-<p>业务逻辑操作</p>
-</li>
+<p>业务逻辑操作</p></li>
 </ol>
-<h5 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h5><ol>
+<h5 id="el表达式">EL表达式</h5>
+<ol type="1">
 <li>Expression Language表达式语言，用于替换和简化jsp页面中java代码的编写，语法：${表达式}</li>
-<li>el表达式从域对象中获取值<ul>
+<li>el表达式从域对象中获取值
+<ul>
 <li>语法1：${域名称.键名}，从指定域对象中获取值</li>
 <li>语法2：${键名}，依次从最小的域中查找键名，查找到则返回值</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="JSTL"><a href="#JSTL" class="headerlink" title="JSTL"></a>JSTL</h5><ol>
+<h5 id="jstl">JSTL</h5>
+<ol type="1">
 <li>JavaServer Pages Tag Library JSP标准标签库，用于简化和替换jsp页面上的java代码</li>
-<li>常用的JSTL标签<ul>
+<li>常用的JSTL标签
+<ul>
 <li>if ：相当于java代码的if语句</li>
 <li>choose ：相当于java代码中的switch语句，其中when相当于case，otherwise相当于default</li>
 <li>foreach ：相当于java代码中的for循环</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h5><ol>
-<li>filter的作用是完成通用的操作，比如，登录验证，统一编码处理，敏感字符过滤等…….</li>
+<h5 id="filter">Filter</h5>
+<ol type="1">
+<li>filter的作用是完成通用的操作，比如，登录验证，统一编码处理，敏感字符过滤等.......</li>
 <li>使用步骤：1）定义一个类，实现接口Filter；2）覆写方法；3）配置拦截路径</li>
-<li><p>拦截路径有几种方式</p>
+<li>拦截路径有几种方式
 <ul>
 <li>具体资源路径：/index.jsp 只有访问index.jsp资源时，过滤器才会被执行</li>
 <li>拦截目录：/user/* 访问/user下的所有资源时，过滤器都会被执行</li>
 <li>后缀名拦截：*.jsp 访问所有后缀名为jsp的资源时，过滤器都会被执行</li>
 <li>拦截所有资源：/* 访问所有资源时，过滤器都会被执行</li>
-</ul>
-</li>
-<li><p>资源访问方式的配置，可以通过在注解中设置dispatcherTypes属性</p>
+</ul></li>
+<li>资源访问方式的配置，可以通过在注解中设置dispatcherTypes属性
 <ul>
 <li>REQUEST：默认值，浏览器直接请求资源，比如浏览器直接请求index.jsp时过滤器才会被执行</li>
 <li>FORWARD：转发访问资源，比如只有转发请求index.jsp时过滤器才会被执行</li>
 <li>INCLUDE：包含访问资源，</li>
 <li>ERROR：错误跳转资源</li>
 <li>ASYNC：异步访问资源</li>
-</ul>
-</li>
-<li><p>过滤器先后顺序如果按照注解配置，那么是按照类名的字符串比较规则比较 ，值小的先执行</p>
-</li>
+</ul></li>
+<li>过滤器先后顺序如果按照注解配置，那么是按照类名的字符串比较规则比较 ，值小的先执行</li>
 </ol>
-<h5 id="Listener"><a href="#Listener" class="headerlink" title="Listener"></a>Listener</h5><ol>
-<li><p>事件监听机制</p>
+<h5 id="listener">Listener</h5>
+<ol type="1">
+<li>事件监听机制
 <ul>
 <li>事件：一件事情或者动作</li>
 <li>事件源：事件发生的地方</li>
 <li>监听器：一个对象</li>
 <li>注册监听：将事件，事件源和监听器绑定在一起，当事件源上发生某个事件后，执行监听器代码</li>
-</ul>
-</li>
-<li><p>ServletContextListenser：监听ServletContext对象的创建和销毁</p>
+</ul></li>
+<li>ServletContextListenser：监听ServletContext对象的创建和销毁
 <ul>
 <li>void contextDestoryed(ServletContextEvent sce)：ServletContext对象被销毁后调用该方法</li>
 <li>void contextInitialized(ServletContextEvent sce)：ServletContext对象创建后会调用该方法</li>
-</ul>
-</li>
-<li><p>步骤：</p>
+</ul></li>
+<li>步骤：
 <ul>
 <li>定义一个类，实现ServletContextListener接口</li>
 <li>覆写方法</li>
 <li>配置（注解配置，webxml配置）</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h5 id="JQuery"><a href="#JQuery" class="headerlink" title="JQuery"></a>JQuery</h5><ol>
+<h5 id="jquery">JQuery</h5>
+<ol type="1">
 <li><p>基本选择器</p>
 <ul>
 <li><p>标签选择器（元素选择器）</p>
-<p>语法： $(“html标签名”) 获得所有匹配标签名称的元素</p>
-</li>
-<li><p>id选择器 </p>
-<p>语法： $(“#id的属性值”) 获得与指定id属性值匹配的元素</p>
-</li>
+<p>语法： $("html标签名") 获得所有匹配标签名称的元素</p></li>
+<li><p>id选择器</p>
+<p>语法： $("#id的属性值") 获得与指定id属性值匹配的元素</p></li>
 <li><p>类选择器</p>
-<p>语法： $(“.class的属性值”) 获得与指定的class属性值匹配的元素</p>
-</li>
+<p>语法： $(".class的属性值") 获得与指定的class属性值匹配的元素</p></li>
 <li><p>并集选择器：</p>
-<p>语法： $(“选择器1,选择器2….”) 获取多个选择器选中的所有元素</p>
-</li>
-</ul>
-</li>
+<p>语法： $("选择器1,选择器2....") 获取多个选择器选中的所有元素</p></li>
+</ul></li>
 <li><p>层级选择器</p>
 <ul>
 <li><p>后代选择器</p>
-<p>语法： $(“A B “) 选择A元素内部的所有B元素        </p>
-</li>
+<p>语法： $("A B ") 选择A元素内部的所有B元素</p></li>
 <li><p>子选择器</p>
-<p>语法： $(“A &gt; B”) 选择A元素内部的所有B子元素</p>
-</li>
-</ul>
-</li>
+<p>语法： $("A &gt; B") 选择A元素内部的所有B子元素</p></li>
+</ul></li>
 <li><p>属性选择器</p>
 <ul>
-<li><p>属性名称选择器 </p>
-<p>语法： $(“A[属性名]”) 包含指定属性的选择器</p>
-</li>
+<li><p>属性名称选择器</p>
+<p>语法： $("A[属性名]") 包含指定属性的选择器</p></li>
 <li><p>属性选择器</p>
-<p>语法： $(“A[属性名=’值’]”) 包含指定属性等于指定值的选择器</p>
-<p>语法： $(“A[属性名!=’值’]”) 包含指定属性不等于指定值的选择器</p>
-<p>语法： $(“A[属性名^=’值’]”) 包含指定属性以指定值开始的选择器</p>
-<p>语法： $(“A[属性名$=’值’]”) 包含指定属性以指定值结束的选择器</p>
-<p>语法： $(“A[属性名*=’值’]”) 包含指定属性包含指定值的选择器</p>
-</li>
+<p>语法： $("A[属性名='值']") 包含指定属性等于指定值的选择器</p>
+<p>语法： $("A[属性名!='值']") 包含指定属性不等于指定值的选择器</p>
+<p>语法： $("A[属性名^='值']") 包含指定属性以指定值开始的选择器</p>
+<p>语法： $("A[属性名$='值']") 包含指定属性以指定值结束的选择器</p>
+<p>语法： $("A[属性名*='值']") 包含指定属性包含指定值的选择器</p></li>
 <li><p>复合属性选择器</p>
-<p>语法： $(“A[属性名=’值’][]…”) 包含多个属性条件的选择器</p>
-</li>
-</ul>
-</li>
+<p>语法： $("A[属性名='值'][]...") 包含多个属性条件的选择器</p></li>
+</ul></li>
 <li><p>过滤选择器</p>
 <ul>
-<li><p>首元素选择器 </p>
-<p>语法： :first 获得选择的元素中的第一个元素比如$(“div:first”)</p>
-</li>
-<li><p>尾元素选择器 </p>
-<p>语法： :last 获得选择的元素中的最后一个元素</p>
-</li>
+<li><p>首元素选择器</p>
+<p>语法： :first 获得选择的元素中的第一个元素比如$("div:first")</p></li>
+<li><p>尾元素选择器</p>
+<p>语法： :last 获得选择的元素中的最后一个元素</p></li>
 <li><p>非元素选择器</p>
-<p>语法： :not(selector) 不包括指定内容的元素</p>
-</li>
+<p>语法： :not(selector) 不包括指定内容的元素</p></li>
 <li><p>偶数选择器</p>
-<p>语法： :even 偶数，从 0 开始计数</p>
-</li>
+<p>语法： :even 偶数，从 0 开始计数</p></li>
 <li><p>奇数选择器</p>
-<p>语法： :odd 奇数，从 0 开始计数</p>
-</li>
+<p>语法： :odd 奇数，从 0 开始计数</p></li>
 <li><p>等于索引选择器</p>
-<p>语法： :eq(index) 指定索引元素</p>
-</li>
-<li><p>大于索引选择器 </p>
-<p>语法： :gt(index) 大于指定索引元素</p>
-</li>
-<li><p>小于索引选择器 </p>
-<p>语法： :lt(index) 小于指定索引元素</p>
-</li>
+<p>语法： :eq(index) 指定索引元素</p></li>
+<li><p>大于索引选择器</p>
+<p>语法： :gt(index) 大于指定索引元素</p></li>
+<li><p>小于索引选择器</p>
+<p>语法： :lt(index) 小于指定索引元素</p></li>
 <li><p>标题选择器</p>
-<p>语法： :header 获得标题（h1~h6）元素，固定写法</p>
-</li>
-</ul>
-</li>
+<p>语法： :header 获得标题（h1~h6）元素，固定写法</p></li>
+</ul></li>
 <li><p>表单过滤选择器</p>
 <ul>
-<li><p>可用元素选择器 </p>
-<p>语法： :enabled 获得可用元素</p>
-</li>
-<li><p>不可用元素选择器 </p>
-<p>语法： :disabled 获得不可用元素</p>
-</li>
-<li><p>选中选择器 </p>
-<p>语法： :checked 获得单选/复选框选中的元素</p>
-</li>
-<li><p>选中选择器 </p>
-<p>语法： :selected 获得下拉框选中的元素</p>
-</li>
-</ul>
-</li>
+<li><p>可用元素选择器</p>
+<p>语法： :enabled 获得可用元素</p></li>
+<li><p>不可用元素选择器</p>
+<p>语法： :disabled 获得不可用元素</p></li>
+<li><p>选中选择器</p>
+<p>语法： :checked 获得单选/复选框选中的元素</p></li>
+<li><p>选中选择器</p>
+<p>语法： :selected 获得下拉框选中的元素</p></li>
+</ul></li>
 <li><p>内容操作</p>
 <ul>
-<li>html()： 获取/设置元素的标签体内容   <a\>\<font>内容&lt;/font>&lt;/a>  —&gt; <font\>内容\</font></li>
-<li>text(): 获取/设置元素的标签体纯文本内容   <a\><font\>内容&lt;/font>&lt;/a> —&gt; 内容</li>
+<li>html()： 获取/设置元素的标签体内容 &lt;a&gt;&lt;font&gt;内容&lt;/font&gt;&lt;/a&gt; --&gt; &lt;font&gt;内容&lt;/font&gt;</li>
+<li>text(): 获取/设置元素的标签体纯文本内容 &lt;a&gt;&lt;font&gt;内容&lt;/font&gt;&lt;/a&gt; --&gt; 内容</li>
 <li>val()： 获取/设置元素的value属性值</li>
-</ul>
-</li>
+</ul></li>
 <li><p>属性操作</p>
 <ul>
 <li><p>通用属性操作（元素的固有属性，则建议使用prop；元素自定义的属性，则建议使用attr）</p>
 <p>attr(): 获取/设置元素的属性</p>
 <p>removeAttr(): 删除属性</p>
 <p>prop(): 获取/设置元素的属性</p>
-<p>removeProp(): 删除属性</p>
-</li>
+<p>removeProp(): 删除属性</p></li>
 <li><p>对class属性操作</p>
 <p>addClass(): 添加class属性值</p>
 <p>removeClass(): 删除class属性值</p>
-<p>toggleClass(): 切换class属性，比如toggleClass(“one”) 元素对象上存在class=”one”，则将属性值one删除掉，如果元素对象上不存在class=”one”，则添加</p>
-</li>
+<p>toggleClass(): 切换class属性，比如toggleClass("one") 元素对象上存在class="one"，则将属性值one删除掉，如果元素对象上不存在class="one"，则添加</p></li>
 <li><p>CRUD操作</p>
 <p>append(): 比如 对象1.append(对象2) 将对象2添加到对象1元素内部，并且在末尾</p>
 <p>prepend(): 比如 对象1.prepend(对象2) 将对象2添加到对象1元素内部，并且在开头</p>
 <p>appendTo(): 比如 对象1.appendTo(对象2) 将对象1添加到对象2内部，并且在末尾</p>
 <p>prependTo()：比如 对象1.prependTo(对象2) 将对象1添加到对象2内部，并且在开头</p>
 <p>after(): 比如 对象1.after(对象2) 将对象2添加到对象1后边。对象1和对象2是兄弟关系</p>
-<p>before(): 比如 对象1.before(对象2)  将对象2添加到对象1前边。对象1和对象2是兄弟关系</p>
+<p>before(): 比如 对象1.before(对象2) 将对象2添加到对象1前边。对象1和对象2是兄弟关系</p>
 <p>insertAfter(): 比如 对象1.insertAfter(对象2) 将对象1添加到对象2后边。对象1和对象2是兄弟关系</p>
 <p>insertBefore(): 比如 对象1.insertBefore(对象2) 将对象1添加到对象2前边。对象1和对象2是兄弟关系</p>
 <p>remove(): 比如 对象.remove() 将对象删除掉</p>
-<p>empty(): 比如 对象.empty() 将对象的后代元素全部清空，但是保留当前对象以及其属性节点</p>
-</li>
-</ul>
-</li>
+<p>empty(): 比如 对象.empty() 将对象的后代元素全部清空，但是保留当前对象以及其属性节点</p></li>
+</ul></li>
 <li><p>动画</p>
 <ul>
 <li><p>默认显示和隐藏方式</p>
 <p>show([][][speed,[easing],[fn]]) 显示</p>
 <p>hide([speed,[easing],[fn]]) 隐藏</p>
-<p>toggle([speed,[easing],[fn]]) 在显示和隐藏之间切换</p>
-</li>
+<p>toggle([speed,[easing],[fn]]) 在显示和隐藏之间切换</p></li>
 <li><p>滑动显示和隐藏方式</p>
 <p>slideDown([speed,[easing],[fn]])</p>
 <p>slideUp([speed,[easing],[fn]])</p>
-<p>slideToggle([speed,[easing],[fn]])</p>
-</li>
+<p>slideToggle([speed,[easing],[fn]])</p></li>
 <li><p>淡入淡出显示和隐藏方式</p>
 <p>fadeIn([speed,[easing],[fn]])</p>
 <p>fadeOut([speed,[easing],[fn]])</p>
-<p>fadeToggle([speed,[easing],[fn]])</p>
-</li>
+<p>fadeToggle([speed,[easing],[fn]])</p></li>
 <li><p>参数介绍</p>
-<p>speed: 动画的速度，可以为”slow”,”normal”, “fast”或者表示动画时长的毫秒数值(如：1000)</p>
-<p>easing: 用来指定切换的效果，默认值是”swing”（慢-快-慢），可用参数”linear”（匀速）</p>
-<p>fn: 在动画完成时执行的函数，每个元素执行一次</p>
-</li>
+<p>speed: 动画的速度，可以为"slow","normal", "fast"或者表示动画时长的毫秒数值(如：1000)</p>
+<p>easing: 用来指定切换的效果，默认值是"swing"（慢-快-慢），可用参数"linear"（匀速）</p>
+<p>fn: 在动画完成时执行的函数，每个元素执行一次</p></li>
 <li><p>例子</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#showDiv"</span>).hide(<span class="string">"slow"</span>,<span class="string">"swing"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   alert(<span class="string">"隐藏了..."</span>) </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#showDiv"</span>).hide(<span class="string">"slow"</span>,<span class="string">"swing"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   alert(<span class="string">"隐藏了..."</span>) </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul></li>
 <li><p>遍历方式</p>
 <ul>
-<li><p>普通的for循环</p>
-</li>
+<li><p>普通的for循环</p></li>
 <li><p>jquery对象.each(function(index,element){})</p>
 <p>其中index是元素在集合中的索引，element是集合中的每一个元素对象</p>
-<p>而且如果回调函数return true相当于continue，如果return false相当于break</p>
-</li>
-<li><p>$.each(object,[callback])</p>
-</li>
-<li>for…of: 这种方式是jquery3.0版本之后提供的方式，其用法为for(元素对象 of 容器对象)</li>
-</ul>
-</li>
+<p>而且如果回调函数return true相当于continue，如果return false相当于break</p></li>
+<li><p>$.each(object,[callback])</p></li>
+<li><p>for...of: 这种方式是jquery3.0版本之后提供的方式，其用法为for(元素对象 of 容器对象)</p></li>
+</ul></li>
 <li><p>事件绑定</p>
 <ul>
 <li><p>jquery标准的绑定方式</p>
-<p>jq对象.事件方法(回调函数); 比如表单对象.submit(); 如果不传回调函数，则会让jq对象获得焦点</p>
-</li>
+<p>jq对象.事件方法(回调函数); 比如表单对象.submit(); 如果不传回调函数，则会让jq对象获得焦点</p></li>
 <li><p>on绑定事件/off解除绑定</p>
-<p>jq对象.on(“事件名称”，回调函数)</p>
-<p>jq对象.off(“事件名称”) 如果off方法不传递任何参数则将组件上的所有事件全部解锁</p>
-</li>
+<p>jq对象.on("事件名称"，回调函数)</p>
+<p>jq对象.off("事件名称") 如果off方法不传递任何参数则将组件上的所有事件全部解锁</p></li>
 <li><p>事件切换</p>
-<p>jq对象.toggle(fn1,fn2…) 当单击jq对象对应的组件后，会执行fn1第二次点击会执行fn2…</p>
-<p>1.9版本后该方法被删除了，但是可以使用jQuery Migrate（迁移）插件恢复此功能</p>
-</li>
-</ul>
-</li>
+<p>jq对象.toggle(fn1,fn2...) 当单击jq对象对应的组件后，会执行fn1第二次点击会执行fn2...</p>
+<p>1.9版本后该方法被删除了，但是可以使用jQuery Migrate（迁移）插件恢复此功能</p></li>
+</ul></li>
 <li><p>插件</p>
 <ul>
 <li><p>$.fn.extend(object) 用来增强$获取的对象，相当于自己定义对象的方法，方法名和方法体可以自己自定义，定义后其他任何jq对象都可以调用该方法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.fn.extend(&#123;</span><br><span class="line">    check:<span class="function"><span class="keyword">function</span></span>&#123;</span><br><span class="line">    	写函数check的函数体</span><br><span class="line">	&#125;,</span><br><span class="line">    uncheck:<span class="function"><span class="keyword">function</span></span>&#123;</span><br><span class="line">        写函数uncheck的函数体</span><br><span class="line">    &#125;           </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.fn.extend(&#123;</span><br><span class="line">    check:<span class="function"><span class="keyword">function</span></span>&#123;</span><br><span class="line">    	写函数check的函数体</span><br><span class="line">	&#125;,</span><br><span class="line">    uncheck:<span class="function"><span class="keyword">function</span></span>&#123;</span><br><span class="line">        写函数uncheck的函数体</span><br><span class="line">    &#125;           </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
 <li><p>$.extend(object) 用来增强$对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.extend(&#123;</span><br><span class="line">    max:<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &gt;= b ? a : b;</span><br><span class="line">    &#125;,</span><br><span class="line">    min:<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &lt;= b ? a : b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.extend(&#123;</span><br><span class="line">    max:<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &gt;= b ? a : b;</span><br><span class="line">    &#125;,</span><br><span class="line">    min:<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &lt;= b ? a : b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul></li>
 </ol>
-<h5 id="AJAX"><a href="#AJAX" class="headerlink" title="AJAX"></a>AJAX</h5><ol>
+<h5 id="ajax">AJAX</h5>
+<ol type="1">
 <li><p>是ASynchronied JavaScript And XML的缩写，表示异步的JavaScript和XML</p>
 <ul>
 <li>同步：客户端必须等待服务器端的响应，在等待的期间，客户端不能做其他操作</li>
 <li>异步：客户端不需要等待服务器端的响应，在等待的期间，客户端可以做其他操作</li>
-</ul>
-</li>
+</ul></li>
 <li><p>使用$.ajax()发送异步请求</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">	url:<span class="string">"ajaxServlet"</span>,</span><br><span class="line">    type:<span class="string">"POST"</span>,</span><br><span class="line">    data:&#123;<span class="string">"username"</span>:<span class="string">"jack"</span>,<span class="string">"age"</span>:<span class="number">23</span>&#125;,</span><br><span class="line">    sucess:<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">        alert(data);</span><br><span class="line">    &#125;,</span><br><span class="line">    error:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    	alert(<span class="string">"出错啦..."</span>)</span><br><span class="line">	&#125;,</span><br><span class="line">    dataType:<span class="string">"text"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">	url:<span class="string">"ajaxServlet"</span>,</span><br><span class="line">    type:<span class="string">"POST"</span>,</span><br><span class="line">    data:&#123;<span class="string">"username"</span>:<span class="string">"jack"</span>,<span class="string">"age"</span>:<span class="number">23</span>&#125;,</span><br><span class="line">    sucess:<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">        alert(data);</span><br><span class="line">    &#125;,</span><br><span class="line">    error:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    	alert(<span class="string">"出错啦..."</span>)</span><br><span class="line">	&#125;,</span><br><span class="line">    dataType:<span class="string">"text"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
 <li><p>使用$.get()发送get请求</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="keyword">get</span>("ajaxServlet",&#123;username:<span class="string">"rose"</span>&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    alert(data);</span><br><span class="line">&#125;,<span class="string">"text"</span>)</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="keyword">get</span>("ajaxServlet",&#123;username:<span class="string">"rose"</span>&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    alert(data);</span><br><span class="line">&#125;,<span class="string">"text"</span>)</span><br></pre></td></tr></table></figure></li>
 <li><p>使用$.post()发送post请求</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.post(<span class="string">"ajaxServlet"</span>,&#123;<span class="attr">username</span>:<span class="string">"rose"</span>&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    alert(data);</span><br><span class="line">&#125;,<span class="string">"text"</span>)</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.post(<span class="string">"ajaxServlet"</span>,&#123;<span class="attr">username</span>:<span class="string">"rose"</span>&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    alert(data);</span><br><span class="line">&#125;,<span class="string">"text"</span>)</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h5 id="Json"><a href="#Json" class="headerlink" title="Json"></a>Json</h5><ol>
-<li><p>JavaScript Object Object Notation JavaScript对象表示法</p>
-</li>
-<li><pre><code class="lang-javascript">var person = {name:&quot;zhangsan&quot;,age:13,gender:true};
-</code></pre>
-</li>
-<li><p>java对象转Json格式（使用jackson解析器）writeValueAsString(obj)</p>
-</li>
-<li>json转化为java对象readValue(str, Person.class)</li>
+<h5 id="json">Json</h5>
+<ol type="1">
+<li><p>JavaScript Object Object Notation JavaScript对象表示法</p></li>
+<li><div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a>   <span class="kw">var</span> person <span class="op">=</span> {<span class="dt">name</span><span class="op">:</span><span class="st">&quot;zhangsan&quot;</span><span class="op">,</span><span class="dt">age</span><span class="op">:</span><span class="dv">13</span><span class="op">,</span><span class="dt">gender</span><span class="op">:</span><span class="kw">true</span>}<span class="op">;</span></span></code></pre></div></li>
+<li><p>java对象转Json格式（使用jackson解析器）writeValueAsString(obj)</p></li>
+<li><p>json转化为java对象readValue(str, Person.class)</p></li>
 </ol>
-<h5 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h5><ol>
-<li><p>redis是属于NoSQL系列的非关系型数据库，它存储的是键值对，数据之间没有关联关系，最重要的一点是，非关系型数据库存储在内存中，而关系型数据库存储在硬盘文件中。</p>
-</li>
+<h5 id="redis">redis</h5>
+<ol type="1">
+<li><p>redis是属于NoSQL系列的非关系型数据库，它存储的是键值对，数据之间没有关联关系，最重要的一点是，非关系型数据库存储在内存中，而关系型数据库存储在硬盘文件中。</p></li>
 <li><p>redis存储的是key:value格式的数据，其中key都是字符串类型，而value有5种不同类型的数据结构</p>
 <ul>
 <li>字符串类型 string</li>
@@ -1170,14 +994,13 @@
 <li>列表类型 list （linkedlist格式）</li>
 <li>集合类型 set</li>
 <li>有序集合类型 sortedset</li>
-</ul>
-</li>
+</ul></li>
 <li><p>基本的命令（参考redis中文网redis教程）</p>
 <p>字符串类型 string</p>
 <ul>
 <li>存储 set age 13 返回OK</li>
-<li>获取 get age  返回 “23”</li>
-<li>删除 del age </li>
+<li>获取 get age 返回 “23”</li>
+<li>删除 del age</li>
 </ul>
 <p>哈希类型 hash</p>
 <ul>
@@ -1202,23 +1025,18 @@
 <li>存储 zadd key score value: 存储数据，并存储数据对应的分数，根据分数排序</li>
 <li>获取 zrange key start end</li>
 <li>删除 zrem key value</li>
-</ul>
-</li>
+</ul></li>
 <li><p>通用命令</p>
 <ul>
 <li>keys *: 获取所有的键</li>
 <li>type key: 根据键名获取其值的类型</li>
 <li>del key: 删除指定的key: value</li>
-</ul>
-</li>
+</ul></li>
 <li><p>redis持久化</p>
 <ul>
-<li><p>RDB：默认方式，不需要进行配置，在一定的间隔时间中，检测key的变化情况，然后持久化数据</p>
-</li>
-<li><p>AOF：日志记录的方式，可以记录每一条命令的操作，每一次命令操作后持久化数据</p>
-</li>
-</ul>
-</li>
+<li><p>RDB：默认方式，不需要进行配置，在一定的间隔时间中，检测key的变化情况，然后持久化数据</p></li>
+<li><p>AOF：日志记录的方式，可以记录每一条命令的操作，每一次命令操作后持久化数据</p></li>
+</ul></li>
 </ol>
 
     </div>
@@ -1304,7 +1122,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#JavaScript基础"><span class="nav-number">1.</span> <span class="nav-text">JavaScript基础</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BOM（Browser-Object-Model）"><span class="nav-number">2.</span> <span class="nav-text">BOM（Browser Object Model）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DOM-Document-Object-Model"><span class="nav-number">3.</span> <span class="nav-text">DOM (Document Object Model)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事件"><span class="nav-number">4.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Bootstrap"><span class="nav-number">5.</span> <span class="nav-text">Bootstrap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#xml（Extensible-Markup-Language）"><span class="nav-number">6.</span> <span class="nav-text">xml（Extensible Markup Language）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Jsoup"><span class="nav-number">7.</span> <span class="nav-text">Jsoup</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tomcat"><span class="nav-number">8.</span> <span class="nav-text">Tomcat</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Servlet-server-applet"><span class="nav-number">9.</span> <span class="nav-text">Servlet(server applet)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTP"><span class="nav-number">10.</span> <span class="nav-text">HTTP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Request"><span class="nav-number">11.</span> <span class="nav-text">Request</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BeanUtils"><span class="nav-number">12.</span> <span class="nav-text">BeanUtils</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Response"><span class="nav-number">13.</span> <span class="nav-text">Response</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ServletContext"><span class="nav-number">14.</span> <span class="nav-text">ServletContext</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie"><span class="nav-number">15.</span> <span class="nav-text">Cookie</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JSP-已过时"><span class="nav-number">16.</span> <span class="nav-text">JSP(已过时)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Session"><span class="nav-number">17.</span> <span class="nav-text">Session</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MVC"><span class="nav-number">18.</span> <span class="nav-text">MVC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#EL表达式"><span class="nav-number">19.</span> <span class="nav-text">EL表达式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JSTL"><span class="nav-number">20.</span> <span class="nav-text">JSTL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Filter"><span class="nav-number">21.</span> <span class="nav-text">Filter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Listener"><span class="nav-number">22.</span> <span class="nav-text">Listener</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JQuery"><span class="nav-number">23.</span> <span class="nav-text">JQuery</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AJAX"><span class="nav-number">24.</span> <span class="nav-text">AJAX</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Json"><span class="nav-number">25.</span> <span class="nav-text">Json</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#redis"><span class="nav-number">26.</span> <span class="nav-text">redis</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#javascript基础"><span class="nav-number">1.</span> <span class="nav-text">JavaScript基础</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#bombrowser-object-model"><span class="nav-number">2.</span> <span class="nav-text">BOM（Browser Object Model）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dom-document-object-model"><span class="nav-number">3.</span> <span class="nav-text">DOM (Document Object Model)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事件"><span class="nav-number">4.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#bootstrap"><span class="nav-number">5.</span> <span class="nav-text">Bootstrap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#xmlextensible-markup-language"><span class="nav-number">6.</span> <span class="nav-text">xml（Extensible Markup Language）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#jsoup"><span class="nav-number">7.</span> <span class="nav-text">Jsoup</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tomcat"><span class="nav-number">8.</span> <span class="nav-text">Tomcat</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#servletserver-applet"><span class="nav-number">9.</span> <span class="nav-text">Servlet(server applet)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#http"><span class="nav-number">10.</span> <span class="nav-text">HTTP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#request"><span class="nav-number">11.</span> <span class="nav-text">Request</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#beanutils"><span class="nav-number">12.</span> <span class="nav-text">BeanUtils</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#response"><span class="nav-number">13.</span> <span class="nav-text">Response</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#servletcontext"><span class="nav-number">14.</span> <span class="nav-text">ServletContext</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cookie"><span class="nav-number">15.</span> <span class="nav-text">Cookie</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#jsp已过时"><span class="nav-number">16.</span> <span class="nav-text">JSP(已过时)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#session"><span class="nav-number">17.</span> <span class="nav-text">Session</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mvc"><span class="nav-number">18.</span> <span class="nav-text">MVC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#el表达式"><span class="nav-number">19.</span> <span class="nav-text">EL表达式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#jstl"><span class="nav-number">20.</span> <span class="nav-text">JSTL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#filter"><span class="nav-number">21.</span> <span class="nav-text">Filter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#listener"><span class="nav-number">22.</span> <span class="nav-text">Listener</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#jquery"><span class="nav-number">23.</span> <span class="nav-text">JQuery</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ajax"><span class="nav-number">24.</span> <span class="nav-text">AJAX</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#json"><span class="nav-number">25.</span> <span class="nav-text">Json</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#redis"><span class="nav-number">26.</span> <span class="nav-text">redis</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1320,7 +1138,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1333,7 +1151,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
