@@ -20,19 +20,22 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":240,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="YY&#39;blog">
+  <meta name="description" content="OLPS Toolbox------论文阅读笔记 OLPS：A Toolbox for On-Line Portfolio Selection 出发点 虽然已经有各种各样的机器学习方法提出来解决资产配置问题，但是由于各种原因却没有一个全面的开源工具箱">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OLPS Toolbox------论文阅读笔记">
 <meta property="og:url" content="http://yy-oops.github.io/2020/03/23/OLPS%20Toolbox------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="YY&#39;blog">
+<meta property="og:description" content="OLPS Toolbox------论文阅读笔记 OLPS：A Toolbox for On-Line Portfolio Selection 出发点 虽然已经有各种各样的机器学习方法提出来解决资产配置问题，但是由于各种原因却没有一个全面的开源工具箱">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429121333.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429121352.png">
 <meta property="article:published_time" content="2020-03-23T02:58:00.000Z">
 <meta property="article:modified_time" content="2020-04-29T04:14:36.199Z">
 <meta property="article:author" content="YY">
 <meta property="article:tag" content="量化投资">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429121333.png">
 
 <link rel="canonical" href="http://yy-oops.github.io/2020/03/23/OLPS%20Toolbox------%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
 
@@ -231,7 +234,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div id="hexo-blog-encrypt" data-wpm="YY'blog" data-whm="YY'blog"><div class="hbe-input-container"><input type="password" id="hbePass" placeholder="YY'blog" /><label>YY'blog</label><div class="bottom-line"></div></div><script id="hbeData" type="hbeData" data-hmacdigest="5fabcdfa3efd9ac86632bd222441ce3467d79e994d44cca7ec43e6fbdf585f0c">d5783f6391abbe5ed8a935383b6c5c3cd4bcce6b009529fff2b6430138e0d652b08c59762281ef721596a003e93f89cc220e4b1839ddc76c9032627d76b2331c2308e2c74948a727140333183ef65be36023ca6e81fc740c78e49d8fbc555b6cc58c9ac40b15477f3d4dff9902a26146dd55603470295b2ffaa0e6e5d638d3a91745417e36b29c4808be9084c4b4a7581d8915fbc63d192d737d4d04238d4c3fcdb4538be5afcb787a720821f579288a4971b9f5681250459e5ab5fa2535ce6fd22788adbdea250ecc8ea4b996e9973b30fd99399a196203c8ab29cad736e94092ff4fc989df7c6ad46725bfe7b0036a997fa441a832d34060ee3d67164eb3d2a24f4883f3417bb761d9000a965934575d0a5a2cfbdc4884ecf408b1ed9156a595f97e8fa7cb9847e56c2754b8b9243db3b82055506e787349058196a94c72d0f615eafb7821c08dbc469fd5f3d07338197c60fde85170654b10d8cd0dfce99bdf9b85124b3fa808fe87c146da893d92cafda0db91119bb6143795438c5e8406881e531a34047e7d273fdf500ca0abbf94233d003ce05f42605d34ba6273314ba68c92ebf5cd96a3f49736f48b9869ac372fc2b06f11d68cdf7e446f3a204a6dcb41e6069187528a5282e3fb1f03f616d0fa5c7d2633f404444fcb47aff59b983880fd2dbc13a907e1305c705f3cd0ad1d7cb9c28e8765f6e7034fcccfcd7351737e10e3e0eaf99dd639298f6f21ce29bc5ad86de14a37bd1d737340fdca890c50ff4b96a584d62456e2dacfd1fcff1f5841277d48d560a438ac904f660300829e6236422cc3549c8c064a3d61c1f8b123e9eb113907eac59d383a4ae4e4fca7c3776bb063d0551dea0c8be44fd538bd01931e65d353175a24ca81e9cdac9f84c985e59d189dfb9616f5b6d67f36df14bed6c89051c48967c2783a42446d224b8598a08756c283a92f8183d330430a401009d7f0d7a159e9c71ef0cc73fe30231a233de82d2db5be6d928e3da0c0b6b95232ff4e92da0144e47bf7ae2b7aa0b6080eb5b0d285663d17c38c193d015bef8d8dacb53278c4936cfd48c1572e8edebcc21862db2511da4bf50a10d1f75b9a0cba918789f4a18d20130cd2d83bc76a66fd3502c7d25fe0a859734b4439c01510db95b7d02df732cf4ea97714e2e93dfed6658c1f02f2cc2baf7ab3805c8f4b0b309222a9a72a44bf2c6d524af205ff5acc26d6afff163dc5b2a6c777432161e1eebdf408e836162ea3b4103c49999f4aace07e9371085e4fbe78063660c9b5758d72d724dc77d06e8f46f4708ea27e2774683c2b33206d5a7f14c2af70c785673f64eeb1349cca6f26b3dd3a0d413b31f427031fbe2ff885655a71d9e279e901a0fc6c730577c70fe5707576d95f8a354604487e6be04c387f99d10dbb3bd20b4faa904e397134e683d448b04bfe9881a9b31260de0621de7acc85bee590deb3e9c262be0010eda392d454e7e954ce4561ec044e6faca1fa088a628d7011e95caf7f1510b7a755026a3e7d0c1a9d7351d55a267649255affc0354bf43faccc601d0a13817606fbbd75ad7b5bc47219a6b441e5598349b026da69dd41141374270874958b594ebfe9fc64b7554385a72c2f645fbc7bb24cdbaa5def565fd82f565c296f101c31f8d814c33c15e7fa6207576e037ca863e03542c845b35fe5b3097facce7e52bc480e6946cdc191d10253a8ebb1e827dc59d2456f29f60dfeabf47610b9d914ae4be40e48ad23b2d8f44965def1d647bc2383871796bf061a20ef0366c7fa61d0e19057b4c6d1ba556ffd1e67aaada51789f99a695fc98924d3585a6a5e5f0bc1890f3b10656bb65d036f29babd972184b05d0537c11408ee4e5c18c9ec41242c709af869d0f3f36510d87ce4f6af8810bd4dbccb85dfbf9d26839dea88b047176ebaa8652e0573a69784ddaf57977885dd2a768e45a40bbef70956b1d473d6c097b5a3a56092f7f39a8743f30381b4d562cb1e84e84b14f7f6</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
+        <h4 id="olps-toolbox------论文阅读笔记">OLPS Toolbox------论文阅读笔记</h4>
+<h4 id="olpsa-toolbox-for-on-line-portfolio-selection">OLPS：A Toolbox for On-Line Portfolio Selection</h4>
+<h5 id="出发点">出发点</h5>
+<p>虽然已经有各种各样的机器学习方法提出来解决资产配置问题，但是由于各种原因却没有一个全面的开源工具箱<a id="more"></a></p>
+<h5 id="toolbox">Toolbox</h5>
+<p>该开源工具箱内包含了由机器学习算法驱动的一些经典和先进的策略，这让我们能够用其来开发新的学习方法并且能够让不同的策略和基准进行性能比较。</p>
+<p>网址：<a href="https://github.com/OLPS/" target="_blank" rel="noopener">https://github.com/OLPS/</a></p>
+<p>该工具箱主要有三个模块：</p>
+<ol type="1">
+<li>数据预处理：主要是导入数据并且初始化环境，比如准备日志文件句柄等</li>
+<li>算法：包括了很多算法，基于模块1中的数据进行模拟交易</li>
+<li>后处理：分析模块2得到的结果，比如风险调整回报等。</li>
+</ol>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429121333.png" /></p>
+<p>在Matlab中包含有GUI接口，实际上CLI接口也是有的。下面就是用CLI进行模拟的一个例子</p>
+<p><img src="https://gitee.com/YY-oops/blogimage/raw/master/img/20200429121352.png" /></p>
+
     </div>
 
     
@@ -316,6 +335,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#olps-toolbox------论文阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">OLPS Toolbox------论文阅读笔记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#olpsa-toolbox-for-on-line-portfolio-selection"><span class="nav-number">2.</span> <span class="nav-text">OLPS：A Toolbox for On-Line Portfolio Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#出发点"><span class="nav-number">2.1.</span> <span class="nav-text">出发点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#toolbox"><span class="nav-number">2.2.</span> <span class="nav-text">Toolbox</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
