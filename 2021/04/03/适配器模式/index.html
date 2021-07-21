@@ -20,20 +20,23 @@
     var CONFIG = {"hostname":"yy-oops.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","Muse | Mist":240,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":"ture","scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="事务的实现机制 事务的四个特性：A（原子性）C（一致性）I（隔离性）D（持久性） 持久性是由redo日志文件实现的 原子性是由undo日志文件实现的">
+  <meta name="description" content="适配器模式 如下场景： 12345String[] s &#x3D; new String[]&amp;#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;&amp;#125;;  &#x2F;&#x2F; 1&#x2F;&#x2F; HashSet set &#x3D; new HashSet(s);  &#x2F;&#x2F; 2 这里编译器报错HashSet set &#x3D; new HashSet(Arrays.asList(s));  &#x2F;&#x2F; 3 在1处创建了一个字符数组实例对象，在2处由于s是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="事务的实现机制">
-<meta property="og:url" content="http://yy-oops.github.io/2020/11/26/%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:title" content="适配器模式">
+<meta property="og:url" content="http://yy-oops.github.io/2021/04/03/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="YY&#39;s blog">
-<meta property="og:description" content="事务的实现机制 事务的四个特性：A（原子性）C（一致性）I（隔离性）D（持久性） 持久性是由redo日志文件实现的 原子性是由undo日志文件实现的">
+<meta property="og:description" content="适配器模式 如下场景： 12345String[] s &#x3D; new String[]&amp;#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;&amp;#125;;  &#x2F;&#x2F; 1&#x2F;&#x2F; HashSet set &#x3D; new HashSet(s);  &#x2F;&#x2F; 2 这里编译器报错HashSet set &#x3D; new HashSet(Arrays.asList(s));  &#x2F;&#x2F; 3 在1处创建了一个字符数组实例对象，在2处由于s是">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-26T14:39:00.000Z">
-<meta property="article:modified_time" content="2021-01-26T03:35:06.441Z">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/image-20210403162926056.png">
+<meta property="og:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/image-20210403165900809.png">
+<meta property="article:published_time" content="2021-04-03T08:59:00.000Z">
+<meta property="article:modified_time" content="2021-07-21T08:57:24.677Z">
 <meta property="article:author" content="YY">
-<meta property="article:tag" content="MySQL数据库">
+<meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/YY-oops/blogimage/raw/master/img/image-20210403162926056.png">
 
-<link rel="canonical" href="http://yy-oops.github.io/2020/11/26/%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/">
+<link rel="canonical" href="http://yy-oops.github.io/2021/04/03/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -45,7 +48,7 @@
   };
 </script>
 
-  <title>事务的实现机制 | YY's blog</title>
+  <title>适配器模式 | YY's blog</title>
   
 
 
@@ -156,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2020/11/26/%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/">
+    <link itemprop="mainEntityOfPage" href="http://yy-oops.github.io/2021/04/03/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/%E5%A4%B4%E5%83%8F.jpg">
@@ -169,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          事务的实现机制
+          适配器模式
         </h1>
 
         <div class="post-meta">
@@ -179,14 +182,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-26 22:39:00" itemprop="dateCreated datePublished" datetime="2020-11-26T22:39:00+08:00">2020-11-26</time>
+              <time title="创建时间：2021-04-03 16:59:00" itemprop="dateCreated datePublished" datetime="2021-04-03T16:59:00+08:00">2021-04-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-26 11:35:06" itemprop="dateModified" datetime="2021-01-26T11:35:06+08:00">2021-01-26</time>
+                <time title="修改时间：2021-07-21 16:57:24" itemprop="dateModified" datetime="2021-07-21T16:57:24+08:00">2021-07-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -211,7 +214,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>944</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -230,40 +233,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="事务的实现机制">事务的实现机制</h2>
-<p>事务的四个特性：A（原子性）C（一致性）I（隔离性）D（持久性）</p>
-<p>持久性是由redo日志文件实现的</p>
-<p>原子性是由undo日志文件实现的<a id="more"></a></p>
-<p>隔离性是由锁和MVCC实现的</p>
-<p>一致性是由以上三种特性共同实现的</p>
-<h5 id="持久性的实现宕机后的恢复">持久性的实现（宕机后的恢复）</h5>
-<p>数据库进行数据读时，先从缓冲池中获取，如果获取不到，就到磁盘中获取，获取后存一份到缓冲池。</p>
-<p>数据库进行数据写时，先把数据写入到缓冲池，然后按照一定的策略定期的将缓冲池中的数据同步到磁盘中。</p>
-<p>以上的这种数据读取方式回产生一定的问题：<strong>当我们把数据写入到缓冲池中后，如果系统宕机，那么缓冲池中的数据就丢失了，没有持久化到磁盘中。</strong></p>
-<p>redo日志文件用来解决这个问题，具体做法如下：</p>
-<ol type="1">
-<li><p>开启事务</p></li>
-<li><p>执行SQL语句对数据进行更新操作，并将更新结果存入缓冲池</p></li>
-<li><p>对执行的SQL语句生成redo log，并将redo log存入redo log缓冲区</p></li>
-<li><p>事务提交</p></li>
-<li><p>将redo log缓冲区中的redo log 同步到磁盘的redo log 文件中</p></li>
-</ol>
-<p>注意，</p>
-<ul>
-<li><p>更新后的数据和redo log都是存在缓冲区中，然后同步到磁盘中，那么redo log不会丢失吗？</p>
-<p>因为，在 InnoDB 中，redo log都是以 512 字节的块的形式进行存储的，同时因为块的大小与磁盘扇区大小相同，所以redo log的写入可以保证原子性，不会由于机器断电导致redo log仅写入一半并留下脏数据。</p></li>
-<li><p>redo log 在逻辑上是对redo log文件的追加操作，是顺序的，而数据的更新操作是随机的，所以磁盘在索引数据时redo log文件的操作会更快</p></li>
-</ul>
-<h5 id="原子性的实现错误后的回滚">原子性的实现（错误后的回滚）</h5>
-<p>保证原子性的一个很重要的一点是要保证错误发生时能够进行正确的回滚操作，而回滚操作是靠undo log来实现的。</p>
-<p>每当出现数据更新的操作时（查询除外）都会伴随着生成一个undo log，回滚时根据undo log做逆向操作（比如insert逆向就delete）</p>
-<h5 id="隔离性的实现">隔离性的实现</h5>
-<p>隔离级别： read uncommited、 read commited、repeatable read、serializable</p>
-<p>通过不同的加锁策略可以实现以上的四种隔离级别</p>
-<p>read uncommited（读取未提交）：从字面意思上的理解就是读取了未提交的数据，事务1的未提交数据被事务2读取了，这样造成了脏读的问题。</p>
-<p>read commited（读取已提交）：从字面意思上的理解就是读取已提交的数据，事务1在提交之前对数据的更改对事务2是不可见的，事务2只能读取事务1已提交的数据，这样脏读的问题就解决了。但是这种情况下会出现不可重复读的问题，就是在一个事务内两次读取的数据不一致的情况，在两次读取数据的期间有其他的事务对数据进行了更新操作并且提交了。</p>
-<p>repeatable read（可重复读）：从字面意思上的理解就是可以在一个事务内重复的读取一份数据，保证读取的数据都是一样的。这个问题的解决是通过读写锁（通过加读锁，读读共享）和MVCC机制（保证多次读取的是同一个版本）实现的。但是这种模式下依然会产生幻读的问题。</p>
-<p>serializable（串行）: 表示所有的操作都是串行执行，通过加读写锁，并且读锁和写锁都是排他锁。这种情况下能够解决上述的三种问题，但是由于加了过多的锁，所以效率不高。</p>
+        <h3 id="适配器模式">适配器模式</h3>
+<p>如下场景：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String[] s = <span class="keyword">new</span> String[]&#123;<span class="string">"A"</span>,<span class="string">"B"</span>,<span class="string">"C"</span>,<span class="string">"D"</span>&#125;;  <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// HashSet set = new HashSet(s);  // 2 这里编译器报错</span></span><br><span class="line"></span><br><span class="line">HashSet set = <span class="keyword">new</span> HashSet(Arrays.asList(s));  <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<p>在1处创建了一个字符数组实例对象，在2处由于s是一个字符串数组类对象，set是一个集合类对象，两者并不适配，所以如果想把这两个并不相干的类能够适配在一起，那么我们需要一个适配器，在3处的Arrays充当了这个适配器，并且该适配器内提供了一个适配方法<code>asList()</code> 该适配方法把字符串数组类对象转化成了一个list类对象。<a id="more"></a></p>
+<h4 id="一类适配器模式">一、类适配器模式</h4>
+<p>当我们要访问的接口A中没有我们想要的方法 ，却在另一个接口B中发现了合适的方法，我们又不能改变访问接口A，在这种情况下，我们可以定义一个适配器p来进行中转，这个适配器p要实现我们访问的接口A，这样我们就能继续访问当前接口A中的方法（虽然它目前不是我们的菜），然后再继承接口B的实现类BB，这样我们可以在适配器P中访问接口B的方法了，这时我们在适配器P中的接口A方法中直接引用BB中的合适方法，这样就完成了一个简单的类适配器。</p>
+<figure>
+<img src="https://gitee.com/YY-oops/blogimage/raw/master/img/image-20210403162926056.png" alt="" /><figcaption>image-20210403162926056</figcaption>
+</figure>
+<p>图中AdapterP实现了适配的功能，我们调用的是接口A中的方法，但是却实现了接口B的功能。</p>
+<h4 id="二对象适配器模式">二、对象适配器模式</h4>
+<p>当我们要访问的接口A中没有我们想要的方法 ，却在另一个接口B中发现了合适的方法，我们又不能改变访问接口A，在这种情况下，我们可以定义一个适配器p来进行中转，这个适配器p要实现我们访问的接口A，这样我们就能继续访问当前接口A中的方法（虽然它目前不是我们的菜），然后在适配器P中定义私有变量B（对象）（B接口指向变量名），再定义一个带参数的构造器用来为B赋值，再在A接口的方法实现中使用对象B调用其来源于B接口的方法。</p>
+<figure>
+<img src="https://gitee.com/YY-oops/blogimage/raw/master/img/image-20210403165900809.png" alt="" /><figcaption>image-20210403165900809</figcaption>
+</figure>
+<p>图中粉色的部分是对象适配器模式不同于类适配器模式的地方，它在适配器内持有接口B的引用，并在接口A的方法中调用接口B的方法，在调用时，传入接口B的实例对象，即可实现在调用接口A中方法时实现的是接口B实例对象中定义的方法行为。</p>
 
     </div>
 
@@ -273,7 +258,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># MySQL数据库</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
           </div>
 
         
@@ -282,12 +267,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/10/11/%E5%BF%AB%E6%8E%92%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" rel="prev" title="快排的两种实现方式">
-      <i class="fa fa-chevron-left"></i> 快排的两种实现方式
+    <a href="/2021/03/01/Spring%E7%9A%84%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" rel="prev" title="Spring的自动配置原理">
+      <i class="fa fa-chevron-left"></i> Spring的自动配置原理
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/01/07/%E6%89%8B%E5%86%99%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="next" title="手写线程池">
-      手写线程池 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/05/12/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E7%9A%84%E6%8E%A2%E8%AE%A8%E4%B8%8E%E5%AE%9E%E8%B7%B5/" rel="next" title="加密算法的探讨与实践">
+      加密算法的探讨与实践 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -348,7 +333,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的实现机制"><span class="nav-number">1.</span> <span class="nav-text">事务的实现机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#持久性的实现宕机后的恢复"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">持久性的实现（宕机后的恢复）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#原子性的实现错误后的回滚"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">原子性的实现（错误后的回滚）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#隔离性的实现"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">隔离性的实现</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#适配器模式"><span class="nav-number">1.</span> <span class="nav-text">适配器模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一类适配器模式"><span class="nav-number">1.1.</span> <span class="nav-text">一、类适配器模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二对象适配器模式"><span class="nav-number">1.2.</span> <span class="nav-text">二、对象适配器模式</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
